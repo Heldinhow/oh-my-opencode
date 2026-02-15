@@ -57,7 +57,7 @@ export function createAnthropicContextWindowLimitRecoveryHook(
         autoCompactState.errorDataBySession.set(sessionID, parsed)
 
         if (autoCompactState.compactionInProgress.has(sessionID)) {
-          await attemptDeduplicationRecovery(sessionID, parsed, experimental)
+          await attemptDeduplicationRecovery(sessionID, parsed, experimental, ctx.client)
           return
         }
 
