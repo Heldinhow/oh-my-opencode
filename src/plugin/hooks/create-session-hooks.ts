@@ -20,6 +20,7 @@ import {
   createSisyphusJuniorNotepadHook,
   createQuestionLabelTruncatorHook,
   createPreemptiveCompactionHook,
+  createSddGateHook,
 } from "../../hooks"
 import { createAnthropicEffortHook } from "../../hooks/anthropic-effort"
 import {
@@ -44,6 +45,7 @@ export type SessionHooks = {
   ralphLoop: ReturnType<typeof createRalphLoopHook> | null
   editErrorRecovery: ReturnType<typeof createEditErrorRecoveryHook> | null
   delegateTaskRetry: ReturnType<typeof createDelegateTaskRetryHook> | null
+  sddGate: ReturnType<typeof createSddGateHook> | null
   startWork: ReturnType<typeof createStartWorkHook> | null
   prometheusMdOnly: ReturnType<typeof createPrometheusMdOnlyHook> | null
   sisyphusJuniorNotepad: ReturnType<typeof createSisyphusJuniorNotepadHook> | null
@@ -134,6 +136,10 @@ export function createSessionHooks(args: {
     ? safeHook("delegate-task-retry", () => createDelegateTaskRetryHook(ctx))
     : null
 
+  const sddGate = isHookEnabled("sdd-gate")
+    ? safeHook("sdd-gate", () => createSddGateHook(ctx, pluginConfig))
+    : null
+
   const startWork = isHookEnabled("start-work")
     ? safeHook("start-work", () => createStartWorkHook(ctx))
     : null
@@ -167,6 +173,7 @@ export function createSessionHooks(args: {
     ralphLoop,
     editErrorRecovery,
     delegateTaskRetry,
+    sddGate,
     startWork,
     prometheusMdOnly,
     sisyphusJuniorNotepad,

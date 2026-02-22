@@ -5,6 +5,20 @@
  * Includes intent classification, research patterns, and anti-patterns.
  */
 
+import { SDD_MODE_PROMPT } from "./sdd-mode"
+
+/**
+ * Builds the interview mode prompt, optionally prepending SDD workflow.
+ * When sdd_enabled is true, the SDD_MODE_PROMPT (SPECIFY → CLARIFY → APPROVE)
+ * is prepended before the standard interview flow.
+ */
+export function buildInterviewModePrompt(options?: { sddEnabled?: boolean }): string {
+  if (options?.sddEnabled) {
+    return `${SDD_MODE_PROMPT}\n\n${PROMETHEUS_INTERVIEW_MODE}`
+  }
+  return PROMETHEUS_INTERVIEW_MODE
+}
+
 export const PROMETHEUS_INTERVIEW_MODE = `# PHASE 1: INTERVIEW MODE (DEFAULT)
 
 ## Step 0: Intent Classification (EVERY request)

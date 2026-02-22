@@ -5,7 +5,7 @@ export const HOOK_NAME = "prometheus-md-only"
 
 export const PROMETHEUS_AGENT = "prometheus"
 
-export const ALLOWED_EXTENSIONS = [".md"]
+export const ALLOWED_EXTENSIONS = [".md", ".json"]
 
 export const ALLOWED_PATH_PREFIX = ".sisyphus"
 

@@ -14,8 +14,10 @@ export { createAtlasAgent, atlasPromptMetadata } from "./atlas"
 export {
   PROMETHEUS_SYSTEM_PROMPT,
   PROMETHEUS_PERMISSION,
+  buildPrometheusSystemPrompt,
   PROMETHEUS_IDENTITY_CONSTRAINTS,
   PROMETHEUS_INTERVIEW_MODE,
+  buildInterviewModePrompt,
   PROMETHEUS_PLAN_GENERATION,
   PROMETHEUS_HIGH_ACCURACY_MODE,
   PROMETHEUS_PLAN_TEMPLATE,

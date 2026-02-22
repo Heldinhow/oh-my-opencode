@@ -91,6 +91,7 @@
           "prometheus-md-only",
           "sisyphus-junior-notepad",
           "start-work",
+          "sdd-gate",
           "atlas",
           "unstable-agent-babysitter",
           "task-reminder",
@@ -2677,8 +2678,20 @@
         },
         "replace_plan": {
           "type": "boolean"
+        },
+        "sdd_enabled": {
+          "default": false,
+          "type": "boolean"
+        },
+        "sdd_require_approval": {
+          "default": true,
+          "type": "boolean"
         }
       },
+      "required": [
+        "sdd_enabled",
+        "sdd_require_approval"
+      ],
       "additionalProperties": false
     },
     "comment_checker": {

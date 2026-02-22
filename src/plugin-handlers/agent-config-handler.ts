@@ -140,6 +140,7 @@ export async function applyAgentConfig(params: {
         pluginPrometheusOverride: prometheusOverride,
         userCategories: params.pluginConfig.categories,
         currentModel,
+        sddEnabled: params.pluginConfig.sisyphus_agent?.sdd_enabled ?? false,
       });
     }
 

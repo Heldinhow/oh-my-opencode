@@ -1,5 +1,5 @@
 import type { CategoryConfig } from "../config/schema";
-import { PROMETHEUS_PERMISSION, PROMETHEUS_SYSTEM_PROMPT } from "../agents/prometheus";
+import { PROMETHEUS_PERMISSION, buildPrometheusSystemPrompt } from "../agents/prometheus";
 import { resolvePromptAppend } from "../agents/builtin-agents/resolve-file-uri";
 import { AGENT_MODEL_REQUIREMENTS } from "../shared/model-requirements";
 import {
@@ -27,6 +27,7 @@ export async function buildPrometheusAgentConfig(params: {
   pluginPrometheusOverride: PrometheusOverride | undefined;
   userCategories: Record<string, CategoryConfig> | undefined;
   currentModel: string | undefined;
+  sddEnabled?: boolean;
 }): Promise<Record<string, unknown>> {
   const categoryConfig = params.pluginPrometheusOverride?.category
     ? resolveCategoryConfig(params.pluginPrometheusOverride.category, params.userCategories)
@@ -70,7 +71,7 @@ export async function buildPrometheusAgentConfig(params: {
     ...(resolvedModel ? { model: resolvedModel } : {}),
     ...(variantToUse ? { variant: variantToUse } : {}),
     mode: "all",
-    prompt: PROMETHEUS_SYSTEM_PROMPT,
+    prompt: buildPrometheusSystemPrompt({ sddEnabled: params.sddEnabled }),
     permission: PROMETHEUS_PERMISSION,
     description: `${(params.configAgentPlan?.description as string) ?? "Plan agent"} (Prometheus - OhMyOpenCode)`,
     color: (params.configAgentPlan?.color as string) ?? "#FF5722",
