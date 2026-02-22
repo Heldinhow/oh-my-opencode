@@ -10,13 +10,13 @@ import {
   getPlanProgress,
   getPlanName,
   createBoulderState,
-  findPrometheusPlans,
+  findTinkerPlans,
 } from "./storage"
 import type { BoulderState } from "./types"
 
 describe("boulder-state", () => {
   const TEST_DIR = join(tmpdir(), "boulder-state-test-" + Date.now())
-  const SISYPHUS_DIR = join(TEST_DIR, ".sisyphus")
+  const SISYPHUS_DIR = join(TEST_DIR, ".specify")
 
   beforeEach(() => {
     if (!existsSync(TEST_DIR)) {
@@ -137,7 +137,7 @@ describe("boulder-state", () => {
   })
 
   describe("writeBoulderState", () => {
-    test("should write state and create .sisyphus directory if needed", () => {
+    test("should write state and create .invoker directory if needed", () => {
       // given - state to write
       const state: BoulderState = {
         active_plan: "/test/plan.md",
@@ -312,7 +312,7 @@ describe("boulder-state", () => {
   describe("getPlanName", () => {
     test("should extract plan name from path", () => {
       // given
-      const path = "/home/user/.sisyphus/plans/project/my-feature.md"
+      const path = "/home/user/.specify/plans/project/my-feature.md"
       // when
       const name = getPlanName(path)
       // then
@@ -340,13 +340,13 @@ describe("boulder-state", () => {
       //#given - plan path, session id, and agent type
       const planPath = "/path/to/feature.md"
       const sessionId = "ses-xyz789"
-      const agent = "atlas"
+      const agent = "axe"
 
       //#when - createBoulderState is called with agent
       const state = createBoulderState(planPath, sessionId, agent)
 
       //#then - state should include the agent field
-      expect(state.agent).toBe("atlas")
+      expect(state.agent).toBe("axe")
       expect(state.active_plan).toBe(planPath)
       expect(state.session_ids).toEqual([sessionId])
       expect(state.plan_name).toBe("feature")

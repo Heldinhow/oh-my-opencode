@@ -27,16 +27,16 @@ export function applyToolConfig(params: {
   const isCliRunMode = process.env.OPENCODE_CLI_RUN_MODE === "true";
   const questionPermission = isCliRunMode ? "deny" : "allow";
 
-  if (params.agentResult.librarian) {
-    const agent = params.agentResult.librarian as AgentWithPermission;
+  if (params.agentResult.keeper) {
+    const agent = params.agentResult.keeper as AgentWithPermission;
     agent.permission = { ...agent.permission, "grep_app_*": "allow" };
   }
-  if (params.agentResult["multimodal-looker"]) {
-    const agent = params.agentResult["multimodal-looker"] as AgentWithPermission;
+  if (params.agentResult["broodmother"]) {
+    const agent = params.agentResult["broodmother"] as AgentWithPermission;
     agent.permission = { ...agent.permission, task: "deny", look_at: "deny" };
   }
-  if (params.agentResult["atlas"]) {
-    const agent = params.agentResult["atlas"] as AgentWithPermission;
+  if (params.agentResult["axe"]) {
+    const agent = params.agentResult["axe"] as AgentWithPermission;
     agent.permission = {
       ...agent.permission,
       task: "allow",
@@ -46,8 +46,8 @@ export function applyToolConfig(params: {
       ...denyTodoTools,
     };
   }
-  if (params.agentResult.sisyphus) {
-    const agent = params.agentResult.sisyphus as AgentWithPermission;
+  if (params.agentResult.invoker) {
+    const agent = params.agentResult.invoker as AgentWithPermission;
     agent.permission = {
       ...agent.permission,
       call_omo_agent: "deny",
@@ -58,8 +58,8 @@ export function applyToolConfig(params: {
       ...denyTodoTools,
     };
   }
-  if (params.agentResult.hephaestus) {
-    const agent = params.agentResult.hephaestus as AgentWithPermission;
+  if (params.agentResult.enigma) {
+    const agent = params.agentResult.enigma as AgentWithPermission;
     agent.permission = {
       ...agent.permission,
       call_omo_agent: "deny",
@@ -68,8 +68,8 @@ export function applyToolConfig(params: {
       ...denyTodoTools,
     };
   }
-  if (params.agentResult["prometheus"]) {
-    const agent = params.agentResult["prometheus"] as AgentWithPermission;
+  if (params.agentResult["tinker"]) {
+    const agent = params.agentResult["tinker"] as AgentWithPermission;
     agent.permission = {
       ...agent.permission,
       call_omo_agent: "deny",
@@ -80,8 +80,8 @@ export function applyToolConfig(params: {
       ...denyTodoTools,
     };
   }
-  if (params.agentResult["sisyphus-junior"]) {
-    const agent = params.agentResult["sisyphus-junior"] as AgentWithPermission;
+  if (params.agentResult["invoker-junior"]) {
+    const agent = params.agentResult["invoker-junior"] as AgentWithPermission;
     agent.permission = {
       ...agent.permission,
       task: "allow",

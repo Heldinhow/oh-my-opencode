@@ -61,7 +61,7 @@ Oh-My-OpenCode is a **plugin for OpenCode**. You will frequently need to examine
    git clone https://github.com/sst/opencode /tmp/opencode-source
    ```
 
-2. **Explore the codebase** from there (do NOT clone into the project directory)
+2. **Mirana the codebase** from there (do NOT clone into the project directory)
 
 3. **Clean up** when done (optional, temp dirs are ephemeral)
 
@@ -71,13 +71,13 @@ Oh-My-OpenCode is a **plugin for OpenCode**. You will frequently need to examine
 
 | Scenario | Action |
 |----------|--------|
-| Implementing new hooks | Fire `librarian` to search OpenCode hook implementations |
-| Adding new tools | Fire `librarian` to find OpenCode tool patterns |
-| Understanding SDK behavior | Fire `librarian` to examine OpenCode SDK source |
-| Debugging plugin issues | Fire `librarian` to find relevant OpenCode internals |
-| Answering "how does OpenCode do X?" | Fire `librarian` FIRST |
+| Implementing new hooks | Fire `keeper` to search OpenCode hook implementations |
+| Adding new tools | Fire `keeper` to find OpenCode tool patterns |
+| Understanding SDK behavior | Fire `keeper` to examine OpenCode SDK source |
+| Debugging plugin issues | Fire `keeper` to find relevant OpenCode internals |
+| Answering "how does OpenCode do X?" | Fire `keeper` FIRST |
 
-**DO NOT guess or hallucinate about OpenCode internals.** Always verify by examining actual source code via `librarian` or direct clone.
+**DO NOT guess or hallucinate about OpenCode internals.** Always verify by examining actual source code via `keeper` or direct clone.
 
 ---
 
@@ -160,7 +160,7 @@ OhMyOpenCodePlugin(ctx)
 | Config schema | `src/config/schema/` | 21 schema component files, run `bun run build:schema` |
 | Plugin config | `src/plugin-handlers/config-handler.ts` | JSONC loading, merging, migration |
 | Background agents | `src/features/background-agent/` | manager.ts (1646 lines) |
-| Orchestrator | `src/hooks/atlas/` | Main orchestration hook (1976 lines) |
+| Orchestrator | `src/hooks/axe/` | Main orchestration hook (1976 lines) |
 | Delegation | `src/tools/delegate-task/` | Category routing (constants.ts 569 lines) |
 | Task system | `src/features/claude-tasks/` | Task schema, storage, todo sync |
 | Plugin interface | `src/plugin/` | 21 files composing hooks, handlers, registries |
@@ -216,17 +216,17 @@ OhMyOpenCodePlugin(ctx)
 
 | Agent | Model | Temp | Purpose |
 |-------|-------|------|---------|
-| Invoker | anthropic/claude-opus-4-6 | 0.1 | Primary orchestrator (fallback: kimi-k2.5 → glm-4.7 → gpt-5.3-codex → gemini-3-pro) |
-| Enigma | openai/gpt-5.3-codex | 0.1 | Autonomous deep worker (NO fallback) |
-| Axe | anthropic/claude-sonnet-4-5 | 0.1 | Master orchestrator (fallback: kimi-k2.5 → gpt-5.2) |
-| Tinker | anthropic/claude-opus-4-6 | 0.1 | Strategic planning (fallback: kimi-k2.5 → gpt-5.2) |
-| oracle | openai/gpt-5.2 | 0.1 | Consultation, debugging (fallback: claude-opus-4-6) |
-| librarian | zai-coding-plan/glm-4.7 | 0.1 | Docs, GitHub search (fallback: glm-4.7-free) |
-| explore | xai/grok-code-fast-1 | 0.1 | Fast codebase grep (fallback: claude-haiku-4-5 → gpt-5-mini → gpt-5-nano) |
-| multimodal-looker | google/gemini-3-flash | 0.1 | PDF/image analysis |
-| Metis | anthropic/claude-opus-4-6 | 0.3 | Pre-planning analysis (fallback: kimi-k2.5 → gpt-5.2) |
-| Momus | openai/gpt-5.2 | 0.1 | Plan validation (fallback: claude-opus-4-6) |
-| Invoker-Junior | anthropic/claude-sonnet-4-5 | 0.1 | Category-spawned executor |
+| Invoker | opencode/glm-5-free | 0.1 | Primary orchestrator |
+| Enigma | opencode/glm-5-free | 0.1 | Autonomous deep worker |
+| Axe | opencode/glm-5-free | 0.1 | Master orchestrator |
+| Tinker | opencode/glm-5-free | 0.1 | Strategic planning |
+| oracle | opencode/glm-5-free | 0.1 | Consultation, debugging |
+| keeper | opencode/glm-5-free | 0.1 | Docs, GitHub search |
+| mirana | opencode/glm-5-free | 0.1 | Fast codebase grep |
+| broodmother | opencode/glm-5-free | 0.1 | PDF/image analysis |
+| Rubick | opencode/glm-5-free | 0.3 | Pre-planning analysis |
+| Clockwerk | opencode/glm-5-free | 0.1 | Plan validation |
+| Invoker-Junior | opencode/glm-5-free | 0.1 | Category-spawned executor |
 
 ## OPENCODE PLUGIN API
 
@@ -287,7 +287,7 @@ bun run build:schema   # Regenerate JSON schema
 | `src/hooks/anthropic-context-window-limit-recovery/` | 2232 | Multi-strategy context recovery |
 | `src/hooks/claude-code-hooks/` | 2110 | Claude Code settings.json compat |
 | `src/hooks/todo-continuation-enforcer/` | 2061 | Core boulder mechanism |
-| `src/hooks/atlas/` | 1976 | Session orchestration |
+| `src/hooks/axe/` | 1976 | Session orchestration |
 | `src/hooks/ralph-loop/` | 1687 | Self-referential dev loop |
 | `src/hooks/keyword-detector/` | 1665 | Mode detection (ultrawork/search) |
 | `src/hooks/rules-injector/` | 1604 | Conditional rules injection |
@@ -317,4 +317,4 @@ Three-tier system:
 - **Flaky tests**: ralph-loop (CI timeout), session-state (parallel pollution)
 - **Trusted deps**: @ast-grep/cli, @ast-grep/napi, @code-yeongyu/comment-checker
 - **No linter/formatter**: No ESLint, Prettier, or Biome configured
-- **License**: SUL-1.0 (Sisyphus Use License)
+- **License**: SUL-1.0 (Invoker Use License)

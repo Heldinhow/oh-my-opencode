@@ -51,7 +51,7 @@ src/
 - Transform (4): claude-code-hooks, keyword-detector, context-injector, thinking-block-validator
 
 **Continuation Hooks** (`create-continuation-hooks.ts`):
-- 7 hooks: stop-continuation-guard, compaction-context-injector, todo-continuation-enforcer, atlas, ...
+- 7 hooks: stop-continuation-guard, compaction-context-injector, todo-continuation-enforcer, axe, ...
 
 **Skill Hooks** (`create-skill-hooks.ts`):
 - 2 hooks: category-skill-reminder, auto-slash-command

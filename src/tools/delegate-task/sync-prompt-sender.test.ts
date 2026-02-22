@@ -19,7 +19,7 @@ describe("sendSyncPrompt", () => {
 
     const input = {
       sessionID: "test-session",
-      agentToUse: "sisyphus-junior",
+      agentToUse: "invoker-junior",
       args: {
         description: "test task",
         prompt: "test prompt",
@@ -40,7 +40,7 @@ describe("sendSyncPrompt", () => {
     expect(promptArgs.body.tools.question).toBe(false)
   })
 
-  test("applies agent tool restrictions for explore agent", async () => {
+  test("applies agent tool restrictions for mirana agent", async () => {
     //#given
     const { sendSyncPrompt } = require("./sync-prompt-sender")
 
@@ -58,7 +58,7 @@ describe("sendSyncPrompt", () => {
 
     const input = {
       sessionID: "test-session",
-      agentToUse: "explore",
+      agentToUse: "mirana",
       args: {
         description: "test task",
         prompt: "test prompt",
@@ -80,7 +80,7 @@ describe("sendSyncPrompt", () => {
     expect(promptArgs.body.tools.call_omo_agent).toBe(false)
   })
 
-  test("applies agent tool restrictions for librarian agent", async () => {
+  test("applies agent tool restrictions for keeper agent", async () => {
     //#given
     const { sendSyncPrompt } = require("./sync-prompt-sender")
 
@@ -98,7 +98,7 @@ describe("sendSyncPrompt", () => {
 
     const input = {
       sessionID: "test-session",
-      agentToUse: "librarian",
+      agentToUse: "keeper",
       args: {
         description: "test task",
         prompt: "test prompt",
@@ -120,7 +120,7 @@ describe("sendSyncPrompt", () => {
     expect(promptArgs.body.tools.call_omo_agent).toBe(false)
   })
 
-  test("does not restrict call_omo_agent for sisyphus agent", async () => {
+  test("does not restrict call_omo_agent for invoker agent", async () => {
     //#given
     const { sendSyncPrompt } = require("./sync-prompt-sender")
 
@@ -138,7 +138,7 @@ describe("sendSyncPrompt", () => {
 
     const input = {
       sessionID: "test-session",
-      agentToUse: "sisyphus",
+      agentToUse: "invoker",
       args: {
         description: "test task",
         prompt: "test prompt",

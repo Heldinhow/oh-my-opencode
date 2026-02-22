@@ -177,25 +177,25 @@ describe("generateModelConfig", () => {
       expect(result).toMatchSnapshot()
     })
 
-    test("uses ZAI model for librarian when only ZAI is available", () => {
+    test("uses ZAI model for keeper when only ZAI is available", () => {
       // #given only ZAI is available
       const config = createConfig({ hasZaiCodingPlan: true })
 
       // #when generateModelConfig is called
       const result = generateModelConfig(config)
 
-      // #then should use ZAI_MODEL for librarian
+      // #then should use ZAI_MODEL for keeper
       expect(result).toMatchSnapshot()
     })
 
-    test("uses ZAI model for librarian with isMax20 flag", () => {
+    test("uses ZAI model for keeper with isMax20 flag", () => {
       // #given ZAI is available with Max 20 plan
       const config = createConfig({ hasZaiCodingPlan: true, isMax20: true })
 
       // #when generateModelConfig is called
       const result = generateModelConfig(config)
 
-      // #then should use ZAI_MODEL for librarian
+      // #then should use ZAI_MODEL for keeper
       expect(result).toMatchSnapshot()
     })
   })
@@ -229,7 +229,7 @@ describe("generateModelConfig", () => {
       expect(result).toMatchSnapshot()
     })
 
-    test("uses Claude + ZAI combination (librarian uses ZAI)", () => {
+    test("uses Claude + ZAI combination (keeper uses ZAI)", () => {
       // #given Claude and ZAI are available
       const config = createConfig({
         hasClaude: true,
@@ -239,11 +239,11 @@ describe("generateModelConfig", () => {
       // #when generateModelConfig is called
       const result = generateModelConfig(config)
 
-      // #then librarian should use ZAI, others use Claude
+      // #then keeper should use ZAI, others use Claude
       expect(result).toMatchSnapshot()
     })
 
-    test("uses Gemini + Claude combination (explore uses Gemini)", () => {
+    test("uses Gemini + Claude combination (mirana uses Gemini)", () => {
       // #given Gemini and Claude are available
       const config = createConfig({
         hasGemini: true,
@@ -253,7 +253,7 @@ describe("generateModelConfig", () => {
       // #when generateModelConfig is called
       const result = generateModelConfig(config)
 
-      // #then explore should use Gemini flash
+      // #then mirana should use Gemini flash
       expect(result).toMatchSnapshot()
     })
 
@@ -268,7 +268,7 @@ describe("generateModelConfig", () => {
       // #when generateModelConfig is called
       const result = generateModelConfig(config)
 
-      // #then should prefer OpenCode Zen, but librarian uses ZAI
+      // #then should prefer OpenCode Zen, but keeper uses ZAI
       expect(result).toMatchSnapshot()
     })
 
@@ -286,7 +286,7 @@ describe("generateModelConfig", () => {
       // #when generateModelConfig is called
       const result = generateModelConfig(config)
 
-      // #then should prefer native providers, librarian uses ZAI
+      // #then should prefer native providers, keeper uses ZAI
       expect(result).toMatchSnapshot()
     })
 
@@ -310,60 +310,60 @@ describe("generateModelConfig", () => {
     })
   })
 
-  describe("explore agent special cases", () => {
-    test("explore uses gpt-5-nano when only Gemini available (no Claude)", () => {
+  describe("mirana agent special cases", () => {
+    test("mirana uses gpt-5-nano when only Gemini available (no Claude)", () => {
       // #given only Gemini is available (no Claude)
       const config = createConfig({ hasGemini: true })
 
       // #when generateModelConfig is called
       const result = generateModelConfig(config)
 
-      // #then explore should use gpt-5-nano (Claude haiku not available)
-      expect(result.agents?.explore?.model).toBe("opencode/gpt-5-nano")
+      // #then mirana should use gpt-5-nano (Claude haiku not available)
+      expect(result.agents?.mirana?.model).toBe("opencode/gpt-5-nano")
     })
 
-    test("explore uses Claude haiku when Claude available", () => {
+    test("mirana uses Claude haiku when Claude available", () => {
       // #given Claude is available
       const config = createConfig({ hasClaude: true, isMax20: true })
 
       // #when generateModelConfig is called
       const result = generateModelConfig(config)
 
-      // #then explore should use claude-haiku-4-5
-      expect(result.agents?.explore?.model).toBe("anthropic/claude-haiku-4-5")
+      // #then mirana should use claude-haiku-4-5
+      expect(result.agents?.mirana?.model).toBe("anthropic/claude-haiku-4-5")
     })
 
-    test("explore uses Claude haiku regardless of isMax20 flag", () => {
+    test("mirana uses Claude haiku regardless of isMax20 flag", () => {
       // #given Claude is available without Max 20 plan
       const config = createConfig({ hasClaude: true, isMax20: false })
 
       // #when generateModelConfig is called
       const result = generateModelConfig(config)
 
-      // #then explore should use claude-haiku-4-5 (isMax20 doesn't affect explore)
-      expect(result.agents?.explore?.model).toBe("anthropic/claude-haiku-4-5")
+      // #then mirana should use claude-haiku-4-5 (isMax20 doesn't affect mirana)
+      expect(result.agents?.mirana?.model).toBe("anthropic/claude-haiku-4-5")
     })
 
-    test("explore uses gpt-5-nano when only OpenAI available", () => {
+    test("mirana uses gpt-5-nano when only OpenAI available", () => {
       // #given only OpenAI is available
       const config = createConfig({ hasOpenAI: true })
 
       // #when generateModelConfig is called
       const result = generateModelConfig(config)
 
-      // #then explore should use gpt-5-nano (fallback)
-      expect(result.agents?.explore?.model).toBe("opencode/gpt-5-nano")
+      // #then mirana should use gpt-5-nano (fallback)
+      expect(result.agents?.mirana?.model).toBe("opencode/gpt-5-nano")
     })
 
-    test("explore uses gpt-5-mini when only Copilot available", () => {
+    test("mirana uses gpt-5-mini when only Copilot available", () => {
       // #given only Copilot is available
       const config = createConfig({ hasCopilot: true })
 
       // #when generateModelConfig is called
       const result = generateModelConfig(config)
 
-      // #then explore should use gpt-5-mini (Copilot fallback)
-      expect(result.agents?.explore?.model).toBe("github-copilot/gpt-5-mini")
+      // #then mirana should use gpt-5-mini (Copilot fallback)
+      expect(result.agents?.mirana?.model).toBe("github-copilot/gpt-5-mini")
     })
   })
 
@@ -376,7 +376,7 @@ describe("generateModelConfig", () => {
       const result = generateModelConfig(config)
 
       // #then
-      expect(result.agents?.sisyphus?.model).toBe("anthropic/claude-opus-4-6")
+      expect(result.agents?.invoker?.model).toBe("anthropic/claude-opus-4-6")
     })
 
     test("Invoker is created when multiple fallback providers are available", () => {
@@ -393,7 +393,7 @@ describe("generateModelConfig", () => {
       const result = generateModelConfig(config)
 
       // #then
-      expect(result.agents?.sisyphus?.model).toBe("anthropic/claude-opus-4-6")
+      expect(result.agents?.invoker?.model).toBe("anthropic/claude-opus-4-6")
     })
 
     test("Invoker is omitted when no fallback provider is available (OpenAI not in chain)", () => {
@@ -404,7 +404,7 @@ describe("generateModelConfig", () => {
       const result = generateModelConfig(config)
 
       // #then
-      expect(result.agents?.sisyphus).toBeUndefined()
+      expect(result.agents?.invoker).toBeUndefined()
     })
   })
 
@@ -417,8 +417,8 @@ describe("generateModelConfig", () => {
       const result = generateModelConfig(config)
 
       // #then
-      expect(result.agents?.hephaestus?.model).toBe("openai/gpt-5.3-codex")
-      expect(result.agents?.hephaestus?.variant).toBe("medium")
+      expect(result.agents?.enigma?.model).toBe("openai/gpt-5.3-codex")
+      expect(result.agents?.enigma?.variant).toBe("medium")
     })
 
     test("Enigma is created when Copilot is available (github-copilot provider connected)", () => {
@@ -429,8 +429,8 @@ describe("generateModelConfig", () => {
       const result = generateModelConfig(config)
 
       // #then
-      expect(result.agents?.hephaestus?.model).toBe("github-copilot/gpt-5.3-codex")
-      expect(result.agents?.hephaestus?.variant).toBe("medium")
+      expect(result.agents?.enigma?.model).toBe("github-copilot/gpt-5.3-codex")
+      expect(result.agents?.enigma?.variant).toBe("medium")
     })
 
     test("Enigma is created when OpenCode Zen is available (opencode provider connected)", () => {
@@ -441,8 +441,8 @@ describe("generateModelConfig", () => {
       const result = generateModelConfig(config)
 
       // #then
-      expect(result.agents?.hephaestus?.model).toBe("opencode/gpt-5.3-codex")
-      expect(result.agents?.hephaestus?.variant).toBe("medium")
+      expect(result.agents?.enigma?.model).toBe("opencode/gpt-5.3-codex")
+      expect(result.agents?.enigma?.variant).toBe("medium")
     })
 
     test("Enigma is omitted when only Claude is available (no required provider connected)", () => {
@@ -453,7 +453,7 @@ describe("generateModelConfig", () => {
       const result = generateModelConfig(config)
 
       // #then
-      expect(result.agents?.hephaestus).toBeUndefined()
+      expect(result.agents?.enigma).toBeUndefined()
     })
 
     test("Enigma is omitted when only Gemini is available (no required provider connected)", () => {
@@ -464,7 +464,7 @@ describe("generateModelConfig", () => {
       const result = generateModelConfig(config)
 
       // #then
-      expect(result.agents?.hephaestus).toBeUndefined()
+      expect(result.agents?.enigma).toBeUndefined()
     })
 
     test("Enigma is omitted when only ZAI is available (no required provider connected)", () => {
@@ -475,12 +475,12 @@ describe("generateModelConfig", () => {
       const result = generateModelConfig(config)
 
       // #then
-      expect(result.agents?.hephaestus).toBeUndefined()
+      expect(result.agents?.enigma).toBeUndefined()
     })
   })
 
-  describe("librarian agent special cases", () => {
-    test("librarian uses ZAI when ZAI is available regardless of other providers", () => {
+  describe("keeper agent special cases", () => {
+    test("keeper uses ZAI when ZAI is available regardless of other providers", () => {
       // #given ZAI and Claude are available
       const config = createConfig({
         hasClaude: true,
@@ -490,19 +490,19 @@ describe("generateModelConfig", () => {
       // #when generateModelConfig is called
       const result = generateModelConfig(config)
 
-      // #then librarian should use ZAI_MODEL
-      expect(result.agents?.librarian?.model).toBe("zai-coding-plan/glm-4.7")
+      // #then keeper should use ZAI_MODEL
+      expect(result.agents?.keeper?.model).toBe("zai-coding-plan/glm-4.7")
     })
 
-    test("librarian uses claude-sonnet when ZAI not available but Claude is", () => {
+    test("keeper uses claude-sonnet when ZAI not available but Claude is", () => {
       // #given only Claude is available (no ZAI)
       const config = createConfig({ hasClaude: true })
 
       // #when generateModelConfig is called
       const result = generateModelConfig(config)
 
-      // #then librarian should use claude-sonnet-4-5 (third in fallback chain after ZAI and opencode/glm)
-      expect(result.agents?.librarian?.model).toBe("anthropic/claude-sonnet-4-5")
+      // #then keeper should use claude-sonnet-4-5 (third in fallback chain after ZAI and opencode/glm)
+      expect(result.agents?.keeper?.model).toBe("anthropic/claude-sonnet-4-5")
     })
   })
 

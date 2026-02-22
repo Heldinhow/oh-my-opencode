@@ -22,7 +22,7 @@ export function createCallOmoAgent(
       prompt: tool.schema.string().describe("The task for the agent to perform"),
       subagent_type: tool.schema
         .string()
-        .describe("The type of specialized agent to use for this task (explore or librarian only)"),
+        .describe("The type of specialized agent to use for this task (mirana or keeper only)"),
       run_in_background: tool.schema
         .boolean()
         .describe("REQUIRED. true: run asynchronously (use background_output to get results), false: run synchronously and wait for completion"),
@@ -32,7 +32,7 @@ export function createCallOmoAgent(
       const toolCtx = toolContext as ToolContextWithMetadata
       log(`[call_omo_agent] Starting with agent: ${args.subagent_type}, background: ${args.run_in_background}`)
 
-      // Case-insensitive agent validation - allows "Mirana", "EXPLORE", "explore" etc.
+      // Case-insensitive agent validation - allows "Mirana", "EXPLORE", "mirana" etc.
       if (
         !ALLOWED_AGENTS.some(
           (name) => name.toLowerCase() === args.subagent_type.toLowerCase(),

@@ -57,7 +57,7 @@ ${REFACTOR_TEMPLATE}
   },
   "start-work": {
     description: "(builtin) Start Invoker work session from Tinker plan",
-    agent: "atlas",
+    agent: "axe",
     template: `<command-instruction>
 ${START_WORK_TEMPLATE}
 </command-instruction>

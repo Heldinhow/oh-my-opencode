@@ -48,7 +48,7 @@ export async function injectBoulderContinuation(input: {
     await ctx.client.session.promptAsync({
       path: { id: sessionID },
       body: {
-        agent: agent ?? "atlas",
+        agent: agent ?? "axe",
         ...(model !== undefined ? { model } : {}),
         parts: [{ type: "text", text: prompt }],
       },

@@ -8,7 +8,7 @@ import { isCallerOrchestrator } from "../../shared/session-utils"
 import { collectGitDiffStats, formatFileChanges } from "../../shared/git-worktree"
 import { HOOK_NAME } from "./hook-name"
 import { DIRECT_WORK_REMINDER } from "./system-reminder-templates"
-import { isSisyphusPath } from "./sisyphus-path"
+import { isInvokerPath } from "./invoker-path"
 import { extractSessionIdFromOutput } from "./subagent-session-id"
 import { buildOrchestratorReminder, buildStandaloneVerificationReminder } from "./verification-reminders"
 import { isWriteOrEditToolName } from "./write-edit-tool-policy"
@@ -53,7 +53,7 @@ export function createToolExecuteAfterHandler(input: {
       if (!filePath) {
         filePath = toolOutput.metadata?.filePath as string | undefined
       }
-      if (filePath && !isSisyphusPath(filePath)) {
+      if (filePath && !isInvokerPath(filePath)) {
         toolOutput.output = (toolOutput.output || "") + DIRECT_WORK_REMINDER
         log(`[${HOOK_NAME}] Direct work reminder appended`, {
           sessionID: toolInput.sessionID,

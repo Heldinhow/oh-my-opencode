@@ -7,7 +7,7 @@ import type { InstallConfig } from "./types"
 import type { AgentConfig, CategoryConfig, GeneratedOmoConfig } from "./model-fallback-types"
 import { toProviderAvailability } from "./provider-availability"
 import {
-	getSisyphusFallbackChain,
+	getInvokerFallbackChain,
 	isAnyFallbackEntryAvailable,
 	isRequiredModelAvailable,
 	isRequiredProviderAvailable,
@@ -39,7 +39,7 @@ export function generateModelConfig(config: InstallConfig): GeneratedOmoConfig {
       $schema: SCHEMA_URL,
       agents: Object.fromEntries(
         Object.entries(AGENT_MODEL_REQUIREMENTS)
-          .filter(([role, req]) => !(role === "sisyphus" && req.requiresAnyModel))
+          .filter(([role, req]) => !(role === "invoker" && req.requiresAnyModel))
           .map(([role]) => [role, { model: ULTIMATE_FALLBACK }])
       ),
       categories: Object.fromEntries(
@@ -52,12 +52,12 @@ export function generateModelConfig(config: InstallConfig): GeneratedOmoConfig {
   const categories: Record<string, CategoryConfig> = {}
 
   for (const [role, req] of Object.entries(AGENT_MODEL_REQUIREMENTS)) {
-    if (role === "librarian" && avail.zai) {
+    if (role === "keeper" && avail.zai) {
       agents[role] = { model: ZAI_MODEL }
       continue
     }
 
-    if (role === "explore") {
+    if (role === "mirana") {
       if (avail.native.claude) {
         agents[role] = { model: "anthropic/claude-haiku-4-5" }
       } else if (avail.opencodeZen) {
@@ -70,8 +70,8 @@ export function generateModelConfig(config: InstallConfig): GeneratedOmoConfig {
       continue
     }
 
-    if (role === "sisyphus") {
-      const fallbackChain = getSisyphusFallbackChain()
+    if (role === "invoker") {
+      const fallbackChain = getInvokerFallbackChain()
       if (req.requiresAnyModel && !isAnyFallbackEntryAvailable(fallbackChain, avail)) {
         continue
       }

@@ -14,7 +14,7 @@ export interface BoulderState {
   session_ids: string[]
   /** Plan name derived from filename */
   plan_name: string
-  /** Agent type to use when resuming (e.g., 'atlas') */
+  /** Agent type to use when resuming (e.g., 'axe') */
   agent?: string
   /** Optional path to spec-kit tasks file */
   tasksFilePath?: string

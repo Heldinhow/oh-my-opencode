@@ -1,59 +1,52 @@
 export const AGENT_NAME_MAP: Record<string, string> = {
-  // Invoker variants → "sisyphus"
-  omo: "sisyphus",
-  OmO: "sisyphus",
-  Sisyphus: "sisyphus",
-  Invoker: "sisyphus",
-  sisyphus: "sisyphus",
+  // Invoker variants → "invoker"
+  omo: "invoker",
+  invoker: "invoker",
 
-  // Tinker variants → "prometheus"
-  "OmO-Plan": "prometheus",
-  "omo-plan": "prometheus",
-  "Planner-Sisyphus": "prometheus",
-  "planner-sisyphus": "prometheus",
-  "Planner-Invoker": "prometheus",
-  "Prometheus (Planner)": "prometheus",
-  "Tinker (Planner)": "prometheus",
-  prometheus: "prometheus",
+  // Tinker variants → "tinker"
+  "OmO-Plan": "tinker",
+  "omo-plan": "tinker",
+  "Planner-Invoker": "tinker",
+  "planner-invoker": "tinker",
+  "Tinker (Planner)": "tinker",
+  tinker: "tinker",
 
-  // Axe variants → "atlas"
-  "orchestrator-sisyphus": "atlas",
-  Atlas: "atlas",
-  Axe: "atlas",
-  atlas: "atlas",
+  // Axe variants → "axe"
+  "orchestrator-invoker": "axe",
+  Axe: "axe",
+  axe: "axe",
 
-  // Metis variants → "metis"
-  "plan-consultant": "metis",
-  "Metis (Plan Consultant)": "metis",
-  metis: "metis",
+  // Rubick variants → "rubick"
+  "plan-consultant": "rubick",
+  "Rubick (Plan Consultant)": "rubick",
+  rubick: "rubick",
 
-  // Momus variants → "momus"
-  "Momus (Plan Reviewer)": "momus",
-  momus: "momus",
+  // Clockwerk variants → "clockwerk"
+  "Clockwerk (Plan Reviewer)": "clockwerk",
+  clockwerk: "clockwerk",
 
-  // Invoker-Junior → "sisyphus-junior"
-  "Sisyphus-Junior": "sisyphus-junior",
-  "Invoker-Junior": "sisyphus-junior",
-  "sisyphus-junior": "sisyphus-junior",
+  // Invoker-Junior → "invoker-junior"
+  "Invoker-Junior": "invoker-junior",
+  "invoker-junior": "invoker-junior",
 
   // Already lowercase - passthrough
   build: "build",
   oracle: "oracle",
-  librarian: "librarian",
-  explore: "explore",
-  "multimodal-looker": "multimodal-looker",
+  keeper: "keeper",
+  mirana: "mirana",
+  "broodmother": "broodmother",
 }
 
 export const BUILTIN_AGENT_NAMES = new Set([
-  "sisyphus", // was "Sisyphus" (display: Invoker)
+  "invoker", // was "Invoker" (display: Invoker)
   "oracle",
-  "librarian",
-  "explore",
-  "multimodal-looker",
-  "metis", // was "Metis (Plan Consultant)"
-  "momus", // was "Momus (Plan Reviewer)"
-  "prometheus", // was "Prometheus (Planner)" (display: Tinker)
-  "atlas", // was "Atlas" (display: Axe)
+  "keeper",
+  "mirana",
+  "broodmother",
+  "rubick", // was "Rubick (Plan Consultant)"
+  "clockwerk", // was "Clockwerk (Plan Reviewer)"
+  "tinker", // was "Tinker (Planner)" (display: Tinker)
+  "axe", // was "Axe" (display: Axe)
   "build",
 ])
 

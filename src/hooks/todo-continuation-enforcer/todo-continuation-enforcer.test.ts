@@ -648,7 +648,7 @@ describe("todo-continuation-enforcer", () => {
 
   test("should accept skipAgents option without error", async () => {
     // given - session with skipAgents configured for Tinker
-    const sessionID = "main-prometheus-option"
+    const sessionID = "main-tinker-option"
     setMainSession(sessionID)
 
     // when - create hook with skipAgents option (should not throw)
@@ -1143,8 +1143,8 @@ describe("todo-continuation-enforcer", () => {
 
     // OpenCode returns assistant messages with flat modelID/providerID, not nested model object
     const mockMessagesWithAssistant = [
-      { info: { id: "msg-1", role: "user", agent: "sisyphus", model: { providerID: "openai", modelID: "gpt-5.2" } } },
-      { info: { id: "msg-2", role: "assistant", agent: "sisyphus", modelID: "gpt-5.2", providerID: "openai" } },
+      { info: { id: "msg-1", role: "user", agent: "invoker", model: { providerID: "openai", modelID: "gpt-5.2" } } },
+      { info: { id: "msg-2", role: "assistant", agent: "invoker", modelID: "gpt-5.2", providerID: "openai" } },
     ]
 
     const mockInput = {
@@ -1203,8 +1203,8 @@ describe("todo-continuation-enforcer", () => {
     setMainSession(sessionID)
 
     const mockMessagesWithCompaction = [
-      { info: { id: "msg-1", role: "user", agent: "sisyphus", model: { providerID: "anthropic", modelID: "claude-sonnet-4-5" } } },
-      { info: { id: "msg-2", role: "assistant", agent: "sisyphus", modelID: "claude-sonnet-4-5", providerID: "anthropic" } },
+      { info: { id: "msg-1", role: "user", agent: "invoker", model: { providerID: "anthropic", modelID: "claude-sonnet-4-5" } } },
+      { info: { id: "msg-2", role: "assistant", agent: "invoker", modelID: "claude-sonnet-4-5", providerID: "anthropic" } },
       { info: { id: "msg-3", role: "assistant", agent: "compaction", modelID: "claude-sonnet-4-5", providerID: "anthropic" } },
     ]
 
@@ -1249,7 +1249,7 @@ describe("todo-continuation-enforcer", () => {
 
      // then - continuation uses Invoker (skipped compaction agent)
      expect(promptCalls.length).toBe(1)
-    expect(promptCalls[0].agent).toBe("sisyphus")
+    expect(promptCalls[0].agent).toBe("invoker")
   })
 
   test("should skip injection when only compaction agent messages exist", async () => {
@@ -1305,14 +1305,14 @@ describe("todo-continuation-enforcer", () => {
     expect(promptCalls).toHaveLength(0)
   })
 
-  test("should skip injection when prometheus agent is after compaction", async () => {
-    // given - prometheus session that was compacted
-    const sessionID = "main-prometheus-compacted"
+  test("should skip injection when tinker agent is after compaction", async () => {
+    // given - tinker session that was compacted
+    const sessionID = "main-tinker-compacted"
     setMainSession(sessionID)
 
-    const mockMessagesPrometheusCompacted = [
-      { info: { id: "msg-1", role: "user", agent: "prometheus" } },
-      { info: { id: "msg-2", role: "assistant", agent: "prometheus" } },
+    const mockMessagesTinkerCompacted = [
+      { info: { id: "msg-1", role: "user", agent: "tinker" } },
+      { info: { id: "msg-2", role: "assistant", agent: "tinker" } },
       { info: { id: "msg-3", role: "assistant", agent: "compaction" } },
     ]
 
@@ -1322,7 +1322,7 @@ describe("todo-continuation-enforcer", () => {
           todo: async () => ({
             data: [{ id: "1", content: "Task 1", status: "pending", priority: "high" }],
           }),
-           messages: async () => ({ data: mockMessagesPrometheusCompacted }),
+           messages: async () => ({ data: mockMessagesTinkerCompacted }),
            prompt: async (opts: any) => {
              promptCalls.push({
                sessionID: opts.path.id,
@@ -1356,7 +1356,7 @@ describe("todo-continuation-enforcer", () => {
 
      await fakeTimers.advanceBy(3000)
 
-     // then - no continuation (prometheus found after filtering compaction, prometheus is in skipAgents)
+     // then - no continuation (tinker found after filtering compaction, tinker is in skipAgents)
     expect(promptCalls).toHaveLength(0)
   })
 

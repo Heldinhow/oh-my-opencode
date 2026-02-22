@@ -45,9 +45,9 @@ export function collectPendingBuiltinAgents(input: {
   for (const [name, source] of Object.entries(agentSources)) {
     const agentName = name as BuiltinAgentName
 
-    if (agentName === "sisyphus") continue
-    if (agentName === "hephaestus") continue
-    if (agentName === "atlas") continue
+    if (agentName === "invoker") continue
+    if (agentName === "enigma") continue
+    if (agentName === "axe") continue
     if (disabledAgents.some((name) => name.toLowerCase() === agentName.toLowerCase())) continue
 
     const override = agentOverrides[agentName]
@@ -80,13 +80,13 @@ export function collectPendingBuiltinAgents(input: {
       config = { ...config, variant: resolvedVariant }
     }
 
-    if (agentName === "librarian") {
+    if (agentName === "keeper") {
       config = applyEnvironmentContext(config, directory)
     }
 
     config = applyOverrides(config, override, mergedCategories, directory)
 
-    // Store for later - will be added after sisyphus and hephaestus
+    // Store for later - will be added after invoker and enigma
     pendingAgentConfigs.set(name, config)
 
     const metadata = agentMetadata[agentName]

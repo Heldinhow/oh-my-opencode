@@ -84,9 +84,9 @@ export function clearBoulderState(directory: string): boolean {
 
 /**
  * Find Tinker plan files for this project.
- * Tinker stores plans at: {project}/.sisyphus/plans/{name}.md
+ * Tinker stores plans at: {project}/.specify/plans/{name}.md
  */
-export function findPrometheusPlans(directory: string): string[] {
+export function findTinkerPlans(directory: string): string[] {
   const plansDir = join(directory, PROMETHEUS_PLANS_DIR)
 
   if (!existsSync(plansDir)) {

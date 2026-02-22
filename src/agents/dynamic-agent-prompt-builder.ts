@@ -106,17 +106,17 @@ export function buildToolSelectionTable(
   }
 
   rows.push("")
-  rows.push("**Default flow**: explore/librarian (background) + tools → oracle (if required)")
+  rows.push("**Default flow**: mirana/keeper (background) + tools → oracle (if required)")
 
   return rows.join("\n")
 }
 
-export function buildExploreSection(agents: AvailableAgent[]): string {
-  const exploreAgent = agents.find((a) => a.name === "explore")
-  if (!exploreAgent) return ""
+export function buildMiranaSection(agents: AvailableAgent[]): string {
+  const miranaAgent = agents.find((a) => a.name === "mirana")
+  if (!miranaAgent) return ""
 
-  const useWhen = exploreAgent.metadata.useWhen || []
-  const avoidWhen = exploreAgent.metadata.avoidWhen || []
+  const useWhen = miranaAgent.metadata.useWhen || []
+  const avoidWhen = miranaAgent.metadata.avoidWhen || []
 
   return `### Mirana Agent = Contextual Grep
 
@@ -128,11 +128,11 @@ ${avoidWhen.map((w) => `| ${w} |  |`).join("\n")}
 ${useWhen.map((w) => `|  | ${w} |`).join("\n")}`
 }
 
-export function buildLibrarianSection(agents: AvailableAgent[]): string {
-  const librarianAgent = agents.find((a) => a.name === "librarian")
-  if (!librarianAgent) return ""
+export function buildKeeperSection(agents: AvailableAgent[]): string {
+  const keeperAgent = agents.find((a) => a.name === "keeper")
+  if (!keeperAgent) return ""
 
-  const useWhen = librarianAgent.metadata.useWhen || []
+  const useWhen = keeperAgent.metadata.useWhen || []
 
   return `### Keeper Agent = Reference Grep
 
@@ -147,7 +147,7 @@ Search **external references** (docs, OSS, web). Fire proactively when unfamilia
 | | Library best practices & quirks |
 | | OSS implementation examples |
 
-**Trigger phrases** (fire librarian immediately):
+**Trigger phrases** (fire keeper immediately):
 ${useWhen.map((w) => `- "${w}"`).join("\n")}`
 }
 
@@ -410,7 +410,7 @@ export function buildUltraworkSection(
   }
 
   if (agents.length > 0) {
-    const ultraworkAgentPriority = ["explore", "librarian", "plan", "oracle"]
+    const ultraworkAgentPriority = ["mirana", "keeper", "plan", "oracle"]
     const sortedAgents = [...agents].sort((a, b) => {
       const aIdx = ultraworkAgentPriority.indexOf(a.name)
       const bIdx = ultraworkAgentPriority.indexOf(b.name)
@@ -423,7 +423,7 @@ export function buildUltraworkSection(
     lines.push("**Agents** (for specialized consultation/exploration):")
     for (const agent of sortedAgents) {
       const shortDesc = agent.description.length > 120 ? agent.description.slice(0, 120) + "..." : agent.description
-      const suffix = agent.name === "explore" || agent.name === "librarian" ? " (multiple)" : ""
+      const suffix = agent.name === "mirana" || agent.name === "keeper" ? " (multiple)" : ""
       lines.push(`- \`${agent.name}${suffix}\`: ${shortDesc}`)
     }
   }

@@ -10,7 +10,7 @@ hooks/
 ├── agent-usage-reminder/         # Specialized agent hints (109 lines)
 ├── anthropic-context-window-limit-recovery/ # Auto-summarize on limit (2232 lines)
 ├── anthropic-effort/             # Effort=max for Opus max variant (56 lines)
-├── atlas/                        # Main orchestration hook (1976 lines)
+├── axe/                        # Main orchestration hook (1976 lines)
 ├── auto-slash-command/           # Detects /command patterns (1134 lines)
 ├── auto-update-checker/          # Plugin update check (1140 lines)
 ├── background-notification/      # OS notifications (33 lines)
@@ -29,13 +29,13 @@ hooks/
 ├── keyword-detector/             # ultrawork/search/analyze modes (1665 lines)
 ├── non-interactive-env/          # Non-TTY handling (483 lines)
 ├── preemptive-compaction.ts      # Auto-compact at 78% usage (108 lines)
-├── prometheus-md-only/           # Planner read-only mode (955 lines)
+├── tinker-md-only/           # Planner read-only mode (955 lines)
 ├── question-label-truncator/     # Truncates labels to 30 chars (199 lines)
 ├── ralph-loop/                   # Self-referential dev loop (1687 lines)
-├── rules-injector/               # Conditional .sisyphus/rules injection (1604 lines)
+├── rules-injector/               # Conditional .specify/rules injection (1604 lines)
 ├── session-notification.ts       # OS idle notifications (108 lines)
 ├── session-recovery/             # Auto-recovers from crashes (1279 lines)
-├── sisyphus-junior-notepad/      # Junior notepad directive (76 lines)
+├── invoker-junior-notepad/      # Junior notepad directive (76 lines)
 ├── start-work/                   # Invoker work session starter (648 lines)
 ├── stop-continuation-guard/      # Guards stop continuation (214 lines)
 ├── subagent-question-blocker/    # Blocks subagent questions (112 lines)
@@ -69,7 +69,7 @@ hooks/
 | auto-slash-command | chat.message | Command execution fails |
 | keyword-detector | chat.message | Keyword injection fails |
 | non-interactive-env | tool.execute.before | Interactive command in non-TTY |
-| prometheus-md-only | tool.execute.before | Write outside .sisyphus/*.md |
+| tinker-md-only | tool.execute.before | Write outside .specify/*.md |
 | subagent-question-blocker | tool.execute.before | Question tool in subagent |
 | tasks-todowrite-disabler | tool.execute.before | TodoWrite with task system |
 | write-existing-file-guard | tool.execute.before | Write to existing file |
@@ -78,8 +78,8 @@ hooks/
 ## EXECUTION ORDER
 
 **UserPromptSubmit**: keywordDetector → claudeCodeHooks → autoSlashCommand → startWork
-**PreToolUse**: subagentQuestionBlocker → questionLabelTruncator → claudeCodeHooks → nonInteractiveEnv → commentChecker → directoryAgentsInjector → directoryReadmeInjector → rulesInjector → prometheusMdOnly → sisyphusJuniorNotepad → writeExistingFileGuard → atlasHook
-**PostToolUse**: claudeCodeHooks → toolOutputTruncator → contextWindowMonitor → commentChecker → directoryAgentsInjector → directoryReadmeInjector → rulesInjector → emptyTaskResponseDetector → agentUsageReminder → interactiveBashSession → editErrorRecovery → delegateTaskRetry → atlasHook → taskResumeInfo → taskReminder
+**PreToolUse**: subagentQuestionBlocker → questionLabelTruncator → claudeCodeHooks → nonInteractiveEnv → commentChecker → directoryAgentsInjector → directoryReadmeInjector → rulesInjector → tinkerMdOnly → invokerJuniorNotepad → writeExistingFileGuard → axeHook
+**PostToolUse**: claudeCodeHooks → toolOutputTruncator → contextWindowMonitor → commentChecker → directoryAgentsInjector → directoryReadmeInjector → rulesInjector → emptyTaskResponseDetector → agentUsageReminder → interactiveBashSession → editErrorRecovery → delegateTaskRetry → axeHook → taskResumeInfo → taskReminder
 
 ## HOW TO ADD
 

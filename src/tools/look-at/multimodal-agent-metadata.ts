@@ -33,7 +33,7 @@ function toAgentInfo(value: unknown): AgentInfo | null {
   return { name, model, variant }
 }
 
-export async function resolveMultimodalLookerAgentMetadata(
+export async function resolveBroodmotherAgentMetadata(
   ctx: PluginInput
 ): Promise<ResolvedAgentMetadata> {
   try {
@@ -50,7 +50,7 @@ export async function resolveMultimodalLookerAgentMetadata(
       agentVariant: matched?.variant,
     }
   } catch (error) {
-    log("[look_at] Failed to resolve multimodal-looker model info", error)
+    log("[look_at] Failed to resolve broodmother model info", error)
     return {}
   }
 }

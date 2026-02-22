@@ -60,7 +60,7 @@ MUTUALLY EXCLUSIVE: Provide EITHER category OR subagent_type, not both (unless c
 - category: Use predefined category → Spawns Invoker-Junior with category config
   Available categories:
 ${categoryList}
-- subagent_type: Use specific agent directly (e.g., "oracle", "explore")
+- subagent_type: Use specific agent directly (e.g., "oracle", "mirana")
 - run_in_background: true=async (returns task_id), false=sync (waits for result). Default: false. Use background=true ONLY for parallel exploration with 5+ independent queries.
 - session_id: Existing Task session to continue (from previous task output). Continues agent with FULL CONTEXT PRESERVED - saves tokens, maintains continuity.
 - command: The command that triggered this task (optional, for slash command tracking).
@@ -80,7 +80,7 @@ Prompts MUST be in English.`
       prompt: tool.schema.string().describe("Full detailed prompt for the agent"),
       run_in_background: tool.schema.boolean().describe("true=async (returns task_id), false=sync (waits). Default: false"),
       category: tool.schema.string().optional().describe(`Category (e.g., ${categoryExamples}). Mutually exclusive with subagent_type.`),
-      subagent_type: tool.schema.string().optional().describe("Agent name (e.g., 'oracle', 'explore'). Mutually exclusive with category."),
+      subagent_type: tool.schema.string().optional().describe("Agent name (e.g., 'oracle', 'mirana'). Mutually exclusive with category."),
       session_id: tool.schema.string().optional().describe("Existing Task session to continue"),
       command: tool.schema.string().optional().describe("The command that triggered this task"),
     },
@@ -88,13 +88,13 @@ Prompts MUST be in English.`
       const ctx = toolContext as ToolContextWithMetadata
 
       if (args.category) {
-        if (args.subagent_type && args.subagent_type !== "sisyphus-junior") {
-          log("[task] category provided - overriding subagent_type to sisyphus-junior", {
+        if (args.subagent_type && args.subagent_type !== "invoker-junior") {
+          log("[task] category provided - overriding subagent_type to invoker-junior", {
             category: args.category,
             subagent_type: args.subagent_type,
           })
         }
-        args.subagent_type = "sisyphus-junior"
+        args.subagent_type = "invoker-junior"
       }
       await ctx.metadata?.({
         title: args.description,

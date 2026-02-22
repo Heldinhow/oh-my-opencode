@@ -2,7 +2,7 @@ import type { ModelFallbackInfo } from "../../features/task-toast-manager/types"
 import type { DelegateTaskArgs } from "./types"
 import type { ExecutorContext } from "./executor-types"
 import { mergeCategories } from "../../shared/merge-categories"
-import { SISYPHUS_JUNIOR_AGENT } from "./sisyphus-junior-agent"
+import { INVOKER_JUNIOR_AGENT } from "./invoker-junior-agent"
 import { resolveCategoryConfig } from "./categories"
 import { parseModelString } from "./model-string-parser"
 import { CATEGORY_MODEL_REQUIREMENTS } from "../../shared/model-requirements"
@@ -25,7 +25,7 @@ export async function resolveCategoryExecution(
   inheritedModel: string | undefined,
   systemDefaultModel: string | undefined
 ): Promise<CategoryResolutionResult> {
-  const { client, userCategories, sisyphusJuniorModel } = executorCtx
+  const { client, userCategories, invokerJuniorModel } = executorCtx
 
   const availableModels = await getAvailableModelsForDelegateTask(client)
 
@@ -78,12 +78,12 @@ Available categories: ${allCategoryNames}`,
   let modelInfo: ModelFallbackInfo | undefined
   let categoryModel: { providerID: string; modelID: string; variant?: string } | undefined
 
-  const overrideModel = sisyphusJuniorModel
+  const overrideModel = invokerJuniorModel
   const explicitCategoryModel = userCategories?.[args.category!]?.model
 
   if (!requirement) {
-    // Precedence: explicit category model > sisyphus-junior default > category resolved model
-    // This keeps `sisyphus-junior.model` useful as a global default while allowing
+    // Precedence: explicit category model > invoker-junior default > category resolved model
+    // This keeps `invoker-junior.model` useful as a global default while allowing
     // per-category overrides via `categories[category].model`.
     actualModel = explicitCategoryModel ?? overrideModel ?? resolved.model
     if (actualModel) {
@@ -171,7 +171,7 @@ Available categories: ${categoryNames.join(", ")}`,
   const isUnstableAgent = resolved.config.is_unstable_agent === true || (unstableModel ? unstableModel.includes("gemini") || unstableModel.includes("minimax") : false)
 
   return {
-    agentToUse: SISYPHUS_JUNIOR_AGENT,
+    agentToUse: INVOKER_JUNIOR_AGENT,
     categoryModel,
     categoryPromptAppend,
     modelInfo,

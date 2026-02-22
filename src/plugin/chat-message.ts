@@ -79,9 +79,6 @@ export function createChatMessageHandler(args: {
     await hooks.keywordDetector?.["chat.message"]?.(input, output)
     await hooks.claudeCodeHooks?.["chat.message"]?.(input, output)
     await hooks.autoSlashCommand?.["chat.message"]?.(input, output)
-    if (hooks.sddGate && isStartWorkHookOutput(output)) {
-      await hooks.sddGate["chat.message"]?.(input, output)
-    }
     if (hooks.startWork && isStartWorkHookOutput(output)) {
       await hooks.startWork["chat.message"]?.(input, output)
     }

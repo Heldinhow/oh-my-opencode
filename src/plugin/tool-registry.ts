@@ -50,10 +50,10 @@ export function createToolRegistry(args: {
   const backgroundTools = createBackgroundTools(managers.backgroundManager, ctx.client)
   const callOmoAgent = createCallOmoAgent(ctx, managers.backgroundManager)
 
-  const isMultimodalLookerEnabled = !(pluginConfig.disabled_agents ?? []).some(
-    (agent) => agent.toLowerCase() === "multimodal-looker",
+  const isBroodmotherEnabled = !(pluginConfig.disabled_agents ?? []).some(
+    (agent) => agent.toLowerCase() === "broodmother",
   )
-  const lookAt = isMultimodalLookerEnabled ? createLookAt(ctx) : null
+  const lookAt = isBroodmotherEnabled ? createLookAt(ctx) : null
 
   const delegateTask = createDelegateTask({
     manager: managers.backgroundManager,
@@ -61,7 +61,7 @@ export function createToolRegistry(args: {
     directory: ctx.directory,
     userCategories: pluginConfig.categories,
     gitMasterConfig: pluginConfig.git_master,
-    sisyphusJuniorModel: pluginConfig.agents?.["sisyphus-junior"]?.model,
+    invokerJuniorModel: pluginConfig.agents?.["invoker-junior"]?.model,
     browserProvider: skillContext.browserProvider,
     disabledSkills: skillContext.disabledSkills,
     availableCategories,

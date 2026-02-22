@@ -25,14 +25,14 @@ describe("call-omo-agent createOrGetSession", () => {
     const toolContext = {
       sessionID: "ses_parent",
       messageID: "msg_parent",
-      agent: "sisyphus",
+      agent: "invoker",
       abort: new AbortController().signal,
     }
 
     const args = {
       description: "test",
       prompt: "hello",
-      subagent_type: "explore",
+      subagent_type: "mirana",
       run_in_background: true,
     }
 

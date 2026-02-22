@@ -6,7 +6,7 @@ import type { CategoryConfig } from "../config/schema"
 import type { OhMyOpenCodeConfig } from "../config"
 
 import * as agents from "../agents"
-import * as sisyphusJunior from "../agents/sisyphus-junior"
+import * as invokerJunior from "../agents/invoker-junior"
 import * as commandLoader from "../features/claude-code-command-loader"
 import * as builtinCommands from "../features/builtin-commands"
 import * as skillLoader from "../features/opencode-skill-loader"
@@ -21,7 +21,7 @@ import * as modelResolver from "../shared/model-resolver"
 
 beforeEach(() => {
   spyOn(agents, "createBuiltinAgents" as any).mockResolvedValue({
-    sisyphus: { name: "sisyphus", prompt: "test", mode: "primary" },
+    invoker: { name: "invoker", prompt: "test", mode: "primary" },
     oracle: { name: "oracle", prompt: "test", mode: "subagent" },
   })
 
@@ -74,7 +74,7 @@ beforeEach(() => {
 
 afterEach(() => {
   (agents.createBuiltinAgents as any)?.mockRestore?.()
-  ;(sisyphusJunior.createSisyphusJuniorAgentWithOverrides as any)?.mockRestore?.()
+  ;(invokerJunior.createInvokerJuniorAgentWithOverrides as any)?.mockRestore?.()
   ;(commandLoader.loadUserCommands as any)?.mockRestore?.()
   ;(commandLoader.loadProjectCommands as any)?.mockRestore?.()
   ;(commandLoader.loadOpencodeGlobalCommands as any)?.mockRestore?.()
@@ -123,16 +123,16 @@ describe("Invoker-Junior model inheritance", () => {
 
     // #then
     const agentConfig = config.agent as Record<string, { model?: string }>
-    expect(agentConfig["sisyphus-junior"]?.model).toBe(
-      sisyphusJunior.SISYPHUS_JUNIOR_DEFAULTS.model
+    expect(agentConfig["invoker-junior"]?.model).toBe(
+      invokerJunior.SPECIFY_JUNIOR_DEFAULTS.model
     )
   })
 
-  test("uses explicitly configured sisyphus-junior model", async () => {
+  test("uses explicitly configured invoker-junior model", async () => {
     // #given
     const pluginConfig: OhMyOpenCodeConfig = {
       agents: {
-        "sisyphus-junior": {
+        "invoker-junior": {
           model: "openai/gpt-5.3-codex",
         },
       },
@@ -155,26 +155,26 @@ describe("Invoker-Junior model inheritance", () => {
 
     // #then
     const agentConfig = config.agent as Record<string, { model?: string }>
-    expect(agentConfig["sisyphus-junior"]?.model).toBe(
+    expect(agentConfig["invoker-junior"]?.model).toBe(
       "openai/gpt-5.3-codex"
     )
   })
 })
 
 describe("Plan agent demote behavior", () => {
-  test("orders core agents as sisyphus -> hephaestus -> prometheus -> atlas", async () => {
+  test("orders core agents as invoker -> enigma -> tinker -> axe", async () => {
     // #given
     const createBuiltinAgentsMock = agents.createBuiltinAgents as unknown as {
       mockResolvedValue: (value: Record<string, unknown>) => void
     }
     createBuiltinAgentsMock.mockResolvedValue({
-      sisyphus: { name: "sisyphus", prompt: "test", mode: "primary" },
-      hephaestus: { name: "hephaestus", prompt: "test", mode: "primary" },
+      invoker: { name: "invoker", prompt: "test", mode: "primary" },
+      enigma: { name: "enigma", prompt: "test", mode: "primary" },
       oracle: { name: "oracle", prompt: "test", mode: "subagent" },
-      atlas: { name: "atlas", prompt: "test", mode: "primary" },
+      axe: { name: "axe", prompt: "test", mode: "primary" },
     })
     const pluginConfig: OhMyOpenCodeConfig = {
-      sisyphus_agent: {
+      invoker_agent: {
         planner_enabled: true,
       },
     }
@@ -196,15 +196,15 @@ describe("Plan agent demote behavior", () => {
 
     // #then
     const keys = Object.keys(config.agent as Record<string, unknown>)
-    const coreAgents = ["sisyphus", "hephaestus", "prometheus", "atlas"]
+    const coreAgents = ["invoker", "enigma", "tinker", "axe"]
     const ordered = keys.filter((key) => coreAgents.includes(key))
     expect(ordered).toEqual(coreAgents)
   })
 
-  test("plan agent should be demoted to subagent without inheriting prometheus prompt", async () => {
+  test("plan agent should be demoted to subagent without inheriting tinker prompt", async () => {
     // #given
     const pluginConfig: OhMyOpenCodeConfig = {
-      sisyphus_agent: {
+      invoker_agent: {
         planner_enabled: true,
         replace_plan: true,
       },
@@ -231,18 +231,18 @@ describe("Plan agent demote behavior", () => {
     // #when
     await handler(config)
 
-    // #then - plan is demoted to subagent but does NOT inherit prometheus prompt
+    // #then - plan is demoted to subagent but does NOT inherit tinker prompt
     const agents = config.agent as Record<string, { mode?: string; name?: string; prompt?: string }>
     expect(agents.plan).toBeDefined()
     expect(agents.plan.mode).toBe("subagent")
     expect(agents.plan.prompt).toBeUndefined()
-    expect(agents.prometheus?.prompt).toBeDefined()
+    expect(agents.tinker?.prompt).toBeDefined()
   })
 
   test("plan agent remains unchanged when planner is disabled", async () => {
     // #given
     const pluginConfig: OhMyOpenCodeConfig = {
-      sisyphus_agent: {
+      invoker_agent: {
         planner_enabled: false,
       },
     }
@@ -268,18 +268,18 @@ describe("Plan agent demote behavior", () => {
     // #when
     await handler(config)
 
-    // #then - plan is not touched, prometheus is not created
+    // #then - plan is not touched, tinker is not created
     const agents = config.agent as Record<string, { mode?: string; name?: string; prompt?: string }>
-    expect(agents.prometheus).toBeUndefined()
+    expect(agents.tinker).toBeUndefined()
     expect(agents.plan).toBeDefined()
     expect(agents.plan.mode).toBe("primary")
     expect(agents.plan.prompt).toBe("original plan prompt")
   })
 
-  test("prometheus should have mode 'all' to be callable via task", async () => {
+  test("tinker should have mode 'all' to be callable via task", async () => {
     // given
     const pluginConfig: OhMyOpenCodeConfig = {
-      sisyphus_agent: {
+      invoker_agent: {
         planner_enabled: true,
       },
     }
@@ -301,20 +301,20 @@ describe("Plan agent demote behavior", () => {
 
     // then
     const agents = config.agent as Record<string, { mode?: string }>
-    expect(agents.prometheus).toBeDefined()
-    expect(agents.prometheus.mode).toBe("all")
+    expect(agents.tinker).toBeDefined()
+    expect(agents.tinker.mode).toBe("all")
   })
 })
 
 describe("Agent permission defaults", () => {
-  test("hephaestus should allow task", async () => {
+  test("enigma should allow task", async () => {
     // #given
     const createBuiltinAgentsMock = agents.createBuiltinAgents as unknown as {
       mockResolvedValue: (value: Record<string, unknown>) => void
     }
     createBuiltinAgentsMock.mockResolvedValue({
-      sisyphus: { name: "sisyphus", prompt: "test", mode: "primary" },
-      hephaestus: { name: "hephaestus", prompt: "test", mode: "primary" },
+      invoker: { name: "invoker", prompt: "test", mode: "primary" },
+      enigma: { name: "enigma", prompt: "test", mode: "primary" },
       oracle: { name: "oracle", prompt: "test", mode: "subagent" },
     })
     const pluginConfig: OhMyOpenCodeConfig = {}
@@ -336,8 +336,8 @@ describe("Agent permission defaults", () => {
 
     // #then
     const agentConfig = config.agent as Record<string, { permission?: Record<string, string> }>
-    expect(agentConfig.hephaestus).toBeDefined()
-    expect(agentConfig.hephaestus.permission?.task).toBe("allow")
+    expect(agentConfig.enigma).toBeDefined()
+    expect(agentConfig.enigma.permission?.task).toBe("allow")
   })
 })
 
@@ -445,7 +445,7 @@ describe("Tinker direct override priority over category", () => {
   test("direct reasoningEffort takes priority over category reasoningEffort", async () => {
     // given - category has reasoningEffort=xhigh, direct override says "low"
     const pluginConfig: OhMyOpenCodeConfig = {
-      sisyphus_agent: {
+      invoker_agent: {
         planner_enabled: true,
       },
       categories: {
@@ -455,7 +455,7 @@ describe("Tinker direct override priority over category", () => {
         },
       },
       agents: {
-        prometheus: {
+        tinker: {
           category: "test-planning",
           reasoningEffort: "low",
         },
@@ -479,14 +479,14 @@ describe("Tinker direct override priority over category", () => {
 
     // then - direct override's reasoningEffort wins
     const agents = config.agent as Record<string, { reasoningEffort?: string }>
-    expect(agents.prometheus).toBeDefined()
-    expect(agents.prometheus.reasoningEffort).toBe("low")
+    expect(agents.tinker).toBeDefined()
+    expect(agents.tinker.reasoningEffort).toBe("low")
   })
 
   test("category reasoningEffort applied when no direct override", async () => {
     // given - category has reasoningEffort but no direct override
     const pluginConfig: OhMyOpenCodeConfig = {
-      sisyphus_agent: {
+      invoker_agent: {
         planner_enabled: true,
       },
       categories: {
@@ -496,7 +496,7 @@ describe("Tinker direct override priority over category", () => {
         },
       },
       agents: {
-        prometheus: {
+        tinker: {
           category: "reasoning-cat",
         },
       },
@@ -519,14 +519,14 @@ describe("Tinker direct override priority over category", () => {
 
     // then - category's reasoningEffort is applied
     const agents = config.agent as Record<string, { reasoningEffort?: string }>
-    expect(agents.prometheus).toBeDefined()
-    expect(agents.prometheus.reasoningEffort).toBe("high")
+    expect(agents.tinker).toBeDefined()
+    expect(agents.tinker.reasoningEffort).toBe("high")
   })
 
   test("direct temperature takes priority over category temperature", async () => {
     // given
     const pluginConfig: OhMyOpenCodeConfig = {
-      sisyphus_agent: {
+      invoker_agent: {
         planner_enabled: true,
       },
       categories: {
@@ -536,7 +536,7 @@ describe("Tinker direct override priority over category", () => {
         },
       },
       agents: {
-        prometheus: {
+        tinker: {
           category: "temp-cat",
           temperature: 0.1,
         },
@@ -560,19 +560,19 @@ describe("Tinker direct override priority over category", () => {
 
     // then - direct temperature wins over category
     const agents = config.agent as Record<string, { temperature?: number }>
-    expect(agents.prometheus).toBeDefined()
-    expect(agents.prometheus.temperature).toBe(0.1)
+    expect(agents.tinker).toBeDefined()
+    expect(agents.tinker.temperature).toBe(0.1)
   })
 
-  test("prometheus prompt_append is appended to base prompt", async () => {
-    // #given - prometheus override with prompt_append
+  test("tinker prompt_append is appended to base prompt", async () => {
+    // #given - tinker override with prompt_append
     const customInstructions = "## Custom Project Rules\nUse max 2 commits."
     const pluginConfig: OhMyOpenCodeConfig = {
-      sisyphus_agent: {
+      invoker_agent: {
         planner_enabled: true,
       },
       agents: {
-        prometheus: {
+        tinker: {
           prompt_append: customInstructions,
         },
       },
@@ -595,23 +595,23 @@ describe("Tinker direct override priority over category", () => {
 
     // #then - prompt_append is appended to base prompt, not overwriting it
     const agents = config.agent as Record<string, { prompt?: string }>
-    expect(agents.prometheus).toBeDefined()
-    expect(agents.prometheus.prompt).toContain("Tinker")
-    expect(agents.prometheus.prompt).toContain(customInstructions)
-    expect(agents.prometheus.prompt!.endsWith(customInstructions)).toBe(true)
+    expect(agents.tinker).toBeDefined()
+    expect(agents.tinker.prompt).toContain("Tinker")
+    expect(agents.tinker.prompt).toContain(customInstructions)
+    expect(agents.tinker.prompt!.endsWith(customInstructions)).toBe(true)
   })
 })
 
-describe("Plan agent model inheritance from prometheus", () => {
-  test("plan agent inherits all model-related settings from resolved prometheus config", async () => {
-    //#given - prometheus resolves to claude-opus-4-6 with model settings
+describe("Plan agent model inheritance from tinker", () => {
+  test("plan agent inherits all model-related settings from resolved tinker config", async () => {
+    //#given - tinker resolves to claude-opus-4-6 with model settings
     spyOn(shared, "resolveModelPipeline" as any).mockReturnValue({
       model: "anthropic/claude-opus-4-6",
       provenance: "provider-fallback",
       variant: "max",
     })
     const pluginConfig: OhMyOpenCodeConfig = {
-      sisyphus_agent: {
+      invoker_agent: {
         planner_enabled: true,
         replace_plan: true,
       },
@@ -638,7 +638,7 @@ describe("Plan agent model inheritance from prometheus", () => {
     //#when
     await handler(config)
 
-    //#then - plan inherits model and variant from prometheus, but NOT prompt
+    //#then - plan inherits model and variant from tinker, but NOT prompt
     const agents = config.agent as Record<string, { mode?: string; model?: string; variant?: string; prompt?: string }>
     expect(agents.plan).toBeDefined()
     expect(agents.plan.mode).toBe("subagent")
@@ -647,20 +647,20 @@ describe("Plan agent model inheritance from prometheus", () => {
     expect(agents.plan.prompt).toBeUndefined()
   })
 
-  test("plan agent inherits temperature, reasoningEffort, and other model settings from prometheus", async () => {
-    //#given - prometheus configured with category that has temperature and reasoningEffort
+  test("plan agent inherits temperature, reasoningEffort, and other model settings from tinker", async () => {
+    //#given - tinker configured with category that has temperature and reasoningEffort
     spyOn(shared, "resolveModelPipeline" as any).mockReturnValue({
       model: "openai/gpt-5.2",
       provenance: "override",
       variant: "high",
     })
     const pluginConfig: OhMyOpenCodeConfig = {
-      sisyphus_agent: {
+      invoker_agent: {
         planner_enabled: true,
         replace_plan: true,
       },
       agents: {
-        prometheus: {
+        tinker: {
           model: "openai/gpt-5.2",
           variant: "high",
           temperature: 0.3,
@@ -688,7 +688,7 @@ describe("Plan agent model inheritance from prometheus", () => {
     //#when
     await handler(config)
 
-    //#then - plan inherits ALL model-related settings from resolved prometheus
+    //#then - plan inherits ALL model-related settings from resolved tinker
     const agents = config.agent as Record<string, Record<string, unknown>>
     expect(agents.plan).toBeDefined()
     expect(agents.plan.mode).toBe("subagent")
@@ -702,15 +702,15 @@ describe("Plan agent model inheritance from prometheus", () => {
     expect(agents.plan.thinking).toEqual({ type: "enabled", budgetTokens: 8000 })
   })
 
-  test("plan agent user override takes priority over prometheus inherited settings", async () => {
-    //#given - prometheus resolves to opus, but user has plan override for gpt-5.2
+  test("plan agent user override takes priority over tinker inherited settings", async () => {
+    //#given - tinker resolves to opus, but user has plan override for gpt-5.2
     spyOn(shared, "resolveModelPipeline" as any).mockReturnValue({
       model: "anthropic/claude-opus-4-6",
       provenance: "provider-fallback",
       variant: "max",
     })
     const pluginConfig: OhMyOpenCodeConfig = {
-      sisyphus_agent: {
+      invoker_agent: {
         planner_enabled: true,
         replace_plan: true,
       },
@@ -738,14 +738,14 @@ describe("Plan agent model inheritance from prometheus", () => {
     //#when
     await handler(config)
 
-    //#then - plan uses its own override, not prometheus settings
+    //#then - plan uses its own override, not tinker settings
     const agents = config.agent as Record<string, Record<string, unknown>>
     expect(agents.plan.model).toBe("openai/gpt-5.2")
     expect(agents.plan.variant).toBe("high")
     expect(agents.plan.temperature).toBe(0.5)
   })
 
-  test("plan agent does NOT inherit prompt, description, or color from prometheus", async () => {
+  test("plan agent does NOT inherit prompt, description, or color from tinker", async () => {
     //#given
     spyOn(shared, "resolveModelPipeline" as any).mockReturnValue({
       model: "anthropic/claude-opus-4-6",
@@ -753,7 +753,7 @@ describe("Plan agent model inheritance from prometheus", () => {
       variant: "max",
     })
     const pluginConfig: OhMyOpenCodeConfig = {
-      sisyphus_agent: {
+      invoker_agent: {
         planner_enabled: true,
         replace_plan: true,
       },
@@ -792,7 +792,7 @@ describe("Deadlock prevention - fetchAvailableModels must not receive client", (
     const fetchSpy = spyOn(shared, "fetchAvailableModels" as any).mockResolvedValue(new Set<string>())
 
     const pluginConfig: OhMyOpenCodeConfig = {
-      sisyphus_agent: {
+      invoker_agent: {
         planner_enabled: true,
       },
     }
@@ -947,7 +947,7 @@ describe("config-handler plugin loading error boundary (#1559)", () => {
 })
 
 describe("per-agent todowrite/todoread deny when task_system enabled", () => {
-  const PRIMARY_AGENTS = ["sisyphus", "hephaestus", "atlas", "prometheus", "sisyphus-junior"]
+  const PRIMARY_AGENTS = ["invoker", "enigma", "axe", "tinker", "invoker-junior"]
 
   test("denies todowrite and todoread for primary agents when task_system is enabled", async () => {
     //#given
@@ -955,11 +955,11 @@ describe("per-agent todowrite/todoread deny when task_system enabled", () => {
       mockResolvedValue: (value: Record<string, unknown>) => void
     }
     createBuiltinAgentsMock.mockResolvedValue({
-      sisyphus: { name: "sisyphus", prompt: "test", mode: "primary" },
-      hephaestus: { name: "hephaestus", prompt: "test", mode: "primary" },
-      atlas: { name: "atlas", prompt: "test", mode: "primary" },
-      prometheus: { name: "prometheus", prompt: "test", mode: "primary" },
-      "sisyphus-junior": { name: "sisyphus-junior", prompt: "test", mode: "subagent" },
+      invoker: { name: "invoker", prompt: "test", mode: "primary" },
+      enigma: { name: "enigma", prompt: "test", mode: "primary" },
+      axe: { name: "axe", prompt: "test", mode: "primary" },
+      tinker: { name: "tinker", prompt: "test", mode: "primary" },
+      "invoker-junior": { name: "invoker-junior", prompt: "test", mode: "subagent" },
       oracle: { name: "oracle", prompt: "test", mode: "subagent" },
     })
 
@@ -996,8 +996,8 @@ describe("per-agent todowrite/todoread deny when task_system enabled", () => {
       mockResolvedValue: (value: Record<string, unknown>) => void
     }
     createBuiltinAgentsMock.mockResolvedValue({
-      sisyphus: { name: "sisyphus", prompt: "test", mode: "primary" },
-      hephaestus: { name: "hephaestus", prompt: "test", mode: "primary" },
+      invoker: { name: "invoker", prompt: "test", mode: "primary" },
+      enigma: { name: "enigma", prompt: "test", mode: "primary" },
     })
 
     const pluginConfig: OhMyOpenCodeConfig = {
@@ -1021,10 +1021,10 @@ describe("per-agent todowrite/todoread deny when task_system enabled", () => {
 
     //#then
     const agentResult = config.agent as Record<string, { permission?: Record<string, unknown> }>
-    expect(agentResult.sisyphus?.permission?.todowrite).toBeUndefined()
-    expect(agentResult.sisyphus?.permission?.todoread).toBeUndefined()
-    expect(agentResult.hephaestus?.permission?.todowrite).toBeUndefined()
-    expect(agentResult.hephaestus?.permission?.todoread).toBeUndefined()
+    expect(agentResult.invoker?.permission?.todowrite).toBeUndefined()
+    expect(agentResult.invoker?.permission?.todoread).toBeUndefined()
+    expect(agentResult.enigma?.permission?.todowrite).toBeUndefined()
+    expect(agentResult.enigma?.permission?.todoread).toBeUndefined()
   })
 
   test("does not deny todowrite/todoread when task_system is undefined", async () => {
@@ -1033,7 +1033,7 @@ describe("per-agent todowrite/todoread deny when task_system enabled", () => {
       mockResolvedValue: (value: Record<string, unknown>) => void
     }
     createBuiltinAgentsMock.mockResolvedValue({
-      sisyphus: { name: "sisyphus", prompt: "test", mode: "primary" },
+      invoker: { name: "invoker", prompt: "test", mode: "primary" },
     })
 
     const pluginConfig: OhMyOpenCodeConfig = {}
@@ -1055,7 +1055,7 @@ describe("per-agent todowrite/todoread deny when task_system enabled", () => {
 
     //#then
     const agentResult = config.agent as Record<string, { permission?: Record<string, unknown> }>
-    expect(agentResult.sisyphus?.permission?.todowrite).toBeUndefined()
-    expect(agentResult.sisyphus?.permission?.todoread).toBeUndefined()
+    expect(agentResult.invoker?.permission?.todowrite).toBeUndefined()
+    expect(agentResult.invoker?.permission?.todoread).toBeUndefined()
   })
 })

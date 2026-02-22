@@ -9,10 +9,10 @@ import { showModelCacheWarningIfNeeded } from "./hook/model-cache-warning"
 import { showLocalDevToast, showVersionToast } from "./hook/startup-toasts"
 
 export function createAutoUpdateCheckerHook(ctx: PluginInput, options: AutoUpdateCheckerOptions = {}) {
-  const { showStartupToast = true, isSisyphusEnabled = false, autoUpdate = true } = options
+  const { showStartupToast = true, isInvokerEnabled = false, autoUpdate = true } = options
 
   const getToastMessage = (isUpdate: boolean, latestVersion?: string): string => {
-    if (isSisyphusEnabled) {
+    if (isInvokerEnabled) {
       return isUpdate
         ? `Invoker on steroids is steering OpenCode.\nv${latestVersion} available. Restart to apply.`
         : "Invoker on steroids is steering OpenCode."
@@ -45,7 +45,7 @@ export function createAutoUpdateCheckerHook(ctx: PluginInput, options: AutoUpdat
 
         if (localDevVersion) {
           if (showStartupToast) {
-            showLocalDevToast(ctx, displayVersion, isSisyphusEnabled).catch(() => {})
+            showLocalDevToast(ctx, displayVersion, isInvokerEnabled).catch(() => {})
           }
           log("[auto-update-checker] Local development mode")
           return

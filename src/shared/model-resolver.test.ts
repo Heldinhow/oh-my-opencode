@@ -389,7 +389,7 @@ describe("resolveModelWithFallback", () => {
       expect(result!.source).toBe("provider-fallback")
     })
 
-    test("cross-provider fuzzy match when preferred provider unavailable (librarian scenario)", () => {
+    test("cross-provider fuzzy match when preferred provider unavailable (keeper scenario)", () => {
       // given - glm-4.7 is defined for zai-coding-plan, but only opencode has it
       const input: ExtendedModelResolutionInput = {
         fallbackChain: [

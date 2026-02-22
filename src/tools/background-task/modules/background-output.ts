@@ -8,7 +8,7 @@ import { storeToolMetadata } from "../../../features/tool-metadata-store"
 import type { BackgroundTask } from "../../../features/background-agent"
 import type { ToolContextWithMetadata } from "./utils"
 
-const SISYPHUS_JUNIOR_AGENT = "sisyphus-junior"
+const INVOKER_JUNIOR_AGENT = "invoker-junior"
 
 type ToolContextWithCallId = ToolContextWithMetadata & {
   callID?: string
@@ -30,7 +30,7 @@ function resolveToolCallID(ctx: ToolContextWithCallId): string | undefined {
 }
 
 function formatResolvedTitle(task: BackgroundTask): string {
-  const label = task.agent === SISYPHUS_JUNIOR_AGENT && task.category
+  const label = task.agent === INVOKER_JUNIOR_AGENT && task.category
     ? task.category
     : task.agent
   return `${label} - ${task.description}`

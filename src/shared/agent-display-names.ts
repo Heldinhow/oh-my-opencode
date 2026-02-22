@@ -1,19 +1,19 @@
 /**
  * Agent config keys to display names mapping.
- * Config keys are lowercase (e.g., "sisyphus", "atlas").
+ * Config keys are lowercase (e.g., "invoker", "axe").
  * Display names include suffixes for UI/logs (e.g., "Invoker (Ultraworker)").
  */
 export const AGENT_DISPLAY_NAMES: Record<string, string> = {
-  sisyphus: "Invoker (Ultraworker)",
-  atlas: "Axe (Plan Execution Orchestrator)",
-  prometheus: "Tinker (Plan Builder)",
-  "sisyphus-junior": "Invoker-Junior",
-  metis: "Metis (Plan Consultant)",
-  momus: "Momus (Plan Reviewer)",
+  invoker: "Invoker (Ultraworker)",
+  axe: "Axe (Plan Execution Orchestrator)",
+  tinker: "Tinker (Plan Builder)",
+  "invoker-junior": "Invoker-Junior",
+  rubick: "Rubick (Plan Consultant)",
+  clockwerk: "Clockwerk (Plan Reviewer)",
   oracle: "oracle",
-  librarian: "keeper",
-  explore: "mirana",
-  "multimodal-looker": "multimodal-looker",
+  keeper: "keeper",
+  mirana: "mirana",
+  "broodmother": "broodmother",
 }
 
 /**

@@ -9,7 +9,7 @@ import { formatFullSession } from "./full-session-format"
 import { formatTaskResult } from "./task-result-format"
 import { formatTaskStatus } from "./task-status-format"
 
-const SISYPHUS_JUNIOR_AGENT = "sisyphus-junior"
+const INVOKER_JUNIOR_AGENT = "invoker-junior"
 
 type ToolContextWithMetadata = {
   sessionID: string
@@ -27,7 +27,7 @@ function resolveToolCallID(ctx: ToolContextWithMetadata): string | undefined {
 }
 
 function formatResolvedTitle(task: BackgroundTask): string {
-  const label = task.agent === SISYPHUS_JUNIOR_AGENT && task.category ? task.category : task.agent
+  const label = task.agent === INVOKER_JUNIOR_AGENT && task.category ? task.category : task.agent
   return `${label} - ${task.description}`
 }
 

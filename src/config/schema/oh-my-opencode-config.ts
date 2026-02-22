@@ -15,8 +15,8 @@ import { HookNameSchema } from "./hooks"
 import { NotificationConfigSchema } from "./notification"
 import { RalphLoopConfigSchema } from "./ralph-loop"
 import { SkillsConfigSchema } from "./skills"
-import { SisyphusConfigSchema } from "./sisyphus"
-import { SisyphusAgentConfigSchema } from "./sisyphus-agent"
+import { InvokerConfigSchema } from "./invoker"
+import { InvokerAgentConfigSchema } from "./invoker-agent"
 import { TmuxConfigSchema } from "./tmux"
 import { WebsearchConfigSchema } from "./websearch"
 
@@ -36,7 +36,7 @@ export const OhMyOpenCodeConfigSchema = z.object({
   agents: AgentOverridesSchema.optional(),
   categories: CategoriesConfigSchema.optional(),
   claude_code: ClaudeCodeConfigSchema.optional(),
-  sisyphus_agent: SisyphusAgentConfigSchema.optional(),
+  invoker_agent: InvokerAgentConfigSchema.optional(),
   comment_checker: CommentCheckerConfigSchema.optional(),
   experimental: ExperimentalConfigSchema.optional(),
   auto_update: z.boolean().optional(),
@@ -49,7 +49,7 @@ export const OhMyOpenCodeConfigSchema = z.object({
   browser_automation_engine: BrowserAutomationConfigSchema.optional(),
   websearch: WebsearchConfigSchema.optional(),
   tmux: TmuxConfigSchema.optional(),
-  sisyphus: SisyphusConfigSchema.optional(),
+  invoker: InvokerConfigSchema.optional(),
   /** Migration history to prevent re-applying migrations (e.g., model version upgrades) */
   _migrations: z.array(z.string()).optional(),
 })

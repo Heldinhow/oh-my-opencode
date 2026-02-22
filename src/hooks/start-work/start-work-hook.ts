@@ -3,7 +3,7 @@ import {
   readBoulderState,
   writeBoulderState,
   appendSessionId,
-  findPrometheusPlans,
+  findTinkerPlans,
   getPlanProgress,
   createBoulderState,
   getPlanName,
@@ -84,7 +84,7 @@ export function createStartWorkHook(ctx: PluginInput) {
         sessionID: input.sessionID,
       })
 
-      updateSessionAgent(input.sessionID, "atlas") // Always switch: fixes #1298
+      updateSessionAgent(input.sessionID, "axe") // Always switch: fixes #1298
 
       const existingState = readBoulderState(ctx.directory)
       const sessionId = input.sessionID
@@ -99,7 +99,7 @@ export function createStartWorkHook(ctx: PluginInput) {
           sessionID: input.sessionID,
         })
         
-        const allPlans = findPrometheusPlans(ctx.directory)
+        const allPlans = findTinkerPlans(ctx.directory)
         const matchedPlan = findPlanByName(allPlans, explicitPlanName)
         
         if (matchedPlan) {
@@ -115,7 +115,7 @@ All ${progress.total} tasks are done. Create a new plan with: /plan "your task"`
             if (existingState) {
               clearBoulderState(ctx.directory)
             }
-            const newState = createBoulderState(matchedPlan, sessionId, "atlas")
+            const newState = createBoulderState(matchedPlan, sessionId, "axe")
             const tasksFilePath = await resolveSpecKitTasksPath(
               ctx.directory,
               getPlanName(matchedPlan)
@@ -203,7 +203,7 @@ Looking for new plans...`
       }
 
       if ((!existingState && !explicitPlanName) || (existingState && !explicitPlanName && getPlanProgress(existingState.active_plan).isComplete)) {
-        const plans = findPrometheusPlans(ctx.directory)
+        const plans = findTinkerPlans(ctx.directory)
         const incompletePlans = plans.filter(p => !getPlanProgress(p).isComplete)
         
         if (plans.length === 0) {
@@ -211,7 +211,7 @@ Looking for new plans...`
 
 ## No Plans Found
 
-No Tinker plan files found at .sisyphus/plans/
+No Tinker plan files found at .specify/plans/
 Use Tinker to create a work plan first: /plan "your task"`
         } else if (incompletePlans.length === 0) {
           contextInfo += `
@@ -222,7 +222,7 @@ All ${plans.length} plan(s) are complete. Create a new plan with: /plan "your ta
         } else if (incompletePlans.length === 1) {
           const planPath = incompletePlans[0]
           const progress = getPlanProgress(planPath)
-          const newState = createBoulderState(planPath, sessionId, "atlas")
+          const newState = createBoulderState(planPath, sessionId, "axe")
           const tasksFilePath = await resolveSpecKitTasksPath(
             ctx.directory,
             getPlanName(planPath)

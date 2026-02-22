@@ -11,19 +11,19 @@
 
 > [!NOTE]
 >
-> [![Invoker Labs — Invoker is the agent that codes like your team.](./.github/assets/sisyphuslabs.png?v=2)](https://sisyphuslabs.ai)
-> > **We're building a fully productized version of Invoker to define the future of frontier agents. <br />Join the waitlist [here](https://sisyphuslabs.ai).**
+> [![Invoker Labs — Invoker is the agent that codes like your team.](./.github/assets/invokerlabs.png?v=2)](https://invokerlabs.ai)
+> > **We're building a fully productized version of Invoker to define the future of frontier agents. <br />Join the waitlist [here](https://invokerlabs.ai).**
 
 > [!TIP]
 >
-> [![Oh My OpenCode 3.0 is now stable!](./.github/assets/orchestrator-atlas.png?v=3)](https://github.com/code-yeongyu/oh-my-opencode/releases/tag/v3.0.0)
+> [![Oh My OpenCode 3.0 is now stable!](./.github/assets/orchestrator-axe.png?v=3)](https://github.com/code-yeongyu/oh-my-opencode/releases/tag/v3.0.0)
 > > **Oh My OpenCode 3.0 is now stable! Use `oh-my-opencode@latest` to install it.**
 >
 > Be with us!
 >
 > | [<img alt="Discord link" src="https://img.shields.io/discord/1452487457085063218?color=5865F2&label=discord&labelColor=black&logo=discord&logoColor=white&style=flat-square" width="156px" />](https://discord.gg/PUwSMR9XNk) | Join our [Discord community](https://discord.gg/PUwSMR9XNk) to connect with contributors and fellow `oh-my-opencode` users. |
 > | :-----| :----- |
-> | [<img alt="X link" src="https://img.shields.io/badge/Follow-%40justsisyphus-00CED1?style=flat-square&logo=x&labelColor=black" width="156px" />](https://x.com/justsisyphus) | News and updates for `oh-my-opencode` used to be posted on my X account. <br /> Since it was suspended mistakenly, [@justsisyphus](https://x.com/justsisyphus) now posts updates on my behalf. |
+> | [<img alt="X link" src="https://img.shields.io/badge/Follow-%40justinvoker-00CED1?style=flat-square&logo=x&labelColor=black" width="156px" />](https://x.com/justinvoker) | News and updates for `oh-my-opencode` used to be posted on my X account. <br /> Since it was suspended mistakenly, [@justinvoker](https://x.com/justinvoker) now posts updates on my behalf. |
 > | [<img alt="GitHub Follow" src="https://img.shields.io/github/followers/code-yeongyu?style=flat-square&logo=github&labelColor=black&color=24292f" width="156px" />](https://github.com/code-yeongyu) | Follow [@code-yeongyu](https://github.com/code-yeongyu) on GitHub for more projects. |
 
 <!-- <CENTERED SECTION FOR GITHUB DISPLAY> -->
@@ -37,7 +37,7 @@
 
 </div>
 
-> This is coding on steroids—`oh-my-opencode` in action. Run background agents, call specialized agents like oracle, librarian, and frontend engineer. Use crafted LSP/AST tools, curated MCPs, and a full Claude Code compatibility layer.
+> This is coding on steroids—`oh-my-opencode` in action. Run background agents, call specialized agents like oracle, keeper, and frontend engineer. Use crafted LSP/AST tools, curated MCPs, and a full Claude Code compatibility layer.
 
 # Claude OAuth Access Notice
 
@@ -113,9 +113,9 @@ Yes, technically possible. But I cannot recommend using it.
   - [Just Skip Reading This Readme](#just-skip-reading-this-readme)
     - [It's the Age of Agents](#its-the-age-of-agents)
     - [🪄 The Magic Word: `ultrawork`](#-the-magic-word-ultrawork)
-    - [For Those Who Want to Read: Meet Invoker](#for-those-who-want-to-read-meet-sisyphus)
+    - [For Those Who Want to Read: Meet Invoker](#for-those-who-want-to-read-meet-invoker)
       - [Just Install This](#just-install-this)
-    - [For Those Who Want Autonomy: Meet Enigma](#for-those-who-want-autonomy-meet-hephaestus)
+    - [For Those Who Want Autonomy: Meet Enigma](#for-those-who-want-autonomy-meet-enigma)
   - [Installation](#installation)
     - [For Humans](#for-humans)
     - [For LLM Agents](#for-llm-agents)
@@ -169,7 +169,7 @@ That's it. All the features we provide will work like magic—parallel agents, b
 
 ### For Those Who Want to Read: Meet Invoker
 
-![Meet Invoker](.github/assets/sisyphus.png)
+![Meet Invoker](.github/assets/invoker.png)
 
 In greek mythology, Invoker was condemned to roll a boulder up a hill for eternity as punishment for deceiving the gods. LLM Agents haven't really done anything wrong, yet they too roll their "stones"—their thoughts—every single day.
 My life is no different. Looking back, we are not so different from these agents.
@@ -224,7 +224,7 @@ If you don't want all this, as mentioned, you can just pick and choose specific 
 
 ### For Those Who Want Autonomy: Meet Enigma
 
-![Meet Enigma](.github/assets/hephaestus.png)
+![Meet Enigma](.github/assets/enigma.png)
 
 In Greek mythology, Enigma was the god of forge, fire, metalworking, and craftsmanship—the divine blacksmith who crafted weapons for the gods with unmatched precision and dedication.
 **Meet our autonomous deep worker: Enigma (GPT 5.2 Codex Medium). The Legitimate Craftsman Agent.**
@@ -235,7 +235,7 @@ Enigma is inspired by [AmpCode's deep mode](https://ampcode.com)—autonomous pr
 
 **Key Characteristics:**
 - **Goal-Oriented**: Give him an objective, not a recipe. He determines the steps himself.
-- **Explores Before Acting**: Fires 2-5 parallel explore/librarian agents before writing a single line of code.
+- **Miranas Before Acting**: Fires 2-5 parallel mirana/keeper agents before writing a single line of code.
 - **End-to-End Completion**: Doesn't stop until the task is 100% done with evidence of verification.
 - **Pattern Matching**: Searches existing codebase to match your project's style—no AI slop.
 - **Legitimate Precision**: Crafts code like a master blacksmith—surgical, minimal, exactly what's needed.
@@ -318,7 +318,7 @@ See the full [Configuration Documentation](docs/configurations.md) for detailed 
 - **JSONC Support**: Comments and trailing commas supported
 - **Agents**: Override models, temperatures, prompts, and permissions for any agent
 - **Built-in Skills**: `playwright` (browser automation), `git-master` (atomic commits)
-- **Invoker Agent**: Main orchestrator with Tinker (Planner) and Metis (Plan Consultant)
+- **Invoker Agent**: Main orchestrator with Tinker (Planner) and Rubick (Plan Consultant)
 - **Background Tasks**: Configure concurrency limits per provider/model
 - **Categories**: Domain-specific task delegation (`visual`, `business-logic`, custom)
 - **Hooks**: 25+ built-in hooks, all configurable via `disabled_hooks`

@@ -61,7 +61,7 @@ export interface DelegateTaskToolOptions {
   availableModelsOverride?: Set<string>
   userCategories?: CategoriesConfig
   gitMasterConfig?: GitMasterConfig
-  sisyphusJuniorModel?: string
+  invokerJuniorModel?: string
   browserProvider?: BrowserAutomationProvider
   disabledSkills?: Set<string>
   availableCategories?: AvailableCategory[]

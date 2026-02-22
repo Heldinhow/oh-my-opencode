@@ -3,40 +3,40 @@ import type { BuiltinAgentName, AgentOverrides, AgentFactory, AgentPromptMetadat
 import type { CategoriesConfig, GitMasterConfig } from "../config/schema"
 import type { LoadedSkill } from "../features/opencode-skill-loader/types"
 import type { BrowserAutomationProvider } from "../config/schema"
-import { createSisyphusAgent } from "./sisyphus"
+import { createInvokerAgent } from "./invoker"
 import { createOracleAgent, ORACLE_PROMPT_METADATA } from "./oracle"
-import { createLibrarianAgent, LIBRARIAN_PROMPT_METADATA } from "./librarian"
-import { createExploreAgent, EXPLORE_PROMPT_METADATA } from "./explore"
-import { createMultimodalLookerAgent, MULTIMODAL_LOOKER_PROMPT_METADATA } from "./multimodal-looker"
-import { createMetisAgent, metisPromptMetadata } from "./metis"
-import { createAtlasAgent, atlasPromptMetadata } from "./atlas"
-import { createMomusAgent, momusPromptMetadata } from "./momus"
-import { createHephaestusAgent } from "./hephaestus"
+import { createKeeperAgent, LIBRARIAN_PROMPT_METADATA } from "./keeper"
+import { createMiranaAgent, EXPLORE_PROMPT_METADATA } from "./mirana"
+import { createBroodmotherAgent, MULTIMODAL_LOOKER_PROMPT_METADATA } from "./broodmother"
+import { createRubickAgent, rubickPromptMetadata } from "./rubick"
+import { createAxeAgent, axePromptMetadata } from "./axe"
+import { createClockwerkAgent, clockwerkPromptMetadata } from "./clockwerk"
+import { createEnigmaAgent } from "./enigma"
 import type { AvailableCategory } from "./dynamic-agent-prompt-builder"
 import { fetchAvailableModels, readConnectedProvidersCache } from "../shared"
 import { CATEGORY_DESCRIPTIONS } from "../tools/delegate-task/constants"
 import { mergeCategories } from "../shared/merge-categories"
 import { buildAvailableSkills } from "./builtin-agents/available-skills"
 import { collectPendingBuiltinAgents } from "./builtin-agents/general-agents"
-import { maybeCreateSisyphusConfig } from "./builtin-agents/sisyphus-agent"
-import { maybeCreateHephaestusConfig } from "./builtin-agents/hephaestus-agent"
-import { maybeCreateAtlasConfig } from "./builtin-agents/atlas-agent"
+import { maybeCreateInvokerConfig } from "./builtin-agents/invoker-agent"
+import { maybeCreateEnigmaConfig } from "./builtin-agents/enigma-agent"
+import { maybeCreateAxeConfig } from "./builtin-agents/axe-agent"
 import { buildCustomAgentMetadata, parseRegisteredAgentSummaries } from "./custom-agent-summaries"
 
 type AgentSource = AgentFactory | AgentConfig
 
 const agentSources: Record<BuiltinAgentName, AgentSource> = {
-  sisyphus: createSisyphusAgent,
-  hephaestus: createHephaestusAgent,
+  invoker: createInvokerAgent,
+  enigma: createEnigmaAgent,
   oracle: createOracleAgent,
-  librarian: createLibrarianAgent,
-  explore: createExploreAgent,
-  "multimodal-looker": createMultimodalLookerAgent,
-  metis: createMetisAgent,
-  momus: createMomusAgent,
+  keeper: createKeeperAgent,
+  mirana: createMiranaAgent,
+  "broodmother": createBroodmotherAgent,
+  rubick: createRubickAgent,
+  clockwerk: createClockwerkAgent,
   // Note: Axe is handled specially in createBuiltinAgents()
   // because it needs OrchestratorContext, not just a model string
-  atlas: createAtlasAgent as AgentFactory,
+  axe: createAxeAgent as AgentFactory,
 }
 
 /**
@@ -45,12 +45,12 @@ const agentSources: Record<BuiltinAgentName, AgentSource> = {
  */
 const agentMetadata: Partial<Record<BuiltinAgentName, AgentPromptMetadata>> = {
   oracle: ORACLE_PROMPT_METADATA,
-  librarian: LIBRARIAN_PROMPT_METADATA,
-  explore: EXPLORE_PROMPT_METADATA,
-  "multimodal-looker": MULTIMODAL_LOOKER_PROMPT_METADATA,
-  metis: metisPromptMetadata,
-  momus: momusPromptMetadata,
-  atlas: atlasPromptMetadata,
+  keeper: LIBRARIAN_PROMPT_METADATA,
+  mirana: EXPLORE_PROMPT_METADATA,
+  "broodmother": MULTIMODAL_LOOKER_PROMPT_METADATA,
+  rubick: rubickPromptMetadata,
+  clockwerk: clockwerkPromptMetadata,
+  axe: axePromptMetadata,
 }
 
 export async function createBuiltinAgents(
@@ -121,7 +121,7 @@ export async function createBuiltinAgents(
     })
   }
 
-  const sisyphusConfig = maybeCreateSisyphusConfig({
+  const invokerConfig = maybeCreateInvokerConfig({
     disabledAgents,
     agentOverrides,
     uiSelectedModel,
@@ -136,11 +136,11 @@ export async function createBuiltinAgents(
     userCategories: categories,
     useTaskSystem,
   })
-  if (sisyphusConfig) {
-    result["sisyphus"] = sisyphusConfig
+  if (invokerConfig) {
+    result["invoker"] = invokerConfig
   }
 
-  const hephaestusConfig = maybeCreateHephaestusConfig({
+  const enigmaConfig = maybeCreateEnigmaConfig({
     disabledAgents,
     agentOverrides,
     availableModels,
@@ -153,16 +153,16 @@ export async function createBuiltinAgents(
     directory,
     useTaskSystem,
   })
-  if (hephaestusConfig) {
-    result["hephaestus"] = hephaestusConfig
+  if (enigmaConfig) {
+    result["enigma"] = enigmaConfig
   }
 
-  // Add pending agents after sisyphus and hephaestus to maintain order
+  // Add pending agents after invoker and enigma to maintain order
   for (const [name, config] of pendingAgentConfigs) {
     result[name] = config
   }
 
-  const atlasConfig = maybeCreateAtlasConfig({
+  const axeConfig = maybeCreateAxeConfig({
     disabledAgents,
     agentOverrides,
     uiSelectedModel,
@@ -174,8 +174,8 @@ export async function createBuiltinAgents(
     directory,
     userCategories: categories,
   })
-  if (atlasConfig) {
-    result["atlas"] = atlasConfig
+  if (axeConfig) {
+    result["axe"] = axeConfig
   }
 
   return result

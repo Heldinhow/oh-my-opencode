@@ -11,7 +11,7 @@ const createConfig = (overrides: Partial<OhMyOpenCodeConfig> = {}): OhMyOpenCode
 describe("resolveRunAgent", () => {
   it("uses CLI agent over env and config", () => {
     // given
-    const config = createConfig({ default_run_agent: "prometheus" })
+    const config = createConfig({ default_run_agent: "tinker" })
     const env = { OPENCODE_DEFAULT_AGENT: "Axe" }
 
     // when
@@ -22,19 +22,19 @@ describe("resolveRunAgent", () => {
     )
 
     // then
-    expect(agent).toBe("hephaestus")
+    expect(agent).toBe("enigma")
   })
 
   it("uses env agent over config", () => {
     // given
-    const config = createConfig({ default_run_agent: "prometheus" })
+    const config = createConfig({ default_run_agent: "tinker" })
     const env = { OPENCODE_DEFAULT_AGENT: "Axe" }
 
     // when
     const agent = resolveRunAgent({ message: "test" }, config, env)
 
     // then
-    expect(agent).toBe("atlas")
+    expect(agent).toBe("axe")
   })
 
   it("uses config agent over default", () => {
@@ -45,10 +45,10 @@ describe("resolveRunAgent", () => {
     const agent = resolveRunAgent({ message: "test" }, config, {})
 
     // then
-    expect(agent).toBe("prometheus")
+    expect(agent).toBe("tinker")
   })
 
-  it("falls back to sisyphus when none set", () => {
+  it("falls back to invoker when none set", () => {
     // given
     const config = createConfig()
 
@@ -56,18 +56,18 @@ describe("resolveRunAgent", () => {
     const agent = resolveRunAgent({ message: "test" }, config, {})
 
     // then
-    expect(agent).toBe("sisyphus")
+    expect(agent).toBe("invoker")
   })
 
-  it("skips disabled sisyphus for next available core agent", () => {
+  it("skips disabled invoker for next available core agent", () => {
     // given
-    const config = createConfig({ disabled_agents: ["sisyphus"] })
+    const config = createConfig({ disabled_agents: ["invoker"] })
 
     // when
     const agent = resolveRunAgent({ message: "test" }, config, {})
 
     // then
-    expect(agent).toBe("hephaestus")
+    expect(agent).toBe("enigma")
   })
 })
 

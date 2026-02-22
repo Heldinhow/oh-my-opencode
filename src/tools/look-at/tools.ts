@@ -12,7 +12,7 @@ import {
   inferMimeTypeFromBase64,
   inferMimeTypeFromFilePath,
 } from "./mime-type-inference"
-import { resolveMultimodalLookerAgentMetadata } from "./multimodal-agent-metadata"
+import { resolveBroodmotherAgentMetadata } from "./multimodal-agent-metadata"
 
 export { normalizeArgs, validateArgs } from "./look-at-arguments"
 
@@ -103,7 +103,7 @@ Original error: ${createResult.error}`
       const sessionID = createResult.data.id
       log(`[look_at] Created session: ${sessionID}`)
 
-      const { agentModel, agentVariant } = await resolveMultimodalLookerAgentMetadata(ctx)
+      const { agentModel, agentVariant } = await resolveBroodmotherAgentMetadata(ctx)
 
       log(`[look_at] Sending prompt with ${isBase64Input ? "base64 image" : "file"} to session ${sessionID}`)
       try {
@@ -146,7 +146,7 @@ Original error: ${createResult.error}`
       const responseText = extractLatestAssistantText(messages)
       if (!responseText) {
         log("[look_at] No assistant message found")
-        return "Error: No response from multimodal-looker agent"
+        return "Error: No response from broodmother agent"
       }
 
       log(`[look_at] Got response, length: ${responseText.length}`)

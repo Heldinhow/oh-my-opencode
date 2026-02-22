@@ -2,8 +2,8 @@ import pc from "picocolors"
 import type { RunOptions } from "./types"
 import type { OhMyOpenCodeConfig } from "../../config"
 
-const CORE_AGENT_ORDER = ["sisyphus", "hephaestus", "prometheus", "atlas"] as const
-const DEFAULT_AGENT = "sisyphus"
+const CORE_AGENT_ORDER = ["invoker", "enigma", "tinker", "axe"] as const
+const DEFAULT_AGENT = "invoker"
 
 type EnvVars = Record<string, string | undefined>
 
@@ -18,7 +18,7 @@ const normalizeAgentName = (agent?: string): string | undefined => {
 
 const isAgentDisabled = (agent: string, config: OhMyOpenCodeConfig): boolean => {
   const lowered = agent.toLowerCase()
-  if (lowered === "sisyphus" && config.sisyphus_agent?.disabled === true) {
+  if (lowered === "invoker" && config.invoker_agent?.disabled === true) {
     return true
   }
   return (config.disabled_agents ?? []).some(

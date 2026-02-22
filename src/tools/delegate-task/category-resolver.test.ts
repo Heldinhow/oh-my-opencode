@@ -24,7 +24,7 @@ describe("resolveCategoryExecution", () => {
 		manager: {} as any,
 		directory: "/tmp/test",
 		userCategories: {},
-		sisyphusJuniorModel: undefined,
+		invokerJuniorModel: undefined,
 	})
 
 	test("returns clear error when category exists but required model is not available", async () => {

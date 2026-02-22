@@ -101,7 +101,7 @@ function openBrowser(url: string): void {
     command = "open"
     args = [url]
   } else if (platform === "win32") {
-    command = "explorer"
+    command = "miranar"
     args = [url]
   } else {
     command = "xdg-open"

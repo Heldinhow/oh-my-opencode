@@ -104,7 +104,7 @@ describe("getTaskDir", () => {
   test("returns absolute storage_path without joining cwd", () => {
     //#given
     const config: Partial<OhMyOpenCodeConfig> = {
-      sisyphus: {
+      invoker: {
         tasks: {
           storage_path: "/tmp/custom-task-path",
           claude_code_compat: false,
@@ -122,7 +122,7 @@ describe("getTaskDir", () => {
   test("joins relative storage_path with cwd", () => {
     //#given
     const config: Partial<OhMyOpenCodeConfig> = {
-      sisyphus: {
+      invoker: {
         tasks: {
           storage_path: ".custom/tasks",
           claude_code_compat: false,
@@ -265,7 +265,7 @@ describe("listTaskFiles", () => {
     //#given
     const config: Partial<OhMyOpenCodeConfig> = {
       new_task_system_enabled: false,
-      sisyphus: { tasks: { storage_path: TEST_DIR, claude_code_compat: false } }
+      invoker: { tasks: { storage_path: TEST_DIR, claude_code_compat: false } }
     }
 
     //#when
@@ -279,7 +279,7 @@ describe("listTaskFiles", () => {
     //#given
     const config: Partial<OhMyOpenCodeConfig> = {
       new_task_system_enabled: false,
-      sisyphus: { tasks: { storage_path: TEST_DIR, claude_code_compat: false } }
+      invoker: { tasks: { storage_path: TEST_DIR, claude_code_compat: false } }
     }
     mkdirSync(TEST_DIR_ABS, { recursive: true })
     writeFileSync(join(TEST_DIR_ABS, "other.json"), "{}", "utf-8")
@@ -295,7 +295,7 @@ describe("listTaskFiles", () => {
     //#given
     const config: Partial<OhMyOpenCodeConfig> = {
       new_task_system_enabled: false,
-      sisyphus: { tasks: { storage_path: TEST_DIR, claude_code_compat: false } }
+      invoker: { tasks: { storage_path: TEST_DIR, claude_code_compat: false } }
     }
     mkdirSync(TEST_DIR_ABS, { recursive: true })
     writeFileSync(join(TEST_DIR_ABS, "T-abc123.json"), "{}", "utf-8")
@@ -316,7 +316,7 @@ describe("listTaskFiles", () => {
     //#given
     const config: Partial<OhMyOpenCodeConfig> = {
       new_task_system_enabled: false,
-      sisyphus: { tasks: { storage_path: TEST_DIR, claude_code_compat: false } }
+      invoker: { tasks: { storage_path: TEST_DIR, claude_code_compat: false } }
     }
     mkdirSync(TEST_DIR_ABS, { recursive: true })
     writeFileSync(join(TEST_DIR_ABS, "T-test-id.json"), "{}", "utf-8")

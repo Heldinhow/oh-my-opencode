@@ -46,7 +46,7 @@ type EventInput = { event: { type: string; properties?: Record<string, unknown> 
 				ralphLoop: { event: async () => {} },
 				stopContinuationGuard: { event: async () => {} },
 				compactionTodoPreserver: { event: async () => {} },
-				atlasHook: { handler: async () => {} },
+				axeHook: { handler: async () => {} },
 			} as any,
 		})
 
@@ -123,7 +123,7 @@ type EventInput = { event: { type: string; properties?: Record<string, unknown> 
 				ralphLoop: { event: async () => {} },
 				stopContinuationGuard: { event: async () => {} },
 				compactionTodoPreserver: { event: async () => {} },
-				atlasHook: { handler: async () => {} },
+				axeHook: { handler: async () => {} },
 			} as any,
 		})
 
@@ -193,7 +193,7 @@ type EventInput = { event: { type: string; properties?: Record<string, unknown> 
 				ralphLoop: { event: async () => {} },
 				stopContinuationGuard: { event: async () => {} },
 				compactionTodoPreserver: { event: async () => {} },
-				atlasHook: { handler: async () => {} },
+				axeHook: { handler: async () => {} },
 			} as any,
 		})
 
@@ -286,7 +286,7 @@ type EventInput = { event: { type: string; properties?: Record<string, unknown> 
 				ralphLoop: { event: async () => {} },
 				stopContinuationGuard: { event: async () => {} },
 				compactionTodoPreserver: { event: async () => {} },
-				atlasHook: { handler: async () => {} },
+				axeHook: { handler: async () => {} },
 			},
 		})
 
@@ -344,7 +344,7 @@ type EventInput = { event: { type: string; properties?: Record<string, unknown> 
 				ralphLoop: { event: async () => {} },
 				stopContinuationGuard: { event: async () => {} },
 				compactionTodoPreserver: { event: async () => {} },
-				atlasHook: { handler: async () => {} },
+				axeHook: { handler: async () => {} },
 			} as any,
 		})
 

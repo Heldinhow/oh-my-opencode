@@ -11,10 +11,10 @@ export async function showVersionToast(ctx: PluginInput, version: string | null,
 export async function showLocalDevToast(
   ctx: PluginInput,
   version: string | null,
-  isSisyphusEnabled: boolean
+  isInvokerEnabled: boolean
 ): Promise<void> {
   const displayVersion = version ?? "dev"
-  const message = isSisyphusEnabled
+  const message = isInvokerEnabled
     ? "Invoker running in local development mode."
     : "Running in local development mode. oMoMoMo..."
   await showSpinnerToast(ctx, `${displayVersion} (dev)`, message)

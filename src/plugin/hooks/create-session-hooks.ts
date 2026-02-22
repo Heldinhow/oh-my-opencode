@@ -16,8 +16,8 @@ import {
   createDelegateTaskRetryHook,
   createTaskResumeInfoHook,
   createStartWorkHook,
-  createPrometheusMdOnlyHook,
-  createSisyphusJuniorNotepadHook,
+  createTinkerMdOnlyHook,
+  createInvokerJuniorNotepadHook,
   createQuestionLabelTruncatorHook,
   createPreemptiveCompactionHook,
 } from "../../hooks"
@@ -45,8 +45,8 @@ export type SessionHooks = {
   editErrorRecovery: ReturnType<typeof createEditErrorRecoveryHook> | null
   delegateTaskRetry: ReturnType<typeof createDelegateTaskRetryHook> | null
   startWork: ReturnType<typeof createStartWorkHook> | null
-  prometheusMdOnly: ReturnType<typeof createPrometheusMdOnlyHook> | null
-  sisyphusJuniorNotepad: ReturnType<typeof createSisyphusJuniorNotepadHook> | null
+  tinkerMdOnly: ReturnType<typeof createTinkerMdOnlyHook> | null
+  invokerJuniorNotepad: ReturnType<typeof createInvokerJuniorNotepadHook> | null
   questionLabelTruncator: ReturnType<typeof createQuestionLabelTruncatorHook>
   taskResumeInfo: ReturnType<typeof createTaskResumeInfoHook>
   anthropicEffort: ReturnType<typeof createAnthropicEffortHook> | null
@@ -101,7 +101,7 @@ export function createSessionHooks(args: {
     ? safeHook("auto-update-checker", () =>
         createAutoUpdateCheckerHook(ctx, {
           showStartupToast: isHookEnabled("startup-toast"),
-          isSisyphusEnabled: pluginConfig.sisyphus_agent?.disabled !== true,
+          isInvokerEnabled: pluginConfig.invoker_agent?.disabled !== true,
           autoUpdate: pluginConfig.auto_update ?? true,
         }))
     : null
@@ -138,12 +138,12 @@ export function createSessionHooks(args: {
     ? safeHook("start-work", () => createStartWorkHook(ctx))
     : null
 
-  const prometheusMdOnly = isHookEnabled("prometheus-md-only")
-    ? safeHook("prometheus-md-only", () => createPrometheusMdOnlyHook(ctx))
+  const tinkerMdOnly = isHookEnabled("tinker-md-only")
+    ? safeHook("tinker-md-only", () => createTinkerMdOnlyHook(ctx))
     : null
 
-  const sisyphusJuniorNotepad = isHookEnabled("sisyphus-junior-notepad")
-    ? safeHook("sisyphus-junior-notepad", () => createSisyphusJuniorNotepadHook(ctx))
+  const invokerJuniorNotepad = isHookEnabled("invoker-junior-notepad")
+    ? safeHook("invoker-junior-notepad", () => createInvokerJuniorNotepadHook(ctx))
     : null
 
   const questionLabelTruncator = createQuestionLabelTruncatorHook()
@@ -168,8 +168,8 @@ export function createSessionHooks(args: {
     editErrorRecovery,
     delegateTaskRetry,
     startWork,
-    prometheusMdOnly,
-    sisyphusJuniorNotepad,
+    tinkerMdOnly,
+    invokerJuniorNotepad,
     questionLabelTruncator,
     taskResumeInfo,
     anthropicEffort,

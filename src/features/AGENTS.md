@@ -58,7 +58,7 @@ opencode-project (`.opencode/skills/`) > opencode (`~/.config/opencode/skills/`)
 name: my-skill
 description: "..."
 model: "claude-opus-4-6"    # optional
-agent: "sisyphus"           # optional
+agent: "invoker"           # optional
 mcp:                        # optional embedded MCPs
   server-name:
     type: http

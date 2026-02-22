@@ -1,7 +1,7 @@
 import type { DelegateTaskArgs } from "./types"
 import type { ExecutorContext } from "./executor-types"
 import { isPlanFamily } from "./constants"
-import { SISYPHUS_JUNIOR_AGENT } from "./sisyphus-junior-agent"
+import { INVOKER_JUNIOR_AGENT } from "./invoker-junior-agent"
 import { parseModelString } from "./model-string-parser"
 import { AGENT_MODEL_REQUIREMENTS } from "../../shared/model-requirements"
 import { getAvailableModelsForDelegateTask } from "./available-models"
@@ -21,11 +21,11 @@ export async function resolveSubagentExecution(
 
   const agentName = args.subagent_type.trim()
 
-  if (agentName.toLowerCase() === SISYPHUS_JUNIOR_AGENT.toLowerCase()) {
+  if (agentName.toLowerCase() === INVOKER_JUNIOR_AGENT.toLowerCase()) {
     return {
       agentToUse: "",
       categoryModel: undefined,
-      error: `Cannot use subagent_type="${SISYPHUS_JUNIOR_AGENT}" directly. Use category parameter instead (e.g., ${categoryExamples}).
+      error: `Cannot use subagent_type="${INVOKER_JUNIOR_AGENT}" directly. Use category parameter instead (e.g., ${categoryExamples}).
 
 Invoker-Junior is spawned automatically when you specify a category. Pick the appropriate category for your task domain.`,
     }
@@ -35,7 +35,7 @@ Invoker-Junior is spawned automatically when you specify a category. Pick the ap
     return {
       agentToUse: "",
       categoryModel: undefined,
-    error: `You are a plan-family agent (plan/prometheus). You cannot delegate to other plan-family agents via task.
+    error: `You are a plan-family agent (plan/tinker). You cannot delegate to other plan-family agents via task.
 
 Create the work plan directly - that's your job as the planning agent.`,
     }

@@ -6,13 +6,13 @@ import { HOOK_NAME } from "./hook-name"
 import { isAbortError } from "./is-abort-error"
 import { injectBoulderContinuation } from "./boulder-continuation-injector"
 import { getLastAgentFromSession } from "./session-last-agent"
-import type { AtlasHookOptions, SessionState } from "./types"
+import type { AxeHookOptions, SessionState } from "./types"
 
 const CONTINUATION_COOLDOWN_MS = 5000
 
-export function createAtlasEventHandler(input: {
+export function createAxeEventHandler(input: {
   ctx: PluginInput
-  options?: AtlasHookOptions
+  options?: AxeHookOptions
   sessions: Map<string, SessionState>
   getState: (sessionID: string) => SessionState
 }): (arg: { event: { type: string; properties?: unknown } }) => Promise<void> {
@@ -88,13 +88,13 @@ export function createAtlasEventHandler(input: {
       }
 
       const lastAgent = getLastAgentFromSession(sessionID)
-      const requiredAgent = (boulderState.agent ?? "atlas").toLowerCase()
+      const requiredAgent = (boulderState.agent ?? "axe").toLowerCase()
       const lastAgentMatchesRequired = lastAgent === requiredAgent
       const boulderAgentWasNotExplicitlySet = boulderState.agent === undefined
-      const boulderAgentDefaultsToAtlas = requiredAgent === "atlas"
-      const lastAgentIsSisyphus = lastAgent === "sisyphus"
-      const allowSisyphusWhenDefaultAtlas = boulderAgentWasNotExplicitlySet && boulderAgentDefaultsToAtlas && lastAgentIsSisyphus
-      const agentMatches = lastAgentMatchesRequired || allowSisyphusWhenDefaultAtlas
+      const boulderAgentDefaultsToAxe = requiredAgent === "axe"
+      const lastAgentIsInvoker = lastAgent === "invoker"
+      const allowInvokerWhenDefaultAxe = boulderAgentWasNotExplicitlySet && boulderAgentDefaultsToAxe && lastAgentIsInvoker
+      const agentMatches = lastAgentMatchesRequired || allowInvokerWhenDefaultAxe
       if (!agentMatches) {
         log(`[${HOOK_NAME}] Skipped: last agent does not match boulder agent`, {
           sessionID,

@@ -26,9 +26,9 @@ export function createToolExecuteBeforeHandler(args: {
     await hooks.directoryReadmeInjector?.["tool.execute.before"]?.(input, output)
     await hooks.rulesInjector?.["tool.execute.before"]?.(input, output)
     await hooks.tasksTodowriteDisabler?.["tool.execute.before"]?.(input, output)
-    await hooks.prometheusMdOnly?.["tool.execute.before"]?.(input, output)
-    await hooks.sisyphusJuniorNotepad?.["tool.execute.before"]?.(input, output)
-    await hooks.atlasHook?.["tool.execute.before"]?.(input, output)
+    await hooks.tinkerMdOnly?.["tool.execute.before"]?.(input, output)
+    await hooks.invokerJuniorNotepad?.["tool.execute.before"]?.(input, output)
+    await hooks.axeHook?.["tool.execute.before"]?.(input, output)
 
     if (input.tool === "task") {
       const argsObject = output.args
@@ -37,7 +37,7 @@ export function createToolExecuteBeforeHandler(args: {
       const sessionId = typeof argsObject.session_id === "string" ? argsObject.session_id : undefined
 
       if (category) {
-        argsObject.subagent_type = "sisyphus-junior"
+        argsObject.subagent_type = "invoker-junior"
       } else if (!subagentType && sessionId) {
         const resolvedAgent = await resolveSessionAgent(ctx.client, sessionId)
         argsObject.subagent_type = resolvedAgent ?? "continue"

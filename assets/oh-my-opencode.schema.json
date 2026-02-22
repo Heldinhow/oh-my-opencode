@@ -26,16 +26,16 @@
       "items": {
         "type": "string",
         "enum": [
-          "sisyphus",
-          "hephaestus",
-          "prometheus",
+          "invoker",
+          "enigma",
+          "tinker",
           "oracle",
-          "librarian",
-          "explore",
-          "multimodal-looker",
-          "metis",
-          "momus",
-          "atlas"
+          "keeper",
+          "mirana",
+          "broodmother",
+          "rubick",
+          "clockwerk",
+          "axe"
         ]
       }
     },
@@ -88,10 +88,10 @@
           "auto-slash-command",
           "edit-error-recovery",
           "delegate-task-retry",
-          "prometheus-md-only",
-          "sisyphus-junior-notepad",
+          "tinker-md-only",
+          "invoker-junior-notepad",
           "start-work",
-          "atlas",
+          "axe",
           "unstable-agent-babysitter",
           "task-reminder",
           "task-resume-info",
@@ -472,7 +472,7 @@
           },
           "additionalProperties": false
         },
-        "sisyphus": {
+        "invoker": {
           "type": "object",
           "properties": {
             "model": {
@@ -645,7 +645,7 @@
           },
           "additionalProperties": false
         },
-        "hephaestus": {
+        "enigma": {
           "type": "object",
           "properties": {
             "model": {
@@ -818,7 +818,7 @@
           },
           "additionalProperties": false
         },
-        "sisyphus-junior": {
+        "invoker-junior": {
           "type": "object",
           "properties": {
             "model": {
@@ -1164,7 +1164,7 @@
           },
           "additionalProperties": false
         },
-        "prometheus": {
+        "tinker": {
           "type": "object",
           "properties": {
             "model": {
@@ -1337,7 +1337,7 @@
           },
           "additionalProperties": false
         },
-        "metis": {
+        "rubick": {
           "type": "object",
           "properties": {
             "model": {
@@ -1510,7 +1510,7 @@
           },
           "additionalProperties": false
         },
-        "momus": {
+        "clockwerk": {
           "type": "object",
           "properties": {
             "model": {
@@ -1856,7 +1856,7 @@
           },
           "additionalProperties": false
         },
-        "librarian": {
+        "keeper": {
           "type": "object",
           "properties": {
             "model": {
@@ -2029,7 +2029,7 @@
           },
           "additionalProperties": false
         },
-        "explore": {
+        "mirana": {
           "type": "object",
           "properties": {
             "model": {
@@ -2202,7 +2202,7 @@
           },
           "additionalProperties": false
         },
-        "multimodal-looker": {
+        "broodmother": {
           "type": "object",
           "properties": {
             "model": {
@@ -2375,7 +2375,7 @@
           },
           "additionalProperties": false
         },
-        "atlas": {
+        "axe": {
           "type": "object",
           "properties": {
             "model": {
@@ -2663,7 +2663,7 @@
       },
       "additionalProperties": false
     },
-    "sisyphus_agent": {
+    "invoker_agent": {
       "type": "object",
       "properties": {
         "disabled": {
@@ -3122,7 +3122,7 @@
       ],
       "additionalProperties": false
     },
-    "sisyphus": {
+    "invoker": {
       "type": "object",
       "properties": {
         "tasks": {

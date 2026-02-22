@@ -9,7 +9,7 @@ export const MINIMUM_OPENCODE_VERSION = "1.1.1"
 /**
  * OpenCode version that introduced native AGENTS.md injection.
  * PR #10678 merged on Jan 26, 2026 - OpenCode now dynamically resolves
- * AGENTS.md files from subdirectories as the agent explores them.
+ * AGENTS.md files from subdirectories as the agent miranas them.
  * When this version is detected, the directory-agents-injector hook
  * is auto-disabled to prevent duplicate AGENTS.md loading.
  */

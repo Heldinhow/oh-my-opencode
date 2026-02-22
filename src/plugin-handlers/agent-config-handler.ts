@@ -1,5 +1,5 @@
 import { createBuiltinAgents } from "../agents";
-import { createSisyphusJuniorAgentWithOverrides } from "../agents/sisyphus-junior";
+import { createInvokerJuniorAgentWithOverrides } from "../agents/invoker-junior";
 import type { OhMyOpenCodeConfig } from "../config";
 import { log, migrateAgentConfig } from "../shared";
 import { AGENT_NAME_MAP } from "../shared/migration";
@@ -13,7 +13,7 @@ import {
 import { loadProjectAgents, loadUserAgents } from "../features/claude-code-agent-loader";
 import type { PluginComponents } from "./plugin-components-loader";
 import { reorderAgentsByPriority } from "./agent-priority-order";
-import { buildPrometheusAgentConfig } from "./prometheus-agent-config-builder";
+import { buildTinkerAgentConfig } from "./tinker-agent-config-builder";
 import { buildPlanDemoteConfig } from "./plan-model-inheritance";
 
 type AgentConfigRecord = Record<string, Record<string, unknown> | undefined> & {
@@ -94,24 +94,24 @@ export async function applyAgentConfig(params: {
     ]),
   );
 
-  const isSisyphusEnabled = params.pluginConfig.sisyphus_agent?.disabled !== true;
+  const isInvokerEnabled = params.pluginConfig.invoker_agent?.disabled !== true;
   const builderEnabled =
-    params.pluginConfig.sisyphus_agent?.default_builder_enabled ?? false;
-  const plannerEnabled = params.pluginConfig.sisyphus_agent?.planner_enabled ?? true;
-  const replacePlan = params.pluginConfig.sisyphus_agent?.replace_plan ?? true;
+    params.pluginConfig.invoker_agent?.default_builder_enabled ?? false;
+  const plannerEnabled = params.pluginConfig.invoker_agent?.planner_enabled ?? true;
+  const replacePlan = params.pluginConfig.invoker_agent?.replace_plan ?? true;
   const shouldDemotePlan = plannerEnabled && replacePlan;
 
   const configAgent = params.config.agent as AgentConfigRecord | undefined;
 
-  if (isSisyphusEnabled && builtinAgents.sisyphus) {
-    (params.config as { default_agent?: string }).default_agent = "sisyphus";
+  if (isInvokerEnabled && builtinAgents.invoker) {
+    (params.config as { default_agent?: string }).default_agent = "invoker";
 
     const agentConfig: Record<string, unknown> = {
-      sisyphus: builtinAgents.sisyphus,
+      invoker: builtinAgents.invoker,
     };
 
-    agentConfig["sisyphus-junior"] = createSisyphusJuniorAgentWithOverrides(
-      params.pluginConfig.agents?.["sisyphus-junior"],
+    agentConfig["invoker-junior"] = createInvokerJuniorAgentWithOverrides(
+      params.pluginConfig.agents?.["invoker-junior"],
       undefined,
       useTaskSystem,
     );
@@ -131,13 +131,13 @@ export async function applyAgentConfig(params: {
     }
 
     if (plannerEnabled) {
-      const prometheusOverride = params.pluginConfig.agents?.["prometheus"] as
+      const tinkerOverride = params.pluginConfig.agents?.["tinker"] as
         | (Record<string, unknown> & { prompt_append?: string })
         | undefined;
 
-      agentConfig["prometheus"] = await buildPrometheusAgentConfig({
+      agentConfig["tinker"] = await buildTinkerAgentConfig({
         configAgentPlan: configAgent?.plan,
-        pluginPrometheusOverride: prometheusOverride,
+        pluginTinkerOverride: tinkerOverride,
         userCategories: params.pluginConfig.categories,
         currentModel,
       });
@@ -165,7 +165,7 @@ export async function applyAgentConfig(params: {
 
     const planDemoteConfig = shouldDemotePlan
       ? buildPlanDemoteConfig(
-          agentConfig["prometheus"] as Record<string, unknown> | undefined,
+          agentConfig["tinker"] as Record<string, unknown> | undefined,
           params.pluginConfig.agents?.plan as Record<string, unknown> | undefined,
         )
       : undefined;
@@ -173,7 +173,7 @@ export async function applyAgentConfig(params: {
     params.config.agent = {
       ...agentConfig,
       ...Object.fromEntries(
-        Object.entries(builtinAgents).filter(([key]) => key !== "sisyphus"),
+        Object.entries(builtinAgents).filter(([key]) => key !== "invoker"),
       ),
       ...userAgents,
       ...projectAgents,

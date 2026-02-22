@@ -7,20 +7,20 @@
 ## STRUCTURE
 ```
 agents/
-├── sisyphus.ts                 # Main orchestrator (530 lines)
-├── hephaestus.ts               # Autonomous deep worker (624 lines)
+├── invoker.ts                 # Main orchestrator (530 lines)
+├── enigma.ts               # Autonomous deep worker (624 lines)
 ├── oracle.ts                   # Strategic advisor (170 lines)
-├── librarian.ts                # Multi-repo research (328 lines)
-├── explore.ts                  # Fast codebase grep (124 lines)
-├── multimodal-looker.ts        # Media analyzer (58 lines)
-├── metis.ts                    # Pre-planning analysis (347 lines)
-├── momus.ts                    # Plan validator (244 lines)
-├── atlas/                      # Master orchestrator
+├── keeper.ts                # Multi-repo research (328 lines)
+├── mirana.ts                  # Fast codebase grep (124 lines)
+├── broodmother.ts        # Media analyzer (58 lines)
+├── rubick.ts                    # Pre-planning analysis (347 lines)
+├── clockwerk.ts                    # Plan validator (244 lines)
+├── axe/                      # Master orchestrator
 │   ├── agent.ts                # Axe factory
 │   ├── default.ts              # Claude-optimized prompt
 │   ├── gpt.ts                  # GPT-optimized prompt
 │   └── utils.ts
-├── prometheus/                 # Planning agent
+├── tinker/                 # Planning agent
 │   ├── index.ts
 │   ├── system-prompt.ts        # 6-section prompt assembly
 │   ├── plan-template.ts        # Work plan structure (423 lines)
@@ -29,7 +29,7 @@ agents/
 │   ├── high-accuracy-mode.ts
 │   ├── identity-constraints.ts # Identity rules (301 lines)
 │   └── behavioral-summary.ts
-├── sisyphus-junior/            # Delegated task executor
+├── invoker-junior/            # Delegated task executor
 │   ├── agent.ts
 │   ├── default.ts              # Claude prompt
 │   └── gpt.ts                  # GPT prompt
@@ -44,26 +44,26 @@ agents/
 
 | Agent | Model | Temp | Fallback Chain | Cost |
 |-------|-------|------|----------------|------|
-| Invoker | claude-opus-4-6 | 0.1 | kimi-k2.5 → glm-4.7 → gpt-5.3-codex → gemini-3-pro | EXPENSIVE |
-| Enigma | gpt-5.3-codex | 0.1 | NONE (required) | EXPENSIVE |
-| Axe | claude-sonnet-4-5 | 0.1 | kimi-k2.5 → gpt-5.2 | EXPENSIVE |
-| Tinker | claude-opus-4-6 | 0.1 | kimi-k2.5 → gpt-5.2 | EXPENSIVE |
-| oracle | gpt-5.2 | 0.1 | claude-opus-4-6 | EXPENSIVE |
-| librarian | glm-4.7 | 0.1 | glm-4.7-free | CHEAP |
-| explore | grok-code-fast-1 | 0.1 | claude-haiku-4-5 → gpt-5-mini → gpt-5-nano | FREE |
-| multimodal-looker | gemini-3-flash | 0.1 | NONE | CHEAP |
-| Metis | claude-opus-4-6 | 0.3 | kimi-k2.5 → gpt-5.2 | EXPENSIVE |
-| Momus | gpt-5.2 | 0.1 | claude-opus-4-6 | EXPENSIVE |
-| Invoker-Junior | claude-sonnet-4-5 | 0.1 | (user-configurable) | EXPENSIVE |
+| Invoker | glm-5-free | 0.1 | NONE | FREE |
+| Enigma | glm-5-free | 0.1 | NONE | FREE |
+| Axe | glm-5-free | 0.1 | NONE | FREE |
+| Tinker | glm-5-free | 0.1 | NONE | FREE |
+| oracle | glm-5-free | 0.1 | NONE | FREE |
+| keeper | glm-5-free | 0.1 | NONE | FREE |
+| mirana | glm-5-free | 0.1 | NONE | FREE |
+| broodmother | glm-5-free | 0.1 | NONE | FREE |
+| Rubick | glm-5-free | 0.3 | NONE | FREE |
+| Clockwerk | glm-5-free | 0.1 | NONE | FREE |
+| Invoker-Junior | glm-5-free | 0.1 | NONE | FREE |
 
 ## TOOL RESTRICTIONS
 
 | Agent | Denied | Allowed |
 |-------|--------|---------|
 | oracle | write, edit, task, call_omo_agent | Read-only consultation |
-| librarian | write, edit, task, call_omo_agent | Research tools only |
-| explore | write, edit, task, call_omo_agent | Search tools only |
-| multimodal-looker | ALL except `read` | Vision-only |
+| keeper | write, edit, task, call_omo_agent | Research tools only |
+| mirana | write, edit, task, call_omo_agent | Search tools only |
+| broodmother | ALL except `read` | Vision-only |
 | Invoker-Junior | task | No delegation |
 | Axe | task, call_omo_agent | Orchestration only |
 
@@ -74,8 +74,8 @@ agents/
 | Invoker | 32k budget tokens | reasoningEffort: "medium" |
 | Enigma | — | reasoningEffort: "medium" |
 | Oracle | 32k budget tokens | reasoningEffort: "medium" |
-| Metis | 32k budget tokens | — |
-| Momus | 32k budget tokens | reasoningEffort: "medium" |
+| Rubick | 32k budget tokens | — |
+| Clockwerk | 32k budget tokens | reasoningEffort: "medium" |
 | Invoker-Junior | 32k budget tokens | reasoningEffort: "medium" |
 
 ## HOW TO ADD

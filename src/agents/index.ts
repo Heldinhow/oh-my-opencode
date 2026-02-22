@@ -1,20 +1,20 @@
 export * from "./types"
 export { createBuiltinAgents } from "./builtin-agents"
 export type { AvailableAgent, AvailableCategory, AvailableSkill } from "./dynamic-agent-prompt-builder"
-export { createSisyphusAgent } from "./sisyphus"
+export { createInvokerAgent } from "./invoker"
 export { createOracleAgent, ORACLE_PROMPT_METADATA } from "./oracle"
-export { createLibrarianAgent, LIBRARIAN_PROMPT_METADATA } from "./librarian"
-export { createExploreAgent, EXPLORE_PROMPT_METADATA } from "./explore"
+export { createKeeperAgent, LIBRARIAN_PROMPT_METADATA } from "./keeper"
+export { createMiranaAgent, EXPLORE_PROMPT_METADATA } from "./mirana"
 
 
-export { createMultimodalLookerAgent, MULTIMODAL_LOOKER_PROMPT_METADATA } from "./multimodal-looker"
-export { createMetisAgent, METIS_SYSTEM_PROMPT, metisPromptMetadata } from "./metis"
-export { createMomusAgent, MOMUS_SYSTEM_PROMPT, momusPromptMetadata } from "./momus"
-export { createAtlasAgent, atlasPromptMetadata } from "./atlas"
+export { createBroodmotherAgent, MULTIMODAL_LOOKER_PROMPT_METADATA } from "./broodmother"
+export { createRubickAgent, METIS_SYSTEM_PROMPT, rubickPromptMetadata } from "./rubick"
+export { createClockwerkAgent, MOMUS_SYSTEM_PROMPT, clockwerkPromptMetadata } from "./clockwerk"
+export { createAxeAgent, axePromptMetadata } from "./axe"
 export {
   PROMETHEUS_SYSTEM_PROMPT,
   PROMETHEUS_PERMISSION,
-  buildPrometheusSystemPrompt,
+  buildTinkerSystemPrompt,
   PROMETHEUS_IDENTITY_CONSTRAINTS,
   PROMETHEUS_INTERVIEW_MODE,
   buildInterviewModePrompt,
@@ -22,4 +22,4 @@ export {
   PROMETHEUS_HIGH_ACCURACY_MODE,
   PROMETHEUS_PLAN_TEMPLATE,
   PROMETHEUS_BEHAVIORAL_SUMMARY,
-} from "./prometheus"
+} from "./tinker"

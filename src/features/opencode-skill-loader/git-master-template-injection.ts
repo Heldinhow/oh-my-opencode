@@ -30,7 +30,7 @@ export function injectGitMasterConfig(template: string, config?: GitMasterConfig
 	if (includeCoAuthoredBy) {
 		sections.push(`${commitFooter ? "2" : "1"}. **Co-authored-by trailer:**`)
 		sections.push("```")
-		sections.push("Co-authored-by: Invoker <clio-agent@sisyphuslabs.ai>")
+		sections.push("Co-authored-by: Invoker <clio-agent@invokerlabs.ai>")
 		sections.push("```")
 		sections.push("")
 	}
@@ -43,7 +43,7 @@ export function injectGitMasterConfig(template: string, config?: GitMasterConfig
 		sections.push("**Example (both enabled):**")
 		sections.push("```bash")
 		sections.push(
-			`git commit -m "{Commit Message}" -m "${footerText}" -m "Co-authored-by: Invoker <clio-agent@sisyphuslabs.ai>"`
+			`git commit -m "{Commit Message}" -m "${footerText}" -m "Co-authored-by: Invoker <clio-agent@invokerlabs.ai>"`
 		)
 		sections.push("```")
 	} else if (commitFooter) {
@@ -59,7 +59,7 @@ export function injectGitMasterConfig(template: string, config?: GitMasterConfig
 		sections.push("**Example:**")
 		sections.push("```bash")
 		sections.push(
-			"git commit -m \"{Commit Message}\" -m \"Co-authored-by: Invoker <clio-agent@sisyphuslabs.ai>\""
+			"git commit -m \"{Commit Message}\" -m \"Co-authored-by: Invoker <clio-agent@invokerlabs.ai>\""
 		)
 		sections.push("```")
 	}

@@ -21,8 +21,8 @@ config/
 │   ├── comment-checker.ts     # CommentCheckerConfigSchema
 │   ├── notification.ts        # NotificationConfigSchema
 │   ├── ralph-loop.ts          # RalphLoopConfigSchema
-│   ├── sisyphus.ts            # SisyphusConfigSchema
-│   ├── sisyphus-agent.ts      # SisyphusAgentConfigSchema
+│   ├── invoker.ts            # InvokerConfigSchema
+│   ├── invoker-agent.ts      # InvokerAgentConfigSchema
 │   ├── skills.ts              # SkillsConfigSchema (45 lines)
 │   ├── tmux.ts                # TmuxConfigSchema, TmuxLayoutSchema
 │   ├── websearch.ts           # WebsearchConfigSchema
@@ -37,7 +37,7 @@ config/
 
 ## ROOT SCHEMA
 
-`OhMyOpenCodeConfigSchema` composes: `$schema`, `new_task_system_enabled`, `default_run_agent`, `auto_update`, `disabled_{mcps,agents,skills,hooks,commands,tools}`, `agents` (14 agent keys), `categories` (8 built-in), `claude_code`, `sisyphus_agent`, `comment_checker`, `experimental`, `skills`, `ralph_loop`, `background_task`, `notification`, `babysitting`, `git_master`, `browser_automation_engine`, `websearch`, `tmux`, `sisyphus`
+`OhMyOpenCodeConfigSchema` composes: `$schema`, `new_task_system_enabled`, `default_run_agent`, `auto_update`, `disabled_{mcps,agents,skills,hooks,commands,tools}`, `agents` (14 agent keys), `categories` (8 built-in), `claude_code`, `invoker_agent`, `comment_checker`, `experimental`, `skills`, `ralph_loop`, `background_task`, `notification`, `babysitting`, `git_master`, `browser_automation_engine`, `websearch`, `tmux`, `invoker`
 
 ## CONFIGURATION HIERARCHY
 

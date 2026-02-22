@@ -2,12 +2,12 @@ export const START_WORK_TEMPLATE = `You are starting a Invoker work session.
 
 ## WHAT TO DO
 
-1. **Find available plans**: Search for Tinker-generated plan files at \`.sisyphus/plans/\`
+1. **Find available plans**: Search for Tinker-generated plan files at \`.specify/plans/\`
 
-2. **Check for active boulder state**: Read \`.sisyphus/boulder.json\` if it exists
+2. **Check for active boulder state**: Read \`.specify/boulder.json\` if it exists
 
 3. **Decision logic**:
-   - If \`.sisyphus/boulder.json\` exists AND plan is NOT complete (has unchecked boxes):
+   - If \`.specify/boulder.json\` exists AND plan is NOT complete (has unchecked boxes):
      - **APPEND** current session to session_ids
      - Continue work on existing plan
    - If no active plan OR plan is complete:
@@ -25,7 +25,7 @@ export const START_WORK_TEMPLATE = `You are starting a Invoker work session.
    }
    \`\`\`
 
-5. **Read the plan file** and start executing tasks according to atlas workflow
+5. **Read the plan file** and start executing tasks according to axe workflow
 
 ## OUTPUT FORMAT
 
@@ -69,4 +69,4 @@ Reading plan and beginning execution...
 - The session_id is injected by the hook - use it directly
 - Always update boulder.json BEFORE starting work
 - Read the FULL plan file before delegating any tasks
-- Follow atlas delegation protocols (7-section format)`
+- Follow axe delegation protocols (7-section format)`

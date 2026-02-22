@@ -3,8 +3,8 @@ import { AGENT_DISPLAY_NAMES, getAgentDisplayName } from "./agent-display-names"
 
 describe("getAgentDisplayName", () => {
   it("returns display name for lowercase config key (new format)", () => {
-    // given config key "sisyphus"
-    const configKey = "sisyphus"
+    // given config key "invoker"
+    const configKey = "invoker"
 
     // when getAgentDisplayName called
     const result = getAgentDisplayName(configKey)
@@ -35,9 +35,9 @@ describe("getAgentDisplayName", () => {
     expect(result).toBe("custom-agent")
   })
 
-  it("returns display name for atlas", () => {
-    // given config key "atlas"
-    const configKey = "atlas"
+  it("returns display name for axe", () => {
+    // given config key "axe"
+    const configKey = "axe"
 
     // when getAgentDisplayName called
     const result = getAgentDisplayName(configKey)
@@ -46,9 +46,9 @@ describe("getAgentDisplayName", () => {
     expect(result).toBe("Axe (Plan Execution Orchestrator)")
   })
 
-  it("returns display name for prometheus", () => {
-    // given config key "prometheus"
-    const configKey = "prometheus"
+  it("returns display name for tinker", () => {
+    // given config key "tinker"
+    const configKey = "tinker"
 
     // when getAgentDisplayName called
     const result = getAgentDisplayName(configKey)
@@ -57,9 +57,9 @@ describe("getAgentDisplayName", () => {
     expect(result).toBe("Tinker (Plan Builder)")
   })
 
-  it("returns display name for sisyphus-junior", () => {
-    // given config key "sisyphus-junior"
-    const configKey = "sisyphus-junior"
+  it("returns display name for invoker-junior", () => {
+    // given config key "invoker-junior"
+    const configKey = "invoker-junior"
 
     // when getAgentDisplayName called
     const result = getAgentDisplayName(configKey)
@@ -68,26 +68,26 @@ describe("getAgentDisplayName", () => {
     expect(result).toBe("Invoker-Junior")
   })
 
-  it("returns display name for metis", () => {
-    // given config key "metis"
-    const configKey = "metis"
+  it("returns display name for rubick", () => {
+    // given config key "rubick"
+    const configKey = "rubick"
 
     // when getAgentDisplayName called
     const result = getAgentDisplayName(configKey)
 
-    // then returns "Metis (Plan Consultant)"
-    expect(result).toBe("Metis (Plan Consultant)")
+    // then returns "Rubick (Plan Consultant)"
+    expect(result).toBe("Rubick (Plan Consultant)")
   })
 
-  it("returns display name for momus", () => {
-    // given config key "momus"
-    const configKey = "momus"
+  it("returns display name for clockwerk", () => {
+    // given config key "clockwerk"
+    const configKey = "clockwerk"
 
     // when getAgentDisplayName called
     const result = getAgentDisplayName(configKey)
 
-    // then returns "Momus (Plan Reviewer)"
-    expect(result).toBe("Momus (Plan Reviewer)")
+    // then returns "Clockwerk (Plan Reviewer)"
+    expect(result).toBe("Clockwerk (Plan Reviewer)")
   })
 
   it("returns display name for oracle", () => {
@@ -101,9 +101,9 @@ describe("getAgentDisplayName", () => {
     expect(result).toBe("oracle")
   })
 
-  it("returns display name for librarian", () => {
-    // given config key "librarian"
-    const configKey = "librarian"
+  it("returns display name for keeper", () => {
+    // given config key "keeper"
+    const configKey = "keeper"
 
     // when getAgentDisplayName called
     const result = getAgentDisplayName(configKey)
@@ -112,9 +112,9 @@ describe("getAgentDisplayName", () => {
     expect(result).toBe("keeper")
   })
 
-  it("returns display name for explore", () => {
-    // given config key "explore"
-    const configKey = "explore"
+  it("returns display name for mirana", () => {
+    // given config key "mirana"
+    const configKey = "mirana"
 
     // when getAgentDisplayName called
     const result = getAgentDisplayName(configKey)
@@ -123,15 +123,15 @@ describe("getAgentDisplayName", () => {
     expect(result).toBe("mirana")
   })
 
-  it("returns display name for multimodal-looker", () => {
-    // given config key "multimodal-looker"
-    const configKey = "multimodal-looker"
+  it("returns display name for broodmother", () => {
+    // given config key "broodmother"
+    const configKey = "broodmother"
 
     // when getAgentDisplayName called
     const result = getAgentDisplayName(configKey)
 
-    // then returns "multimodal-looker"
-    expect(result).toBe("multimodal-looker")
+    // then returns "broodmother"
+    expect(result).toBe("broodmother")
   })
 })
 
@@ -139,16 +139,16 @@ describe("AGENT_DISPLAY_NAMES", () => {
   it("contains all expected agent mappings", () => {
     // given expected mappings
     const expectedMappings = {
-      sisyphus: "Invoker (Ultraworker)",
-      atlas: "Axe (Plan Execution Orchestrator)",
-      prometheus: "Tinker (Plan Builder)",
-      "sisyphus-junior": "Invoker-Junior",
-      metis: "Metis (Plan Consultant)",
-      momus: "Momus (Plan Reviewer)",
+      invoker: "Invoker (Ultraworker)",
+      axe: "Axe (Plan Execution Orchestrator)",
+      tinker: "Tinker (Plan Builder)",
+      "invoker-junior": "Invoker-Junior",
+      rubick: "Rubick (Plan Consultant)",
+      clockwerk: "Clockwerk (Plan Reviewer)",
       oracle: "oracle",
-      librarian: "keeper",
-      explore: "mirana",
-      "multimodal-looker": "multimodal-looker",
+      keeper: "keeper",
+      mirana: "mirana",
+      "broodmother": "broodmother",
     }
 
     // when checking the constant

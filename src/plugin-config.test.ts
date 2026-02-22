@@ -88,7 +88,7 @@ describe("mergeConfigs", () => {
       const override: OhMyOpenCodeConfig = {
         agents: {
           oracle: { temperature: 0.5 },
-          explore: { model: "anthropic/claude-haiku-4-5" },
+          mirana: { model: "anthropic/claude-haiku-4-5" },
         },
       };
 
@@ -96,7 +96,7 @@ describe("mergeConfigs", () => {
 
       expect(result.agents?.oracle?.model).toBe("openai/gpt-5.2");
       expect(result.agents?.oracle?.temperature).toBe(0.5);
-      expect(result.agents?.explore?.model).toBe("anthropic/claude-haiku-4-5");
+      expect(result.agents?.mirana?.model).toBe("anthropic/claude-haiku-4-5");
     });
 
     it("should merge disabled arrays without duplicates", () => {
@@ -128,7 +128,7 @@ describe("parseConfigPartially", () => {
       const rawConfig = {
         agents: {
           oracle: { model: "openai/gpt-5.2" },
-          momus: { model: "openai/gpt-5.2" },
+          clockwerk: { model: "openai/gpt-5.2" },
         },
         disabled_hooks: ["comment-checker"],
       };
@@ -137,7 +137,7 @@ describe("parseConfigPartially", () => {
 
       expect(result).not.toBeNull();
       expect(result!.agents?.oracle?.model).toBe("openai/gpt-5.2");
-      expect(result!.agents?.momus?.model).toBe("openai/gpt-5.2");
+      expect(result!.agents?.clockwerk?.model).toBe("openai/gpt-5.2");
       expect(result!.disabled_hooks).toEqual(["comment-checker"]);
     });
   });
@@ -151,10 +151,10 @@ describe("parseConfigPartially", () => {
       const rawConfig = {
         agents: {
           oracle: { model: "openai/gpt-5.2" },
-          momus: { model: "openai/gpt-5.2" },
-          prometheus: {
+          clockwerk: { model: "openai/gpt-5.2" },
+          tinker: {
             permission: {
-              edit: { "*": "ask", ".sisyphus/**": "allow" },
+              edit: { "*": "ask", ".specify/**": "allow" },
             },
           },
         },

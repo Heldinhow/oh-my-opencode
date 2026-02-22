@@ -2,8 +2,8 @@ import type { AgentConfig } from "@opencode-ai/sdk"
 
 /**
  * Agent mode determines UI model selection behavior:
- * - "primary": Respects user's UI-selected model (sisyphus, atlas)
- * - "subagent": Uses own fallback chain, ignores UI selection (oracle, explore, etc.)
+ * - "primary": Respects user's UI-selected model (invoker, axe)
+ * - "subagent": Uses own fallback chain, ignores UI selection (oracle, mirana, etc.)
  * - "all": Available in both contexts (OpenCode compatibility)
  */
 export type AgentMode = "primary" | "subagent" | "all"
@@ -62,7 +62,7 @@ export interface AgentPromptMetadata {
   /** Nickname/alias used in prompt (e.g., "Oracle" instead of "oracle") */
   promptAlias?: string
 
-  /** Key triggers that should appear in Phase 0 (e.g., "External library mentioned → fire librarian") */
+  /** Key triggers that should appear in Phase 0 (e.g., "External library mentioned → fire keeper") */
   keyTrigger?: string
 }
 
@@ -81,15 +81,15 @@ export function isGptModel(model: string): boolean {
 }
 
 export type BuiltinAgentName =
-  | "sisyphus"
-  | "hephaestus"
+  | "invoker"
+  | "enigma"
   | "oracle"
-  | "librarian"
-  | "explore"
-  | "multimodal-looker"
-  | "metis"
-  | "momus"
-  | "atlas"
+  | "keeper"
+  | "mirana"
+  | "broodmother"
+  | "rubick"
+  | "clockwerk"
+  | "axe"
 
 export type OverridableAgentName =
   | "build"
