@@ -11,8 +11,10 @@ import { PROMETHEUS_BEHAVIORAL_SUMMARY } from "./behavioral-summary"
  * is prepended to the interview mode section.
  */
 export function buildPrometheusSystemPrompt(options?: { sddEnabled?: boolean }): string {
+  const debugMarker = "🔧 DEBUG: SDD MODE IS ACTIVE 🔧"
   const interviewSection = buildInterviewModePrompt(options)
-  return `${PROMETHEUS_IDENTITY_CONSTRAINTS}
+  return `${debugMarker}
+${PROMETHEUS_IDENTITY_CONSTRAINTS}
 ${interviewSection}
 ${PROMETHEUS_PLAN_GENERATION}
 ${PROMETHEUS_HIGH_ACCURACY_MODE}
