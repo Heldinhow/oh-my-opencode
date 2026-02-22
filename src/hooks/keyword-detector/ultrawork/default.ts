@@ -156,6 +156,9 @@ task(session_id="ses_abc123", load_skills=[], prompt="Here's my answer to your q
 
 **CATEGORY + SKILL DELEGATION:**
 \`\`\`
+// Frontend work
+task(category="visual-engineering", load_skills=["frontend-ui-ux"])
+
 // Complex logic
 task(category="ultrabrain", load_skills=["typescript-programmer"])
 

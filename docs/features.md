@@ -49,7 +49,7 @@ Ask @explore for the policy on this feature
 Run agents in the background and continue working:
 
 - Have GPT debug while Claude tries different approaches
-- Coordinate parallel agents by domain and merge findings as results arrive
+- Gemini writes frontend while Claude handles backend
 - Fire massive parallel searches, continue implementation, use results when ready
 
 ```
