@@ -2680,7 +2680,7 @@
           "type": "boolean"
         },
         "sdd_enabled": {
-          "default": false,
+          "default": true,
           "type": "boolean"
         },
         "sdd_require_approval": {
