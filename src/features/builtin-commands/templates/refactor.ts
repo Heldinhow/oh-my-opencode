@@ -95,7 +95,7 @@ TodoWrite([
 
 **Mark phase-1 as in_progress.**
 
-## 1.1: Launch Parallel Explore Agents (BACKGROUND)
+## 1.1: Launch Parallel Mirana Agents (BACKGROUND)
 
 Fire ALL of these simultaneously using \`call_omo_agent\`:
 

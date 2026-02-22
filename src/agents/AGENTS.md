@@ -16,7 +16,7 @@ agents/
 ├── metis.ts                    # Pre-planning analysis (347 lines)
 ├── momus.ts                    # Plan validator (244 lines)
 ├── atlas/                      # Master orchestrator
-│   ├── agent.ts                # Atlas factory
+│   ├── agent.ts                # Axe factory
 │   ├── default.ts              # Claude-optimized prompt
 │   ├── gpt.ts                  # GPT-optimized prompt
 │   └── utils.ts
@@ -44,17 +44,17 @@ agents/
 
 | Agent | Model | Temp | Fallback Chain | Cost |
 |-------|-------|------|----------------|------|
-| Sisyphus | claude-opus-4-6 | 0.1 | kimi-k2.5 → glm-4.7 → gpt-5.3-codex → gemini-3-pro | EXPENSIVE |
-| Hephaestus | gpt-5.3-codex | 0.1 | NONE (required) | EXPENSIVE |
-| Atlas | claude-sonnet-4-5 | 0.1 | kimi-k2.5 → gpt-5.2 | EXPENSIVE |
-| Prometheus | claude-opus-4-6 | 0.1 | kimi-k2.5 → gpt-5.2 | EXPENSIVE |
+| Invoker | claude-opus-4-6 | 0.1 | kimi-k2.5 → glm-4.7 → gpt-5.3-codex → gemini-3-pro | EXPENSIVE |
+| Enigma | gpt-5.3-codex | 0.1 | NONE (required) | EXPENSIVE |
+| Axe | claude-sonnet-4-5 | 0.1 | kimi-k2.5 → gpt-5.2 | EXPENSIVE |
+| Tinker | claude-opus-4-6 | 0.1 | kimi-k2.5 → gpt-5.2 | EXPENSIVE |
 | oracle | gpt-5.2 | 0.1 | claude-opus-4-6 | EXPENSIVE |
 | librarian | glm-4.7 | 0.1 | glm-4.7-free | CHEAP |
 | explore | grok-code-fast-1 | 0.1 | claude-haiku-4-5 → gpt-5-mini → gpt-5-nano | FREE |
 | multimodal-looker | gemini-3-flash | 0.1 | NONE | CHEAP |
 | Metis | claude-opus-4-6 | 0.3 | kimi-k2.5 → gpt-5.2 | EXPENSIVE |
 | Momus | gpt-5.2 | 0.1 | claude-opus-4-6 | EXPENSIVE |
-| Sisyphus-Junior | claude-sonnet-4-5 | 0.1 | (user-configurable) | EXPENSIVE |
+| Invoker-Junior | claude-sonnet-4-5 | 0.1 | (user-configurable) | EXPENSIVE |
 
 ## TOOL RESTRICTIONS
 
@@ -64,19 +64,19 @@ agents/
 | librarian | write, edit, task, call_omo_agent | Research tools only |
 | explore | write, edit, task, call_omo_agent | Search tools only |
 | multimodal-looker | ALL except `read` | Vision-only |
-| Sisyphus-Junior | task | No delegation |
-| Atlas | task, call_omo_agent | Orchestration only |
+| Invoker-Junior | task | No delegation |
+| Axe | task, call_omo_agent | Orchestration only |
 
 ## THINKING / REASONING
 
 | Agent | Claude | GPT |
 |-------|--------|-----|
-| Sisyphus | 32k budget tokens | reasoningEffort: "medium" |
-| Hephaestus | — | reasoningEffort: "medium" |
+| Invoker | 32k budget tokens | reasoningEffort: "medium" |
+| Enigma | — | reasoningEffort: "medium" |
 | Oracle | 32k budget tokens | reasoningEffort: "medium" |
 | Metis | 32k budget tokens | — |
 | Momus | 32k budget tokens | reasoningEffort: "medium" |
-| Sisyphus-Junior | 32k budget tokens | reasoningEffort: "medium" |
+| Invoker-Junior | 32k budget tokens | reasoningEffort: "medium" |
 
 ## HOW TO ADD
 
@@ -89,12 +89,12 @@ agents/
 
 - **Factory**: `createXXXAgent(model): AgentConfig`
 - **Metadata**: `XXX_PROMPT_METADATA` with category, cost, triggers
-- **Model-specific prompts**: Atlas, Sisyphus-Junior have GPT vs Claude variants
-- **Dynamic prompts**: Sisyphus, Hephaestus use `dynamic-agent-prompt-builder.ts` to inject available tools/skills/categories
+- **Model-specific prompts**: Axe, Invoker-Junior have GPT vs Claude variants
+- **Dynamic prompts**: Invoker, Enigma use `dynamic-agent-prompt-builder.ts` to inject available tools/skills/categories
 
 ## ANTI-PATTERNS
 
 - **Trust agent self-reports**: NEVER — always verify outputs
 - **High temperature**: Don't use >0.3 for code agents
 - **Sequential calls**: Use `task` with `run_in_background` for exploration
-- **Prometheus writing code**: Planner only — never implements
+- **Tinker writing code**: Planner only — never implements

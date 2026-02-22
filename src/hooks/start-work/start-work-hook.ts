@@ -73,7 +73,7 @@ export function createStartWorkHook(ctx: PluginInput) {
         .trim() || ""
 
       // Only trigger on actual command execution (contains <session-context> tag)
-      // NOT on description text like "Start Sisyphus work session from Prometheus plan"
+      // NOT on description text like "Start Invoker work session from Tinker plan"
       const isStartWorkCommand = promptText.includes("<session-context>")
 
       if (!isStartWorkCommand) {
@@ -211,8 +211,8 @@ Looking for new plans...`
 
 ## No Plans Found
 
-No Prometheus plan files found at .sisyphus/plans/
-Use Prometheus to create a work plan first: /plan "your task"`
+No Tinker plan files found at .sisyphus/plans/
+Use Tinker to create a work plan first: /plan "your task"`
         } else if (incompletePlans.length === 0) {
           contextInfo += `
 

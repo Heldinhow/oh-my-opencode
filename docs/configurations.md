@@ -209,7 +209,7 @@ Use `prompt_append` to add extra instructions without replacing the default syst
 }
 ```
 
-You can also override settings for `Sisyphus` (the main orchestrator) and `build` (the default agent) using the same options.
+You can also override settings for `Invoker` (the main orchestrator) and `build` (the default agent) using the same options.
 
 ### Permission Options
 
@@ -602,16 +602,16 @@ Configure git-master skill behavior:
 
 | Option                   | Default | Description                                                                      |
 | ------------------------ | ------- | -------------------------------------------------------------------------------- |
-| `commit_footer`          | `true`  | Adds "Ultraworked with Sisyphus" footer to commit messages.                      |
-| `include_co_authored_by` | `true`  | Adds `Co-authored-by: Sisyphus <clio-agent@sisyphuslabs.ai>` trailer to commits. |
+| `commit_footer`          | `true`  | Adds "Ultraworked with Invoker" footer to commit messages.                      |
+| `include_co_authored_by` | `true`  | Adds `Co-authored-by: Invoker <clio-agent@sisyphuslabs.ai>` trailer to commits. |
 
-## Sisyphus Agent
+## Invoker Agent
 
-When enabled (default), Sisyphus provides a powerful orchestrator with optional specialized agents:
+When enabled (default), Invoker provides a powerful orchestrator with optional specialized agents:
 
-- **Sisyphus**: Primary orchestrator agent (Claude Opus 4.5)
+- **Invoker**: Primary orchestrator agent (Claude Opus 4.5)
 - **OpenCode-Builder**: OpenCode's default build agent, renamed due to SDK limitations (disabled by default)
-- **Prometheus (Planner)**: OpenCode's default plan agent with work-planner methodology (enabled by default)
+- **Tinker (Planner)**: OpenCode's default plan agent with work-planner methodology (enabled by default)
 - **Metis (Plan Consultant)**: Pre-planning analysis agent that identifies hidden requirements and AI failure points
 
 **Configuration Options:**
@@ -637,9 +637,9 @@ When enabled (default), Sisyphus provides a powerful orchestrator with optional 
 }
 ```
 
-This enables OpenCode-Builder agent alongside Sisyphus. The default build agent is always demoted to subagent mode when Sisyphus is enabled.
+This enables OpenCode-Builder agent alongside Invoker. The default build agent is always demoted to subagent mode when Invoker is enabled.
 
-**Example: Disable all Sisyphus orchestration:**
+**Example: Disable all Invoker orchestration:**
 
 ```json
 {
@@ -649,19 +649,19 @@ This enables OpenCode-Builder agent alongside Sisyphus. The default build agent 
 }
 ```
 
-You can also customize Sisyphus agents like other agents:
+You can also customize Invoker agents like other agents:
 
 ```json
 {
   "agents": {
-    "Sisyphus": {
+    "Invoker": {
       "model": "anthropic/claude-sonnet-4",
       "temperature": 0.3
     },
     "OpenCode-Builder": {
       "model": "anthropic/claude-opus-4"
     },
-    "Prometheus (Planner)": {
+    "Tinker (Planner)": {
       "model": "openai/gpt-5.2"
     },
     "Metis (Plan Consultant)": {
@@ -673,10 +673,10 @@ You can also customize Sisyphus agents like other agents:
 
 | Option                    | Default | Description                                                                                                                            |
 | ------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| `disabled`                | `false` | When `true`, disables all Sisyphus orchestration and restores original build/plan as primary.                                          |
+| `disabled`                | `false` | When `true`, disables all Invoker orchestration and restores original build/plan as primary.                                          |
 | `default_builder_enabled` | `false` | When `true`, enables OpenCode-Builder agent (same as OpenCode build, renamed due to SDK limitations). Disabled by default.             |
-| `planner_enabled`         | `true`  | When `true`, enables Prometheus (Planner) agent with work-planner methodology. Enabled by default.                                     |
-| `replace_plan`            | `true`  | When `true`, demotes default plan agent to subagent mode. Set to `false` to keep both Prometheus (Planner) and default plan available. |
+| `planner_enabled`         | `true`  | When `true`, enables Tinker (Planner) agent with work-planner methodology. Enabled by default.                                     |
+| `replace_plan`            | `true`  | When `true`, demotes default plan agent to subagent mode. Set to `false` to keep both Tinker (Planner) and default plan available. |
 
 ## Background Tasks
 
@@ -716,7 +716,7 @@ Configure concurrency limits for background agent tasks. This controls how many 
 
 ## Categories
 
-Categories enable domain-specific task delegation via the `task` tool. Each category applies runtime presets (model, temperature, prompt additions) when calling the `Sisyphus-Junior` agent.
+Categories enable domain-specific task delegation via the `task` tool. Each category applies runtime presets (model, temperature, prompt additions) when calling the `Invoker-Junior` agent.
 
 ### Built-in Categories
 
@@ -866,7 +866,7 @@ At runtime, Oh My OpenCode uses a 3-step resolution process to determine which m
 │   ┌─────────────────────────────────────────────────────────┐   │
 │   │ For each provider in requirement.providers order:       │   │
 │   │                                                         │   │
-│   │ Example for Sisyphus:                                   │   │
+│   │ Example for Invoker:                                   │   │
 │   │ anthropic → github-copilot → opencode → antigravity     │   │
 │   │     │            │              │            │          │   │
 │   │     ▼            ▼              ▼            ▼          │   │
@@ -894,15 +894,15 @@ Each agent has a defined provider priority chain. The system tries providers in 
 
 | Agent | Model (no prefix) | Provider Priority Chain |
 |-------|-------------------|-------------------------|
-| **Sisyphus** | `claude-opus-4-6` | anthropic → kimi-for-coding → zai-coding-plan → openai → google |
+| **Invoker** | `claude-opus-4-6` | anthropic → kimi-for-coding → zai-coding-plan → openai → google |
 | **oracle** | `gpt-5.2` | openai → google → anthropic |
 | **librarian** | `glm-4.7` | zai-coding-plan → opencode → anthropic |
 | **explore** | `claude-haiku-4-5` | anthropic → github-copilot → opencode |
 | **multimodal-looker** | `gemini-3-flash` | google → openai → zai-coding-plan → kimi-for-coding → anthropic → opencode |
-| **Prometheus (Planner)** | `claude-opus-4-6` | anthropic → kimi-for-coding → openai → google |
+| **Tinker (Planner)** | `claude-opus-4-6` | anthropic → kimi-for-coding → openai → google |
 | **Metis (Plan Consultant)** | `claude-opus-4-6` | anthropic → kimi-for-coding → openai → google |
 | **Momus (Plan Reviewer)** | `gpt-5.2` | openai → anthropic → google |
-| **Atlas** | `claude-sonnet-4-5` | anthropic → kimi-for-coding → openai → google |
+| **Axe** | `claude-sonnet-4-5` | anthropic → kimi-for-coding → openai → google |
 
 ### Category Provider Chains
 
@@ -940,7 +940,7 @@ Override any agent or category model in `oh-my-opencode.json`:
 ```json
 {
   "agents": {
-    "Sisyphus": {
+    "Invoker": {
       "model": "anthropic/claude-sonnet-4-5"
     },
     "oracle": {
@@ -1017,9 +1017,9 @@ Configure notification behavior for background task completion.
 | -------------- | ------- | ---------------------------------------------------------------------------------------------- |
 | `force_enable` | `false` | Force enable session-notification even if external notification plugins are detected. Default: `false`. |
 
-## Sisyphus Tasks
+## Invoker Tasks
 
-Configure Sisyphus Tasks system for advanced task management.
+Configure Invoker Tasks system for advanced task management.
 
 ```json
 {
@@ -1037,7 +1037,7 @@ Configure Sisyphus Tasks system for advanced task management.
 
 | Option               | Default            | Description                                                               |
 | -------------------- | ------------------ | ------------------------------------------------------------------------- |
-| `enabled`            | `false`            | Enable Sisyphus Tasks system                                               |
+| `enabled`            | `false`            | Enable Invoker Tasks system                                               |
 | `storage_path`       | `.sisyphus/tasks`  | Storage path for tasks (relative to project root)                           |
 | `claude_code_compat` | `false`            | Enable Claude Code path compatibility mode                                   |
 

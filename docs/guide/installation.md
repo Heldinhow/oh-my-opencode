@@ -97,7 +97,7 @@ bunx oh-my-opencode install --no-tui --claude=<yes|no|max20> --gemini=<yes|no> -
 - User has only Claude: `bunx oh-my-opencode install --no-tui --claude=yes --gemini=no --copilot=no`
 - User has Claude + OpenAI: `bunx oh-my-opencode install --no-tui --claude=yes --openai=yes --gemini=no --copilot=no`
 - User has only GitHub Copilot: `bunx oh-my-opencode install --no-tui --claude=no --gemini=no --copilot=yes`
-- User has Z.ai for Librarian: `bunx oh-my-opencode install --no-tui --claude=yes --gemini=no --copilot=no --zai-coding-plan=yes`
+- User has Z.ai for Keeper: `bunx oh-my-opencode install --no-tui --claude=yes --gemini=no --copilot=no --zai-coding-plan=yes`
 - User has only OpenCode Zen: `bunx oh-my-opencode install --no-tui --claude=no --gemini=no --copilot=no --opencode-zen=yes`
 - User has no subscriptions: `bunx oh-my-opencode install --no-tui --claude=no --gemini=no --copilot=no`
 
@@ -196,25 +196,25 @@ When GitHub Copilot is the best available provider, oh-my-opencode uses these mo
 
 | Agent         | Model                            |
 | ------------- | -------------------------------- |
-| **Sisyphus**  | `github-copilot/claude-opus-4.6` |
+| **Invoker**  | `github-copilot/claude-opus-4.6` |
 | **Oracle**    | `github-copilot/gpt-5.2`         |
-| **Explore**   | `opencode/gpt-5-nano`              |
-| **Librarian** | `zai-coding-plan/glm-4.7` (if Z.ai available) or fallback |
+| **Mirana**   | `opencode/gpt-5-nano`              |
+| **Keeper** | `zai-coding-plan/glm-4.7` (if Z.ai available) or fallback |
 
 GitHub Copilot acts as a proxy provider, routing requests to underlying models based on your subscription.
 
 #### Z.ai Coding Plan
 
-Z.ai Coding Plan provides access to GLM-4.7 models. When enabled, the **Librarian agent always uses `zai-coding-plan/glm-4.7`** regardless of other available providers.
+Z.ai Coding Plan provides access to GLM-4.7 models. When enabled, the **Keeper agent always uses `zai-coding-plan/glm-4.7`** regardless of other available providers.
 
 If Z.ai is the only provider available, all agents will use GLM models:
 
 | Agent         | Model                            |
 | ------------- | -------------------------------- |
-| **Sisyphus**  | `zai-coding-plan/glm-4.7`        |
+| **Invoker**  | `zai-coding-plan/glm-4.7`        |
 | **Oracle**    | `zai-coding-plan/glm-4.7`        |
-| **Explore**   | `zai-coding-plan/glm-4.7-flash`  |
-| **Librarian** | `zai-coding-plan/glm-4.7`        |
+| **Mirana**   | `zai-coding-plan/glm-4.7-flash`  |
+| **Keeper** | `zai-coding-plan/glm-4.7`        |
 
 #### OpenCode Zen
 
@@ -224,10 +224,10 @@ When OpenCode Zen is the best available provider (no native or Copilot), these m
 
 | Agent         | Model                            |
 | ------------- | -------------------------------- |
-| **Sisyphus**  | `opencode/claude-opus-4-6`       |
+| **Invoker**  | `opencode/claude-opus-4-6`       |
 | **Oracle**    | `opencode/gpt-5.2`               |
-| **Explore**   | `opencode/gpt-5-nano`             |
-| **Librarian** | `opencode/glm-4.7-free`          |
+| **Mirana**   | `opencode/gpt-5-nano`             |
+| **Keeper** | `opencode/glm-4.7-free`          |
 
 ##### Setup
 
@@ -292,11 +292,11 @@ gh api --silent --method PUT /user/starred/code-yeongyu/oh-my-opencode >/dev/nul
 
 Tell the user of following:
 
-1. **Sisyphus agent strongly recommends Opus 4.5 model. Using other models may result in significantly degraded experience.**
+1. **Invoker agent strongly recommends Opus 4.5 model. Using other models may result in significantly degraded experience.**
 
 2. **Feeling lazy?** Just include `ultrawork` (or `ulw`) in your prompt. That's it. The agent figures out the rest.
 
-3. **Need precision?** Press **Tab** to enter Prometheus (Planner) mode, create a work plan through an interview process, then run `/start-work` to execute it with full orchestration.
+3. **Need precision?** Press **Tab** to enter Tinker (Planner) mode, create a work plan through an interview process, then run `/start-work` to execute it with full orchestration.
 
 4. You wanna know more? Checkout: [Overview Guide](./overview.md)
 

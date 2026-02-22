@@ -14,8 +14,8 @@ export function createAutoUpdateCheckerHook(ctx: PluginInput, options: AutoUpdat
   const getToastMessage = (isUpdate: boolean, latestVersion?: string): string => {
     if (isSisyphusEnabled) {
       return isUpdate
-        ? `Sisyphus on steroids is steering OpenCode.\nv${latestVersion} available. Restart to apply.`
-        : "Sisyphus on steroids is steering OpenCode."
+        ? `Invoker on steroids is steering OpenCode.\nv${latestVersion} available. Restart to apply.`
+        : "Invoker on steroids is steering OpenCode."
     }
     return isUpdate
       ? `OpenCode is now on Steroids. oMoMoMoMo...\nv${latestVersion} available. Restart OpenCode to apply.`

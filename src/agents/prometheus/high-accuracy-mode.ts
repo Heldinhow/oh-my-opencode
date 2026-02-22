@@ -1,5 +1,5 @@
 /**
- * Prometheus High Accuracy Mode
+ * Tinker High Accuracy Mode
  *
  * Phase 3: Momus review loop for rigorous plan validation.
  */

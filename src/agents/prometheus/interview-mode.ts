@@ -1,5 +1,5 @@
 /**
- * Prometheus Interview Mode
+ * Tinker Interview Mode
  *
  * Phase 1: Interview strategies for different intent types.
  * Includes intent classification, research patterns, and anti-patterns.

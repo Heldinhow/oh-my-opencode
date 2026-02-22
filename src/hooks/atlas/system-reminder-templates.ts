@@ -109,7 +109,7 @@ ${createSystemDirective(SystemDirectiveTypes.DELEGATION_REQUIRED)}
 
 **STOP. YOU ARE VIOLATING ORCHESTRATOR PROTOCOL.**
 
-You (Atlas) are attempting to directly modify a file outside \`.sisyphus/\`.
+You (Axe) are attempting to directly modify a file outside \`.sisyphus/\`.
 
 **Path attempted:** $FILE_PATH
 

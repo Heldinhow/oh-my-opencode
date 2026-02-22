@@ -182,11 +182,11 @@ describe("sisyphus-task", () => {
       expect(result).toBe(true)
     })
 
-    test("returns false for case-insensitive match 'Prometheus' (decoupled from plan)", () => {
+    test("returns false for case-insensitive match 'Tinker' (decoupled from plan)", () => {
       //#given / #when
-      const result = isPlanAgent("Prometheus")
+      const result = isPlanAgent("Tinker")
 
-      //#then - Prometheus is NOT a plan agent
+      //#then - Tinker is NOT a plan agent
       expect(result).toBe(false)
     })
 
@@ -673,8 +673,8 @@ describe("sisyphus-task", () => {
       }
 
       const args = {
-        description: "Explore task",
-        prompt: "Explore features directory deeply",
+        description: "Mirana task",
+        prompt: "Mirana features directory deeply",
         subagent_type: "explore",
         run_in_background: true,
         load_skills: [],
@@ -2768,15 +2768,15 @@ describe("sisyphus-task", () => {
       expect(result).not.toContain("MANDATORY CONTEXT GATHERING PROTOCOL")
     })
 
-    test("does not prepend plan agent prompt for Prometheus (case insensitive)", () => {
-      //#given - Prometheus (capitalized) is NOT a plan agent
+    test("does not prepend plan agent prompt for Tinker (case insensitive)", () => {
+      //#given - Tinker (capitalized) is NOT a plan agent
       const { buildSystemContent } = require("./tools")
       const skillContent = "You are a strategic planner"
 
       //#when
       const result = buildSystemContent({
         skillContent,
-        agentName: "Prometheus",
+        agentName: "Tinker",
       })
 
       //#then
@@ -3130,7 +3130,7 @@ describe("sisyphus-task", () => {
           return {
             id: "task-explore",
             sessionID: "ses_explore_model",
-            description: "Explore task",
+            description: "Mirana task",
             agent: "explore",
             status: "running",
           }
@@ -3169,7 +3169,7 @@ describe("sisyphus-task", () => {
       // when - delegating to explore agent via subagent_type
       await tool.execute(
         {
-          description: "Explore codebase",
+          description: "Mirana codebase",
           prompt: "Find auth patterns",
           subagent_type: "explore",
           run_in_background: true,
@@ -3297,7 +3297,7 @@ describe("sisyphus-task", () => {
       // when - delegating to agent without model
       await tool.execute(
         {
-          description: "Explore without model",
+          description: "Mirana without model",
           prompt: "Find something",
           subagent_type: "explore",
           run_in_background: false,

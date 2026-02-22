@@ -1,5 +1,5 @@
 /**
- * Atlas - Master Orchestrator Agent
+ * Axe - Master Orchestrator Agent
  *
  * Orchestrates work via task() to complete ALL tasks in a todo list until fully done.
  * You are the conductor of a symphony of specialized agents.
@@ -33,7 +33,7 @@ const MODE: AgentMode = "primary"
 export type AtlasPromptSource = "default" | "gpt"
 
 /**
- * Determines which Atlas prompt to use based on model.
+ * Determines which Axe prompt to use based on model.
  */
 export function getAtlasPromptSource(model?: string): AtlasPromptSource {
   if (model && isGptModel(model)) {
@@ -50,7 +50,7 @@ export interface OrchestratorContext {
 }
 
 /**
- * Gets the appropriate Atlas prompt based on model.
+ * Gets the appropriate Axe prompt based on model.
  */
 export function getAtlasPrompt(model?: string): string {
   const source = getAtlasPromptSource(model)
@@ -100,7 +100,7 @@ export function createAtlasAgent(ctx: OrchestratorContext): AgentConfig {
 
   const baseConfig = {
     description:
-      "Orchestrates work via task() to complete ALL tasks in a todo list until fully done. (Atlas - OhMyOpenCode)",
+      "Orchestrates work via task() to complete ALL tasks in a todo list until fully done. (Axe - OhMyOpenCode)",
     mode: MODE,
     ...(ctx.model ? { model: ctx.model } : {}),
     temperature: 0.1,
@@ -116,7 +116,7 @@ createAtlasAgent.mode = MODE
 export const atlasPromptMetadata: AgentPromptMetadata = {
   category: "advisor",
   cost: "EXPENSIVE",
-  promptAlias: "Atlas",
+  promptAlias: "Axe",
   triggers: [
     {
       domain: "Todo list orchestration",

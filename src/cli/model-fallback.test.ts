@@ -50,7 +50,7 @@ describe("generateModelConfig", () => {
       // #when generateModelConfig is called
       const result = generateModelConfig(config)
 
-      // #then should use higher capability models for Sisyphus
+      // #then should use higher capability models for Invoker
       expect(result).toMatchSnapshot()
     })
 
@@ -367,8 +367,8 @@ describe("generateModelConfig", () => {
     })
   })
 
-  describe("Sisyphus agent special cases", () => {
-    test("Sisyphus is created when at least one fallback provider is available (Claude)", () => {
+  describe("Invoker agent special cases", () => {
+    test("Invoker is created when at least one fallback provider is available (Claude)", () => {
       // #given
       const config = createConfig({ hasClaude: true, isMax20: true })
 
@@ -379,7 +379,7 @@ describe("generateModelConfig", () => {
       expect(result.agents?.sisyphus?.model).toBe("anthropic/claude-opus-4-6")
     })
 
-    test("Sisyphus is created when multiple fallback providers are available", () => {
+    test("Invoker is created when multiple fallback providers are available", () => {
       // #given
       const config = createConfig({
         hasClaude: true,
@@ -396,7 +396,7 @@ describe("generateModelConfig", () => {
       expect(result.agents?.sisyphus?.model).toBe("anthropic/claude-opus-4-6")
     })
 
-    test("Sisyphus is omitted when no fallback provider is available (OpenAI not in chain)", () => {
+    test("Invoker is omitted when no fallback provider is available (OpenAI not in chain)", () => {
       // #given
       const config = createConfig({ hasOpenAI: true })
 
@@ -408,8 +408,8 @@ describe("generateModelConfig", () => {
     })
   })
 
-  describe("Hephaestus agent special cases", () => {
-    test("Hephaestus is created when OpenAI is available (openai provider connected)", () => {
+  describe("Enigma agent special cases", () => {
+    test("Enigma is created when OpenAI is available (openai provider connected)", () => {
       // #given
       const config = createConfig({ hasOpenAI: true })
 
@@ -421,7 +421,7 @@ describe("generateModelConfig", () => {
       expect(result.agents?.hephaestus?.variant).toBe("medium")
     })
 
-    test("Hephaestus is created when Copilot is available (github-copilot provider connected)", () => {
+    test("Enigma is created when Copilot is available (github-copilot provider connected)", () => {
       // #given
       const config = createConfig({ hasCopilot: true })
 
@@ -433,7 +433,7 @@ describe("generateModelConfig", () => {
       expect(result.agents?.hephaestus?.variant).toBe("medium")
     })
 
-    test("Hephaestus is created when OpenCode Zen is available (opencode provider connected)", () => {
+    test("Enigma is created when OpenCode Zen is available (opencode provider connected)", () => {
       // #given
       const config = createConfig({ hasOpencodeZen: true })
 
@@ -445,7 +445,7 @@ describe("generateModelConfig", () => {
       expect(result.agents?.hephaestus?.variant).toBe("medium")
     })
 
-    test("Hephaestus is omitted when only Claude is available (no required provider connected)", () => {
+    test("Enigma is omitted when only Claude is available (no required provider connected)", () => {
       // #given
       const config = createConfig({ hasClaude: true })
 
@@ -456,7 +456,7 @@ describe("generateModelConfig", () => {
       expect(result.agents?.hephaestus).toBeUndefined()
     })
 
-    test("Hephaestus is omitted when only Gemini is available (no required provider connected)", () => {
+    test("Enigma is omitted when only Gemini is available (no required provider connected)", () => {
       // #given
       const config = createConfig({ hasGemini: true })
 
@@ -467,7 +467,7 @@ describe("generateModelConfig", () => {
       expect(result.agents?.hephaestus).toBeUndefined()
     })
 
-    test("Hephaestus is omitted when only ZAI is available (no required provider connected)", () => {
+    test("Enigma is omitted when only ZAI is available (no required provider connected)", () => {
       // #given
       const config = createConfig({ hasZaiCodingPlan: true })
 

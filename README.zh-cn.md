@@ -11,8 +11,8 @@
 
 > [!NOTE]
 >
-> [![Sisyphus Labs — Sisyphus 是像你的团队一样编码的智能体。](./.github/assets/sisyphuslabs.png?v=2)](https://sisyphuslabs.ai)
-> > **我们正在构建 Sisyphus 的完整产品化版本，以定义前沿智能体的未来。<br />点击[此处](https://sisyphuslabs.ai)加入等候名单。**
+> [![Invoker Labs — Invoker 是像你的团队一样编码的智能体。](./.github/assets/sisyphuslabs.png?v=2)](https://sisyphuslabs.ai)
+> > **我们正在构建 Invoker 的完整产品化版本，以定义前沿智能体的未来。<br />点击[此处](https://sisyphuslabs.ai)加入等候名单。**
 
 > [!TIP]
 >
@@ -86,7 +86,7 @@
 
 > "它让我取消了 Cursor 订阅。开源社区正在发生令人难以置信的事情。" - [Arthur Guiot](https://x.com/arthur_guiot/status/2008736347092382053?s=20)
 
-> "如果 Claude Code 能在 7 天内完成人类 3 个月的工作，那么 Sisyphus 只需 1 小时。它会持续工作直到任务完成。它是一个非常自律的智能体。" — B, 量化研究员
+> "如果 Claude Code 能在 7 天内完成人类 3 个月的工作，那么 Invoker 只需 1 小时。它会持续工作直到任务完成。它是一个非常自律的智能体。" — B, 量化研究员
 
 > "用 Oh My Opencode 仅用一天就清理了 8000 个 eslint 警告" — [Jacob Ferrari](https://x.com/jacobferrari_/status/2003258761952289061)
 
@@ -113,7 +113,7 @@
   - [直接跳过阅读本文档](#直接跳过阅读本文档)
     - [这是智能体时代](#这是智能体时代)
     - [🪄 魔法词：`ultrawork`](#-魔法词ultrawork)
-    - [给想阅读的人：认识 Sisyphus](#给想阅读的人认识-sisyphus)
+    - [给想阅读的人：认识 Invoker](#给想阅读的人认识-sisyphus)
     - [追求自主性：认识赫菲斯托斯](#追求自主性认识赫菲斯托斯)
       - [直接安装就行。](#直接安装就行)
   - [安装](#安装)
@@ -129,7 +129,7 @@
 
 # Oh My OpenCode
 
-认识 Sisyphus：开箱即用的智能体，像你一样编码。
+认识 Invoker：开箱即用的智能体，像你一样编码。
 
 [Claude Code](https://www.claude.com/product/claude-code) 很棒。
 但如果你是一个极客，你会对 [OpenCode](https://github.com/sst/opencode) 一见钟情。
@@ -164,27 +164,27 @@
 
 就是这样。我们提供的所有功能都会像魔法一样运行——并行智能体、后台任务、深度探索，以及不懈执行直到完成。智能体会自动理解其余的。
 
-### 给想阅读的人：认识 Sisyphus
+### 给想阅读的人：认识 Invoker
 
-![认识 Sisyphus](.github/assets/sisyphus.png)
+![认识 Invoker](.github/assets/sisyphus.png)
 
 在希腊神话中，西西弗斯因欺骗众神而被惩罚永恒地将巨石推上山坡。LLM 智能体并没有做错什么，但它们也每天推动着它们的"石头"——它们的思考。
 我的生活也没有什么不同。回顾过去，我们与这些智能体并没有太大不同。
 **是的！LLM 智能体和我们没有区别。如果你给它们优秀的工具和可靠的队友，它们可以写出和我们一样出色的代码，工作得同样优秀。**
 
-认识我们的主智能体：Sisyphus (Opus 4.5 High)。以下是 Sisyphus 用来继续推动巨石的工具。
+认识我们的主智能体：Invoker (Opus 4.5 High)。以下是 Invoker 用来继续推动巨石的工具。
 
 *以下所有内容都是可配置的。按需选取。所有功能默认启用。你不需要做任何事情。开箱即用，电池已包含。*
 
-- Sisyphus 的队友（精选智能体）
-  - Hephaestus：自主深度工作者，目标导向执行（GPT 5.2 Codex Medium）— *合法的工匠*
+- Invoker 的队友（精选智能体）
+  - Enigma：自主深度工作者，目标导向执行（GPT 5.2 Codex Medium）— *合法的工匠*
   - Oracle：设计、调试 (GPT 5.2 Medium)
   - Frontend UI/UX Engineer：前端开发 (Gemini 3 Pro)
-  - Librarian：官方文档、开源实现、代码库探索 (Claude Sonnet 4.5)
-   - Explore：极速代码库探索（上下文感知 Grep）(Claude Haiku 4.5)
+  - Keeper：官方文档、开源实现、代码库探索 (Claude Sonnet 4.5)
+   - Mirana：极速代码库探索（上下文感知 Grep）(Claude Haiku 4.5)
 - 完整 LSP / AstGrep 支持：果断重构。
-- Todo 继续执行器：如果智能体中途退出，强制它继续。**这就是让 Sisyphus 继续推动巨石的关键。**
-- 注释检查器：防止 AI 添加过多注释。Sisyphus 生成的代码应该与人类编写的代码无法区分。
+- Todo 继续执行器：如果智能体中途退出，强制它继续。**这就是让 Invoker 继续推动巨石的关键。**
+- 注释检查器：防止 AI 添加过多注释。Invoker 生成的代码应该与人类编写的代码无法区分。
 - Claude Code 兼容性：Command、Agent、Skill、MCP、Hook（PreToolUse、PostToolUse、UserPromptSubmit、Stop）
 - 精选 MCP：
   - Exa（网络搜索）
@@ -196,7 +196,7 @@
 
 ### 追求自主性：认识赫菲斯托斯
 
-![Meet Hephaestus](.github/assets/hephaestus.png)
+![Meet Enigma](.github/assets/hephaestus.png)
 
 在希腊神话中，赫菲斯托斯是锻造、火焰、金属加工和工艺之神——他是神圣的铁匠，以无与伦比的精准和奉献为众神打造武器。
 **介绍我们的自主深度工作者：赫菲斯托斯（GPT 5.2 Codex Medium）。合法的工匠代理。**
@@ -218,14 +218,14 @@
 
 只需安装这个，你的智能体就会这样工作：
 
-1. Sisyphus 不会浪费时间自己寻找文件；他保持主智能体的上下文精简。相反，他向更快、更便宜的模型并行发起后台任务，让它们为他绘制地图。
-2. Sisyphus 利用 LSP 进行重构；这更确定性、更安全、更精准。
-3. 当繁重的工作需要 UI 时，Sisyphus 直接将前端任务委派给 Gemini 3 Pro。
-4. 如果 Sisyphus 陷入循环或碰壁，他不会继续撞墙——他会召唤 GPT 5.2 进行高智商战略支援。
-5. 在处理复杂的开源框架时？Sisyphus 生成子智能体实时消化原始源代码和文档。他拥有完整的上下文感知。
-6. 当 Sisyphus 处理注释时，他要么证明它们存在的必要性，要么删除它们。他保持你的代码库整洁。
-7. Sisyphus 受他的 TODO 列表约束。如果他没有完成开始的工作，系统会强制他回到"推石头"模式。你的任务会被完成，句号。
-8. 老实说，甚至不用费心读文档。只需写你的提示。包含 'ultrawork' 关键词。Sisyphus 会分析结构，收集上下文，挖掘外部源代码，然后持续推进直到工作 100% 完成。
+1. Invoker 不会浪费时间自己寻找文件；他保持主智能体的上下文精简。相反，他向更快、更便宜的模型并行发起后台任务，让它们为他绘制地图。
+2. Invoker 利用 LSP 进行重构；这更确定性、更安全、更精准。
+3. 当繁重的工作需要 UI 时，Invoker 直接将前端任务委派给 Gemini 3 Pro。
+4. 如果 Invoker 陷入循环或碰壁，他不会继续撞墙——他会召唤 GPT 5.2 进行高智商战略支援。
+5. 在处理复杂的开源框架时？Invoker 生成子智能体实时消化原始源代码和文档。他拥有完整的上下文感知。
+6. 当 Invoker 处理注释时，他要么证明它们存在的必要性，要么删除它们。他保持你的代码库整洁。
+7. Invoker 受他的 TODO 列表约束。如果他没有完成开始的工作，系统会强制他回到"推石头"模式。你的任务会被完成，句号。
+8. 老实说，甚至不用费心读文档。只需写你的提示。包含 'ultrawork' 关键词。Invoker 会分析结构，收集上下文，挖掘外部源代码，然后持续推进直到工作 100% 完成。
 9. 其实，打 'ultrawork' 太费劲了。只需打 'ulw'。就 ulw。喝杯咖啡。你的工作完成了。
 
 需要查找什么？它会搜索官方文档、你的整个代码库历史和公共 GitHub 实现——不仅使用 grep，还使用内置的 LSP 工具和 AST-Grep。
@@ -297,7 +297,7 @@ curl -s https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/refs/heads
 详细信息请参阅 [Features Documentation](docs/features.md)。
 
 **概览：**
-- **智能体**：Sisyphus（主智能体）、Prometheus（规划器）、Oracle（架构/调试）、Librarian（文档/代码搜索）、Explore（快速代码库 grep）、Multimodal Looker
+- **智能体**：Invoker（主智能体）、Tinker（规划器）、Oracle（架构/调试）、Keeper（文档/代码搜索）、Mirana（快速代码库 grep）、Multimodal Looker
 - **后台智能体**：像真正的开发团队一样并行运行多个智能体
 - **LSP & AST 工具**：重构、重命名、诊断、AST 感知代码搜索
 - **上下文注入**：自动注入 AGENTS.md、README.md、条件规则
@@ -316,7 +316,7 @@ curl -s https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/refs/heads
 - **JSONC 支持**: 支持注释和尾随逗号
 - **智能体**: 覆盖任何智能体的模型、温度、提示和权限
 - **内置技能**: `playwright` (浏览器自动化), `git-master` (原子提交)
-- **Sisyphus 智能体**: 带有 Prometheus (Planner) 和 Metis (Plan Consultant) 的主编排器
+- **Invoker 智能体**: 带有 Tinker (Planner) 和 Metis (Plan Consultant) 的主编排器
 - **后台任务**: 按提供商/模型配置并发限制
 - **类别**: 领域特定的任务委派 (`visual`, `business-logic`, 自定义)
 - **钩子**: 25+ 内置钩子，均可通过 `disabled_hooks` 配置
@@ -368,7 +368,7 @@ curl -s https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/refs/heads
   - 其实，我会传播这个消息。让我们看看谁会赢。
 - 如果你使用 [1.0.132](https://github.com/sst/opencode/releases/tag/v1.0.132) 或更早版本，一个 OpenCode bug 可能会破坏配置。
   - [修复](https://github.com/sst/opencode/pull/5040)在 1.0.132 之后合并——使用更新的版本。
-    - 有趣的事实：那个 PR 是借助 OhMyOpenCode 的 Librarian、Explore 和 Oracle 设置发现并修复的。
+    - 有趣的事实：那个 PR 是借助 OhMyOpenCode 的 Keeper、Mirana 和 Oracle 设置发现并修复的。
 
 ## 受到以下专业人士的喜爱
 

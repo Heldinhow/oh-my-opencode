@@ -56,7 +56,7 @@ SDD is disabled by default. To enable it, add the following to your configuratio
 
 **Goal**: Transform user intent into detailed, unambiguous specifications.
 
-When you describe a feature you want to build, Prometheus (the planner) will create a detailed specification file at `.specify/specs/{feature-name}/spec.md`.
+When you describe a feature you want to build, Tinker (the planner) will create a detailed specification file at `.specify/specs/{feature-name}/spec.md`.
 
 Every specification includes:
 
@@ -74,7 +74,7 @@ Every specification includes:
 
 **Goal**: Resolve ambiguities, edge cases, and unknown unknowns.
 
-Prometheus will:
+Tinker will:
 - Research your codebase to understand existing patterns
 - Ask clarifying questions about requirements
 - Document assumptions explicitly
@@ -84,7 +84,7 @@ Prometheus will:
 
 **Goal**: Lock the specification and establish a baseline.
 
-Before presenting for approval, Prometheus verifies:
+Before presenting for approval, Tinker verifies:
 - All requirements have acceptance criteria
 - All acceptance criteria are verifiable
 - Edge cases are documented
@@ -154,7 +154,7 @@ Each plan has a state file at `.specify/specs/{plan-name}/sdd-state.json`:
 ```
 > I want to add user authentication to my app
 
-[Prometheus responds in SPECIFY mode]
+[Tinker responds in SPECIFY mode]
 I'll create a detailed specification for user authentication. Let me first explore your codebase to understand existing patterns, then create a comprehensive spec covering:
 
 1. Login flow (email/password, OAuth)
@@ -170,7 +170,7 @@ I'll ask clarifying questions about:
 
 [You answer questions]
 
-[Prometheus moves to APPROVE]
+[Tinker moves to APPROVE]
 Here's the complete specification. Do you approve to proceed with implementation?
 ```
 
@@ -200,6 +200,6 @@ Current status: "draft". Please approve the specification before starting work.
 
 ## Related Documentation
 
-- [Understanding the Orchestration System](./understanding-orchestration-system.md) - Deep dive into Prometheus → Orchestrator workflow
-- [Prometheus Planner](../features.md#prometheus) - More about the planner agent
+- [Understanding the Orchestration System](./understanding-orchestration-system.md) - Deep dive into Tinker → Orchestrator workflow
+- [Tinker Planner](../features.md#prometheus) - More about the planner agent
 - [Configuration Guide](../configurations.md) - Full configuration reference

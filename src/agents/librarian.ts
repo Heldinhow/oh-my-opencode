@@ -7,10 +7,10 @@ const MODE: AgentMode = "subagent"
 export const LIBRARIAN_PROMPT_METADATA: AgentPromptMetadata = {
   category: "exploration",
   cost: "CHEAP",
-  promptAlias: "Librarian",
+  promptAlias: "Keeper",
   keyTrigger: "External library/source mentioned -> fire librarian background",
   triggers: [
-    { domain: "Librarian", trigger: "Unfamiliar packages or libraries" },
+    { domain: "Keeper", trigger: "Unfamiliar packages or libraries" },
   ],
   useWhen: [
     "How do I use [library]?",
@@ -32,7 +32,7 @@ export function createLibrarianAgent(model: string): AgentConfig {
 
   return {
     description:
-      "Open-source research agent. Finds official docs, source code, and usage examples with evidence. (Librarian - OhMyOpenCode)",
+      "Open-source research agent. Finds official docs, source code, and usage examples with evidence. (Keeper - OhMyOpenCode)",
     mode: MODE,
     model,
     temperature: 0.1,

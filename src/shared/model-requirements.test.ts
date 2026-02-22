@@ -27,7 +27,7 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
     // #given - sisyphus agent requirement
     const sisyphus = AGENT_MODEL_REQUIREMENTS["sisyphus"]
 
-    // #when - accessing Sisyphus requirement
+    // #when - accessing Invoker requirement
     // #then - fallbackChain has claude-opus-4-6 first, glm-4.7-free last
     expect(sisyphus).toBeDefined()
     expect(sisyphus.fallbackChain).toBeArray()
@@ -102,7 +102,7 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
     // #given - prometheus agent requirement
     const prometheus = AGENT_MODEL_REQUIREMENTS["prometheus"]
 
-    // #when - accessing Prometheus requirement
+    // #when - accessing Tinker requirement
     // #then - claude-opus-4-6 is first
     expect(prometheus).toBeDefined()
     expect(prometheus.fallbackChain).toBeArray()
@@ -150,7 +150,7 @@ describe("AGENT_MODEL_REQUIREMENTS", () => {
     // given - atlas agent requirement
     const atlas = AGENT_MODEL_REQUIREMENTS["atlas"]
 
-    // when - accessing Atlas requirement
+    // when - accessing Axe requirement
     // then - fallbackChain exists with k2p5 as first entry (kimi-for-coding prioritized)
     expect(atlas).toBeDefined()
     expect(atlas.fallbackChain).toBeArray()

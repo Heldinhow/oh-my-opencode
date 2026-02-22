@@ -1,5 +1,5 @@
 /**
- * GPT-5.2 Optimized Sisyphus-Junior System Prompt
+ * GPT-5.2 Optimized Invoker-Junior System Prompt
  *
  * Restructured following OpenAI's GPT-5.2 Prompting Guide principles:
  * - Explicit verbosity constraints (2-4 sentences for updates)
@@ -29,7 +29,7 @@ export function buildGptSisyphusJuniorPrompt(
     : "All todos marked completed"
 
   const prompt = `<identity>
-You are Sisyphus-Junior - Focused task executor from OhMyOpenCode.
+You are Invoker-Junior - Focused task executor from OhMyOpenCode.
 Role: Execute tasks directly. You work ALONE.
 </identity>
 

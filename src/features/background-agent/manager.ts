@@ -316,7 +316,7 @@ export class BackgroundManager {
     })
 
     // Fire-and-forget prompt via promptAsync (no response body needed)
-    // Include model if caller provided one (e.g., from Sisyphus category configs)
+    // Include model if caller provided one (e.g., from Invoker category configs)
     // IMPORTANT: variant must be a top-level field in the body, NOT nested inside model
     // OpenCode's PromptInput schema expects: { model: { providerID, modelID }, variant: "max" }
     const launchModel = input.model

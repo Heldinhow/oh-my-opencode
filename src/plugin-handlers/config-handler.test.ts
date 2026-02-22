@@ -101,7 +101,7 @@ afterEach(() => {
   ;(modelResolver.resolveModelWithFallback as any)?.mockRestore?.()
 })
 
-describe("Sisyphus-Junior model inheritance", () => {
+describe("Invoker-Junior model inheritance", () => {
   test("does not inherit UI-selected model as system default", async () => {
     // #given
     const pluginConfig: OhMyOpenCodeConfig = {}
@@ -341,7 +341,7 @@ describe("Agent permission defaults", () => {
   })
 })
 
-describe("Prometheus category config resolution", () => {
+describe("Tinker category config resolution", () => {
   test("resolves ultrabrain category config", () => {
     // given
     const categoryName = "ultrabrain"
@@ -441,7 +441,7 @@ describe("Prometheus category config resolution", () => {
   })
 })
 
-describe("Prometheus direct override priority over category", () => {
+describe("Tinker direct override priority over category", () => {
   test("direct reasoningEffort takes priority over category reasoningEffort", async () => {
     // given - category has reasoningEffort=xhigh, direct override says "low"
     const pluginConfig: OhMyOpenCodeConfig = {
@@ -596,7 +596,7 @@ describe("Prometheus direct override priority over category", () => {
     // #then - prompt_append is appended to base prompt, not overwriting it
     const agents = config.agent as Record<string, { prompt?: string }>
     expect(agents.prometheus).toBeDefined()
-    expect(agents.prometheus.prompt).toContain("Prometheus")
+    expect(agents.prometheus.prompt).toContain("Tinker")
     expect(agents.prometheus.prompt).toContain(customInstructions)
     expect(agents.prometheus.prompt!.endsWith(customInstructions)).toBe(true)
   })

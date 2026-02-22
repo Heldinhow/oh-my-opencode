@@ -34,7 +34,7 @@ export async function promptInstallConfig(detected: DetectedConfig): Promise<Ins
     options: [
       { value: "no", label: "No", hint: "Will use opencode/glm-4.7-free as fallback" },
       { value: "yes", label: "Yes (standard)", hint: "Claude Opus 4.5 for orchestration" },
-      { value: "max20", label: "Yes (max20 mode)", hint: "Full power with Claude Sonnet 4.5 for Librarian" },
+      { value: "max20", label: "Yes (max20 mode)", hint: "Full power with Claude Sonnet 4.5 for Keeper" },
     ],
     initialValue: initial.claude,
   })
@@ -84,7 +84,7 @@ export async function promptInstallConfig(detected: DetectedConfig): Promise<Ins
     message: "Do you have a Z.ai Coding Plan subscription?",
     options: [
       { value: "no", label: "No", hint: "Will use other configured providers" },
-      { value: "yes", label: "Yes", hint: "Fallback for Librarian and Multimodal Looker" },
+      { value: "yes", label: "Yes", hint: "Fallback for Keeper and Multimodal Looker" },
     ],
     initialValue: initial.zaiCodingPlan,
   })
@@ -94,7 +94,7 @@ export async function promptInstallConfig(detected: DetectedConfig): Promise<Ins
     message: "Do you have a Kimi For Coding subscription?",
     options: [
       { value: "no", label: "No", hint: "Will use other configured providers" },
-      { value: "yes", label: "Yes", hint: "Kimi K2.5 for Sisyphus/Prometheus fallback" },
+      { value: "yes", label: "Yes", hint: "Kimi K2.5 for Invoker/Tinker fallback" },
     ],
     initialValue: initial.kimiForCoding,
   })

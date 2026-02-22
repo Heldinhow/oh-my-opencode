@@ -118,11 +118,11 @@ export function buildExploreSection(agents: AvailableAgent[]): string {
   const useWhen = exploreAgent.metadata.useWhen || []
   const avoidWhen = exploreAgent.metadata.avoidWhen || []
 
-  return `### Explore Agent = Contextual Grep
+  return `### Mirana Agent = Contextual Grep
 
 Use it as a **peer tool**, not a fallback. Fire liberally.
 
-| Use Direct Tools | Use Explore Agent |
+| Use Direct Tools | Use Mirana Agent |
 |------------------|-------------------|
 ${avoidWhen.map((w) => `| ${w} |  |`).join("\n")}
 ${useWhen.map((w) => `|  | ${w} |`).join("\n")}`
@@ -134,7 +134,7 @@ export function buildLibrarianSection(agents: AvailableAgent[]): string {
 
   const useWhen = librarianAgent.metadata.useWhen || []
 
-  return `### Librarian Agent = Reference Grep
+  return `### Keeper Agent = Reference Grep
 
 Search **external references** (docs, OSS, web). Fire proactively when unfamiliar libraries are involved.
 

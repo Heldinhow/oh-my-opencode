@@ -1,5 +1,5 @@
 /**
- * Sisyphus-Junior - Focused Task Executor
+ * Invoker-Junior - Focused Task Executor
  *
  * Executes delegated tasks directly without spawning other agents.
  * Category-spawned executor with domain-specific configurations.
@@ -23,7 +23,7 @@ import { buildGptSisyphusJuniorPrompt } from "./gpt"
 
 const MODE: AgentMode = "subagent"
 
-// Core tools that Sisyphus-Junior must NEVER have access to
+// Core tools that Invoker-Junior must NEVER have access to
 // Note: call_omo_agent is ALLOWED so subagents can spawn explore/librarian
 const BLOCKED_TOOLS = ["task"]
 
@@ -35,7 +35,7 @@ export const SISYPHUS_JUNIOR_DEFAULTS = {
 export type SisyphusJuniorPromptSource = "default" | "gpt"
 
 /**
- * Determines which Sisyphus-Junior prompt to use based on model.
+ * Determines which Invoker-Junior prompt to use based on model.
  */
 export function getSisyphusJuniorPromptSource(model?: string): SisyphusJuniorPromptSource {
   if (model && isGptModel(model)) {
@@ -45,7 +45,7 @@ export function getSisyphusJuniorPromptSource(model?: string): SisyphusJuniorPro
 }
 
 /**
- * Builds the appropriate Sisyphus-Junior prompt based on model.
+ * Builds the appropriate Invoker-Junior prompt based on model.
  */
 export function buildSisyphusJuniorPrompt(
   model: string | undefined,
@@ -92,7 +92,7 @@ export function createSisyphusJuniorAgentWithOverrides(
 
   const base: AgentConfig = {
     description: override?.description ??
-      "Focused task executor. Same discipline, no delegation. (Sisyphus-Junior - OhMyOpenCode)",
+      "Focused task executor. Same discipline, no delegation. (Invoker-Junior - OhMyOpenCode)",
     mode: MODE,
     model,
     temperature,

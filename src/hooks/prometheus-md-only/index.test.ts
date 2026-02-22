@@ -64,9 +64,9 @@ describe("prometheus-md-only", () => {
       ).rejects.toThrow("can only write/edit .md files")
     })
 
-    test("should enforce md-only restriction for Prometheus display name Plan Builder", async () => {
+    test("should enforce md-only restriction for Tinker display name Plan Builder", async () => {
       //#given
-      setupMessageStorage(TEST_SESSION_ID, "Prometheus (Plan Builder)")
+      setupMessageStorage(TEST_SESSION_ID, "Tinker (Plan Builder)")
       const hook = createPrometheusMdOnlyHook(createMockPluginInput())
       const input = {
         tool: "Write",
@@ -83,9 +83,9 @@ describe("prometheus-md-only", () => {
       ).rejects.toThrow("can only write/edit .md files")
     })
 
-    test("should enforce md-only restriction for Prometheus display name Planner", async () => {
+    test("should enforce md-only restriction for Tinker display name Planner", async () => {
       //#given
-      setupMessageStorage(TEST_SESSION_ID, "Prometheus (Planner)")
+      setupMessageStorage(TEST_SESSION_ID, "Tinker (Planner)")
       const hook = createPrometheusMdOnlyHook(createMockPluginInput())
       const input = {
         tool: "Write",
@@ -121,7 +121,7 @@ describe("prometheus-md-only", () => {
       ).rejects.toThrow("can only write/edit .md files")
     })
 
-    test("should not enforce restriction for non-Prometheus agent", async () => {
+    test("should not enforce restriction for non-Tinker agent", async () => {
       //#given
       setupMessageStorage(TEST_SESSION_ID, "sisyphus")
       const hook = createPrometheusMdOnlyHook(createMockPluginInput())
@@ -160,12 +160,12 @@ describe("prometheus-md-only", () => {
     })
   })
 
-   describe("with Prometheus agent in message storage", () => {
+   describe("with Tinker agent in message storage", () => {
      beforeEach(() => {
        setupMessageStorage(TEST_SESSION_ID, "prometheus")
      })
 
-    test("should block Prometheus from writing non-.md files", async () => {
+    test("should block Tinker from writing non-.md files", async () => {
       // given
       const hook = createPrometheusMdOnlyHook(createMockPluginInput())
       const input = {
@@ -183,7 +183,7 @@ describe("prometheus-md-only", () => {
       ).rejects.toThrow("can only write/edit .md files")
     })
 
-    test("should allow Prometheus to write .md files inside .sisyphus/", async () => {
+    test("should allow Tinker to write .md files inside .sisyphus/", async () => {
       // given
       const hook = createPrometheusMdOnlyHook(createMockPluginInput())
       const input = {
@@ -201,7 +201,7 @@ describe("prometheus-md-only", () => {
       ).resolves.toBeUndefined()
     })
 
-    test("should inject workflow reminder when Prometheus writes to .sisyphus/plans/", async () => {
+    test("should inject workflow reminder when Tinker writes to .sisyphus/plans/", async () => {
       // given
       const hook = createPrometheusMdOnlyHook(createMockPluginInput())
       const input = {
@@ -242,7 +242,7 @@ describe("prometheus-md-only", () => {
       expect(output.message).toBeUndefined()
     })
 
-    test("should block Prometheus from writing .md files outside .sisyphus/", async () => {
+    test("should block Tinker from writing .md files outside .sisyphus/", async () => {
       // given
       const hook = createPrometheusMdOnlyHook(createMockPluginInput())
       const input = {
@@ -278,7 +278,7 @@ describe("prometheus-md-only", () => {
       ).rejects.toThrow("can only write/edit .md files")
     })
 
-    test("should allow bash commands from Prometheus", async () => {
+    test("should allow bash commands from Tinker", async () => {
       // given
       const hook = createPrometheusMdOnlyHook(createMockPluginInput())
       const input = {
@@ -332,7 +332,7 @@ describe("prometheus-md-only", () => {
       ).resolves.toBeUndefined()
     })
 
-    test("should inject read-only warning when Prometheus calls task", async () => {
+    test("should inject read-only warning when Tinker calls task", async () => {
       // given
       const hook = createPrometheusMdOnlyHook(createMockPluginInput())
       const input = {
@@ -352,7 +352,7 @@ describe("prometheus-md-only", () => {
       expect(output.args.prompt).toContain("DO NOT modify any files")
     })
 
-    test("should inject read-only warning when Prometheus calls task", async () => {
+    test("should inject read-only warning when Tinker calls task", async () => {
       // given
       const hook = createPrometheusMdOnlyHook(createMockPluginInput())
       const input = {
@@ -371,7 +371,7 @@ describe("prometheus-md-only", () => {
       expect(output.args.prompt).toContain(SYSTEM_DIRECTIVE_PREFIX)
     })
 
-    test("should inject read-only warning when Prometheus calls call_omo_agent", async () => {
+    test("should inject read-only warning when Tinker calls call_omo_agent", async () => {
       // given
       const hook = createPrometheusMdOnlyHook(createMockPluginInput())
       const input = {
@@ -412,12 +412,12 @@ describe("prometheus-md-only", () => {
     })
   })
 
-  describe("with non-Prometheus agent in message storage", () => {
+  describe("with non-Tinker agent in message storage", () => {
     beforeEach(() => {
       setupMessageStorage(TEST_SESSION_ID, "sisyphus")
     })
 
-    test("should not affect non-Prometheus agents", async () => {
+    test("should not affect non-Tinker agents", async () => {
       // given
       const hook = createPrometheusMdOnlyHook(createMockPluginInput())
       const input = {
@@ -435,7 +435,7 @@ describe("prometheus-md-only", () => {
       ).resolves.toBeUndefined()
     })
 
-    test("should not inject warning for non-Prometheus agents calling task", async () => {
+    test("should not inject warning for non-Tinker agents calling task", async () => {
       // given
       const hook = createPrometheusMdOnlyHook(createMockPluginInput())
       const input = {

@@ -6,11 +6,11 @@ Learn about Oh My OpenCode, a plugin that transforms OpenCode into the best agen
 
 ## TL;DR
 
-> **Sisyphus agent strongly recommends Opus 4.5 model. Using other models may result in significantly degraded experience.**
+> **Invoker agent strongly recommends Opus 4.5 model. Using other models may result in significantly degraded experience.**
 
 **Feeling lazy?** Just include `ultrawork` (or `ulw`) in your prompt. That's it. The agent figures out the rest.
 
-**Need precision?** Press **Tab** to enter Prometheus (Planner) mode, create a work plan through an interview process, then run `/start-work` to execute it with full orchestration.
+**Need precision?** Press **Tab** to enter Tinker (Planner) mode, create a work plan through an interview process, then run `/start-work` to execute it with full orchestration.
 
 ---
 
@@ -44,23 +44,23 @@ This is the "just do it" mode. Full automatic mode.
 The agent is already smart enough, so it explores the codebase and make plans itself.
 **You don't have to think that deep. Agent will think that deep.**
 
-### Option 2: Prometheus Mode (For Precise Work)
+### Option 2: Tinker Mode (For Precise Work)
 
-For complex or critical tasks, press **Tab** to switch to Prometheus (Planner) mode.
+For complex or critical tasks, press **Tab** to switch to Tinker (Planner) mode.
 
 **How it works:**
 
-1. **Prometheus interviews you** - Acts as your personal consultant, asking clarifying questions while researching your codebase to understand exactly what you need.
+1. **Tinker interviews you** - Acts as your personal consultant, asking clarifying questions while researching your codebase to understand exactly what you need.
 
-2. **Plan generation** - Based on the interview, Prometheus generates a detailed work plan with tasks, acceptance criteria, and guardrails. Optionally reviewed by Momus (plan reviewer) for high-accuracy validation.
+2. **Plan generation** - Based on the interview, Tinker generates a detailed work plan with tasks, acceptance criteria, and guardrails. Optionally reviewed by Momus (plan reviewer) for high-accuracy validation.
 
-3. **Run `/start-work`** - The Atlas takes over:
+3. **Run `/start-work`** - The Axe takes over:
    - Distributes tasks to specialized sub-agents
    - Verifies each task completion independently
    - Accumulates learnings across tasks
    - Tracks progress across sessions (resume anytime)
 
-**When to use Prometheus:**
+**When to use Tinker:**
 - Multi-day or multi-session projects
 - Critical production changes
 - Complex refactoring spanning many files
@@ -70,21 +70,21 @@ For complex or critical tasks, press **Tab** to switch to Prometheus (Planner) m
 
 ## Critical Usage Guidelines
 
-### Always Use Prometheus + Orchestrator Together
+### Always Use Tinker + Orchestrator Together
 
 **Do NOT use `atlas` without `/start-work`.**
 
-The orchestrator is designed to execute work plans created by Prometheus. Using it directly without a plan leads to unpredictable behavior.
+The orchestrator is designed to execute work plans created by Tinker. Using it directly without a plan leads to unpredictable behavior.
 
 **Correct workflow:**
 ```
-1. Press Tab → Enter Prometheus mode
-2. Describe work → Prometheus interviews you
+1. Press Tab → Enter Tinker mode
+2. Describe work → Tinker interviews you
 3. Confirm plan → Review .sisyphus/plans/*.md
 4. Run /start-work → Orchestrator executes
 ```
 
-**Prometheus and Atlas are a pair. Always use them together.**
+**Tinker and Axe are a pair. Always use them together.**
 
 ---
 
@@ -161,7 +161,7 @@ For detailed configuration options including per-agent settings, category custom
 
 ## Next Steps
 
-- [Understanding the Orchestration System](./understanding-orchestration-system.md) - Deep dive into Prometheus → Orchestrator → Junior workflow
+- [Understanding the Orchestration System](./understanding-orchestration-system.md) - Deep dive into Tinker → Orchestrator → Junior workflow
 - [Ultrawork Manifesto](../ultrawork-manifesto.md) - Philosophy and principles behind Oh My OpenCode
 - [Installation Guide](./installation.md) - Detailed installation instructions
 - [Configuration Guide](../configurations.md) - Customize agents, models, and behaviors

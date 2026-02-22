@@ -1,5 +1,5 @@
 /**
- * Prometheus Plan Generation
+ * Tinker Plan Generation
  *
  * Phase 2: Plan generation triggers, Metis consultation,
  * gap classification, and summary format.

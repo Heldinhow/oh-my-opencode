@@ -41,9 +41,9 @@ task(
 )
 ```
 
-### Sisyphus-Junior (Delegated Executor)
+### Invoker-Junior (Delegated Executor)
 
-When you use a Category, a special agent called **Sisyphus-Junior** performs the work.
+When you use a Category, a special agent called **Invoker-Junior** performs the work.
 - **Characteristic**: Cannot **re-delegate** tasks to other agents.
 - **Purpose**: Prevents infinite delegation loops and ensures focus on the assigned task.
 

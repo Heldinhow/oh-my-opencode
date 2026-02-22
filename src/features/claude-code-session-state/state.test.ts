@@ -24,7 +24,7 @@ describe("claude-code-session-state", () => {
     test("should store agent for session", () => {
       // given
       const sessionID = "test-session-1"
-      const agent = "Prometheus (Planner)"
+      const agent = "Tinker (Planner)"
 
       // when
       setSessionAgent(sessionID, agent)
@@ -36,13 +36,13 @@ describe("claude-code-session-state", () => {
     test("should NOT overwrite existing agent (first-write wins)", () => {
       // given
       const sessionID = "test-session-1"
-      setSessionAgent(sessionID, "Prometheus (Planner)")
+      setSessionAgent(sessionID, "Tinker (Planner)")
 
       // when - try to overwrite
       setSessionAgent(sessionID, "sisyphus")
 
       // then - first agent preserved
-      expect(getSessionAgent(sessionID)).toBe("Prometheus (Planner)")
+      expect(getSessionAgent(sessionID)).toBe("Tinker (Planner)")
     })
 
     test("should return undefined for unknown session", () => {
@@ -57,7 +57,7 @@ describe("claude-code-session-state", () => {
     test("should overwrite existing agent", () => {
       // given
       const sessionID = "test-session-1"
-      setSessionAgent(sessionID, "Prometheus (Planner)")
+      setSessionAgent(sessionID, "Tinker (Planner)")
 
       // when - force update
       updateSessionAgent(sessionID, "sisyphus")
@@ -71,8 +71,8 @@ describe("claude-code-session-state", () => {
     test("should remove agent from session", () => {
       // given
       const sessionID = "test-session-1"
-      setSessionAgent(sessionID, "Prometheus (Planner)")
-      expect(getSessionAgent(sessionID)).toBe("Prometheus (Planner)")
+      setSessionAgent(sessionID, "Tinker (Planner)")
+      expect(getSessionAgent(sessionID)).toBe("Tinker (Planner)")
 
       // when
       clearSessionAgent(sessionID)
@@ -103,18 +103,18 @@ describe("claude-code-session-state", () => {
   })
 
   describe("prometheus-md-only integration scenario", () => {
-    test("should correctly identify Prometheus agent for permission checks", () => {
-      // given - Prometheus session
+    test("should correctly identify Tinker agent for permission checks", () => {
+      // given - Tinker session
       const sessionID = "test-prometheus-session"
-      const prometheusAgent = "Prometheus (Planner)"
+      const prometheusAgent = "Tinker (Planner)"
 
       // when - agent is set (simulating chat.message hook)
       setSessionAgent(sessionID, prometheusAgent)
 
       // then - getSessionAgent returns correct agent for prometheus-md-only hook
       const agent = getSessionAgent(sessionID)
-      expect(agent).toBe("Prometheus (Planner)")
-      expect(["Prometheus (Planner)"].includes(agent!)).toBe(true)
+      expect(agent).toBe("Tinker (Planner)")
+      expect(["Tinker (Planner)"].includes(agent!)).toBe(true)
     })
 
     test("should return undefined when agent not set (bug scenario)", () => {
@@ -138,7 +138,7 @@ describe("claude-code-session-state", () => {
       expect(getSessionAgent(sessionID)).toBe(customAgent)
 
       // when - first message after switch sends default agent
-      // This simulates the bug: input.agent = "Sisyphus" on first message
+      // This simulates the bug: input.agent = "Invoker" on first message
       // Using setSessionAgent (first-write wins) should preserve custom agent
       setSessionAgent(sessionID, defaultAgent)
 

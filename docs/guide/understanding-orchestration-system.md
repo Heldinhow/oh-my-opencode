@@ -1,6 +1,6 @@
 # Understanding the Orchestration System
 
-Oh My OpenCode's orchestration system transforms a simple AI agent into a coordinated development team. This document explains how the Prometheus → Atlas → Junior workflow creates high-quality, reliable code output.
+Oh My OpenCode's orchestration system transforms a simple AI agent into a coordinated development team. This document explains how the Tinker → Axe → Junior workflow creates high-quality, reliable code output.
 
 ---
 
@@ -21,55 +21,55 @@ The orchestration system solves these problems through **specialization and dele
 
 ```mermaid
 flowchart TB
-    subgraph Planning["Planning Layer (Human + Prometheus)"]
+    subgraph Planning["Planning Layer (Human + Tinker)"]
         User[("👤 User")]
-        Prometheus["🔥 Prometheus<br/>(Planner)<br/>Claude Opus 4.5"]
+        Tinker["🔥 Tinker<br/>(Planner)<br/>Claude Opus 4.5"]
         Metis["🦉 Metis<br/>(Consultant)<br/>Claude Opus 4.5"]
         Momus["👁️ Momus<br/>(Reviewer)<br/>GPT-5.2"]
     end
     
     subgraph Execution["Execution Layer (Orchestrator)"]
-        Orchestrator["⚡ Atlas<br/>(Conductor)<br/>Claude Opus 4.5"]
+        Orchestrator["⚡ Axe<br/>(Conductor)<br/>Claude Opus 4.5"]
     end
     
     subgraph Workers["Worker Layer (Specialized Agents)"]
-        Junior["🪨 Sisyphus-Junior<br/>(Task Executor)<br/>Claude Sonnet 4.5"]
+        Junior["🪨 Invoker-Junior<br/>(Task Executor)<br/>Claude Sonnet 4.5"]
         Oracle["🧠 Oracle<br/>(Architecture)<br/>GPT-5.2"]
-        Explore["🔍 Explore<br/>(Codebase Grep)<br/>Grok Code"]
-        Librarian["📚 Librarian<br/>(Docs/OSS)<br/>GLM-4.7"]
+        Mirana["🔍 Mirana<br/>(Codebase Grep)<br/>Grok Code"]
+        Keeper["📚 Keeper<br/>(Docs/OSS)<br/>GLM-4.7"]
         Frontend["🎨 Frontend<br/>(UI/UX)<br/>Gemini 3 Pro"]
     end
     
-    User -->|"Describe work"| Prometheus
-    Prometheus -->|"Consult"| Metis
-    Prometheus -->|"Interview"| User
-    Prometheus -->|"Generate plan"| Plan[".sisyphus/plans/*.md"]
+    User -->|"Describe work"| Tinker
+    Tinker -->|"Consult"| Metis
+    Tinker -->|"Interview"| User
+    Tinker -->|"Generate plan"| Plan[".sisyphus/plans/*.md"]
     Plan -->|"High accuracy?"| Momus
-    Momus -->|"OKAY / REJECT"| Prometheus
+    Momus -->|"OKAY / REJECT"| Tinker
     
     User -->|"/start-work"| Orchestrator
     Plan -->|"Read"| Orchestrator
     
     Orchestrator -->|"task(category)"| Junior
     Orchestrator -->|"task(agent)"| Oracle
-    Orchestrator -->|"task(agent)"| Explore
-    Orchestrator -->|"task(agent)"| Librarian
+    Orchestrator -->|"task(agent)"| Mirana
+    Orchestrator -->|"task(agent)"| Keeper
     Orchestrator -->|"task(agent)"| Frontend
     
     Junior -->|"Results + Learnings"| Orchestrator
     Oracle -->|"Advice"| Orchestrator
-    Explore -->|"Code patterns"| Orchestrator
-    Librarian -->|"Documentation"| Orchestrator
+    Mirana -->|"Code patterns"| Orchestrator
+    Keeper -->|"Documentation"| Orchestrator
     Frontend -->|"UI code"| Orchestrator
 ```
 
 ---
 
-## Layer 1: Planning (Prometheus + Metis + Momus)
+## Layer 1: Planning (Tinker + Metis + Momus)
 
-### Prometheus: Your Strategic Consultant
+### Tinker: Your Strategic Consultant
 
-Prometheus is **not just a planner** - it's an intelligent interviewer that helps you think through what you actually need.
+Tinker is **not just a planner** - it's an intelligent interviewer that helps you think through what you actually need.
 
 **The Interview Process:**
 
@@ -107,9 +107,9 @@ stateDiagram-v2
 
 **Intent-Specific Strategies:**
 
-Prometheus adapts its interview style based on what you're doing:
+Tinker adapts its interview style based on what you're doing:
 
-| Intent | Prometheus Focus | Example Questions |
+| Intent | Tinker Focus | Example Questions |
 |--------|------------------|-------------------|
 | **Refactoring** | Safety - behavior preservation | "What tests verify current behavior?" "Rollback strategy?" |
 | **Build from Scratch** | Discovery - patterns first | "Found pattern X in codebase. Follow it or deviate?" |
@@ -118,7 +118,7 @@ Prometheus adapts its interview style based on what you're doing:
 
 ### Metis: The Gap Analyzer
 
-Before Prometheus writes the plan, **Metis catches what Prometheus missed**:
+Before Tinker writes the plan, **Metis catches what Tinker missed**:
 
 - Hidden intentions in user's request
 - Ambiguities that could derail implementation
@@ -128,7 +128,7 @@ Before Prometheus writes the plan, **Metis catches what Prometheus missed**:
 
 **Why Metis Exists:**
 
-The plan author (Prometheus) has "ADHD working memory" - it makes connections that never make it onto the page. Metis forces externalization of implicit knowledge.
+The plan author (Tinker) has "ADHD working memory" - it makes connections that never make it onto the page. Metis forces externalization of implicit knowledge.
 
 ### Momus: The Ruthless Reviewer
 
@@ -148,11 +148,11 @@ Momus only says "OKAY" when:
 - Zero tasks require assumptions about business logic
 - Zero critical red flags
 
-If REJECTED, Prometheus fixes issues and resubmits. **No maximum retry limit.**
+If REJECTED, Tinker fixes issues and resubmits. **No maximum retry limit.**
 
 ---
 
-## Layer 2: Execution (Atlas)
+## Layer 2: Execution (Axe)
 
 ### The Conductor Mindset
 
@@ -160,7 +160,7 @@ The Orchestrator is like an orchestra conductor: **it doesn't play instruments, 
 
 ```mermaid
 flowchart LR
-    subgraph Orchestrator["Atlas"]
+    subgraph Orchestrator["Axe"]
         Read["1. Read Plan"]
         Analyze["2. Analyze Tasks"]
         Wisdom["3. Accumulate Wisdom"]
@@ -230,7 +230,7 @@ task(category="general", prompt="Task 4...")
 
 ## Layer 3: Workers (Specialized Agents)
 
-### Sisyphus-Junior: The Task Executor
+### Invoker-Junior: The Task Executor
 
 Junior is the **workhorse** that actually writes code. Key characteristics:
 
@@ -264,7 +264,7 @@ You have incomplete todos! Complete ALL before responding:
 DO NOT respond until all todos are marked completed.
 ```
 
-This "boulder pushing" mechanism is why the system is named after Sisyphus.
+This "boulder pushing" mechanism is why the system is named after Invoker.
 
 ---
 
@@ -352,8 +352,8 @@ task(
 ```mermaid
 sequenceDiagram
     participant User
-    participant Orchestrator as Atlas
-    participant Junior as Sisyphus-Junior
+    participant Orchestrator as Axe
+    participant Junior as Invoker-Junior
     participant Notepad as .sisyphus/notepads/
     
     User->>Orchestrator: /start-work
@@ -391,8 +391,8 @@ sequenceDiagram
 
 ### 1. Separation of Concerns
 
-- **Planning** (Prometheus): High reasoning, interview, strategic thinking
-- **Orchestration** (Atlas): Coordination, verification, wisdom accumulation
+- **Planning** (Tinker): High reasoning, interview, strategic thinking
+- **Orchestration** (Axe): Coordination, verification, wisdom accumulation
 - **Execution** (Junior): Focused implementation, no distractions
 
 ### 2. Explicit Over Implicit
@@ -427,9 +427,9 @@ Bulk work goes to cost-effective models (Sonnet, Haiku, Flash).
 
 ## Getting Started
 
-1. **Enter Prometheus Mode**: Press **Tab** at the prompt
+1. **Enter Tinker Mode**: Press **Tab** at the prompt
 2. **Describe Your Work**: "I want to add user authentication to my app"
-3. **Answer Interview Questions**: Prometheus will ask about patterns, preferences, constraints
+3. **Answer Interview Questions**: Tinker will ask about patterns, preferences, constraints
 4. **Review the Plan**: Check `.sisyphus/plans/` for generated work plan
 5. **Run `/start-work`**: Orchestrator takes over
 6. **Observe**: Watch tasks complete with verification

@@ -104,8 +104,8 @@ describe("atlas hook", () => {
       expect(output.output).toBe("Original output")
     })
 
-     test("should not transform when caller is not Atlas", async () => {
-       // given - boulder state exists but caller agent in message storage is not Atlas
+     test("should not transform when caller is not Axe", async () => {
+       // given - boulder state exists but caller agent in message storage is not Axe
        const sessionID = "session-non-orchestrator-test"
        setupMessageStorage(sessionID, "other-agent")
       
@@ -122,7 +122,7 @@ describe("atlas hook", () => {
 
       const hook = createAtlasHook(createMockPluginInput())
       const output = {
-        title: "Sisyphus Task",
+        title: "Invoker Task",
         output: "Task completed successfully",
         metadata: {},
       }
@@ -139,14 +139,14 @@ describe("atlas hook", () => {
       cleanupMessageStorage(sessionID)
     })
 
-     test("should append standalone verification when no boulder state but caller is Atlas", async () => {
-       // given - no boulder state, but caller is Atlas
+     test("should append standalone verification when no boulder state but caller is Axe", async () => {
+       // given - no boulder state, but caller is Axe
        const sessionID = "session-no-boulder-test"
        setupMessageStorage(sessionID, "atlas")
       
       const hook = createAtlasHook(createMockPluginInput())
       const output = {
-        title: "Sisyphus Task",
+        title: "Invoker Task",
         output: "Task completed successfully",
         metadata: {},
       }
@@ -165,8 +165,8 @@ describe("atlas hook", () => {
       cleanupMessageStorage(sessionID)
     })
 
-     test("should transform output when caller is Atlas with boulder state", async () => {
-       // given - Atlas caller with boulder state
+     test("should transform output when caller is Axe with boulder state", async () => {
+       // given - Axe caller with boulder state
        const sessionID = "session-transform-test"
        setupMessageStorage(sessionID, "atlas")
       
@@ -183,7 +183,7 @@ describe("atlas hook", () => {
 
       const hook = createAtlasHook(createMockPluginInput())
       const output = {
-        title: "Sisyphus Task",
+        title: "Invoker Task",
         output: "Task completed successfully",
         metadata: {},
       }
@@ -205,7 +205,7 @@ describe("atlas hook", () => {
     })
 
      test("should still transform when plan is complete (shows progress)", async () => {
-       // given - boulder state with complete plan, Atlas caller
+       // given - boulder state with complete plan, Axe caller
        const sessionID = "session-complete-plan-test"
        setupMessageStorage(sessionID, "atlas")
       
@@ -222,7 +222,7 @@ describe("atlas hook", () => {
 
       const hook = createAtlasHook(createMockPluginInput())
       const output = {
-        title: "Sisyphus Task",
+        title: "Invoker Task",
         output: "Original output",
         metadata: {},
       }
@@ -242,7 +242,7 @@ describe("atlas hook", () => {
     })
 
      test("should append session ID to boulder state if not present", async () => {
-       // given - boulder state without session-append-test, Atlas caller
+       // given - boulder state without session-append-test, Axe caller
        const sessionID = "session-append-test"
        setupMessageStorage(sessionID, "atlas")
       
@@ -259,7 +259,7 @@ describe("atlas hook", () => {
 
       const hook = createAtlasHook(createMockPluginInput())
       const output = {
-        title: "Sisyphus Task",
+        title: "Invoker Task",
         output: "Task output",
         metadata: {},
       }
@@ -278,7 +278,7 @@ describe("atlas hook", () => {
     })
 
      test("should not duplicate existing session ID", async () => {
-       // given - boulder state already has session-dup-test, Atlas caller
+       // given - boulder state already has session-dup-test, Axe caller
        const sessionID = "session-dup-test"
        setupMessageStorage(sessionID, "atlas")
       
@@ -295,7 +295,7 @@ describe("atlas hook", () => {
 
       const hook = createAtlasHook(createMockPluginInput())
       const output = {
-        title: "Sisyphus Task",
+        title: "Invoker Task",
         output: "Task output",
         metadata: {},
       }
@@ -315,7 +315,7 @@ describe("atlas hook", () => {
     })
 
      test("should include boulder.json path and notepad path in transformed output", async () => {
-       // given - boulder state, Atlas caller
+       // given - boulder state, Axe caller
        const sessionID = "session-path-test"
        setupMessageStorage(sessionID, "atlas")
       
@@ -332,7 +332,7 @@ describe("atlas hook", () => {
 
       const hook = createAtlasHook(createMockPluginInput())
       const output = {
-        title: "Sisyphus Task",
+        title: "Invoker Task",
         output: "Task completed",
         metadata: {},
       }
@@ -352,7 +352,7 @@ describe("atlas hook", () => {
     })
 
      test("should include session_id and checkbox instructions in reminder", async () => {
-       // given - boulder state, Atlas caller
+       // given - boulder state, Axe caller
        const sessionID = "session-resume-test"
        setupMessageStorage(sessionID, "atlas")
       
@@ -369,7 +369,7 @@ describe("atlas hook", () => {
 
       const hook = createAtlasHook(createMockPluginInput())
       const output = {
-        title: "Sisyphus Task",
+        title: "Invoker Task",
         output: "Task completed",
         metadata: {},
       }
@@ -945,7 +945,7 @@ describe("atlas hook", () => {
        expect(mockInput._promptMock).not.toHaveBeenCalled()
      })
 
-     test("should inject when last agent matches boulder agent even if non-Atlas", async () => {
+     test("should inject when last agent matches boulder agent even if non-Axe", async () => {
        // given - boulder state expects sisyphus and last agent is sisyphus
        const planPath = join(TEST_DIR, "test-plan.md")
        writeFileSync(planPath, "# Plan\n- [ ] Task 1\n- [ ] Task 2")

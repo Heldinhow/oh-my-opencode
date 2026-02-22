@@ -36,7 +36,7 @@ hooks/
 ├── session-notification.ts       # OS idle notifications (108 lines)
 ├── session-recovery/             # Auto-recovers from crashes (1279 lines)
 ├── sisyphus-junior-notepad/      # Junior notepad directive (76 lines)
-├── start-work/                   # Sisyphus work session starter (648 lines)
+├── start-work/                   # Invoker work session starter (648 lines)
 ├── stop-continuation-guard/      # Guards stop continuation (214 lines)
 ├── subagent-question-blocker/    # Blocks subagent questions (112 lines)
 ├── task-reminder/                # Task progress reminders (210 lines)

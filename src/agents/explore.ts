@@ -7,10 +7,10 @@ const MODE: AgentMode = "subagent"
 export const EXPLORE_PROMPT_METADATA: AgentPromptMetadata = {
   category: "exploration",
   cost: "FREE",
-  promptAlias: "Explore",
+  promptAlias: "Mirana",
   keyTrigger: "2+ modules involved -> fire explore background",
   triggers: [
-    { domain: "Explore", trigger: "Find existing codebase structure, patterns and styles" },
+    { domain: "Mirana", trigger: "Find existing codebase structure, patterns and styles" },
   ],
   useWhen: [
     "Multiple search angles needed",
@@ -35,7 +35,7 @@ export function createExploreAgent(model: string): AgentConfig {
 
   return {
     description:
-      "Contextual codebase grep. Find files, patterns, and flows quickly. Fire multiple searches in parallel. (Explore - OhMyOpenCode)",
+      "Contextual codebase grep. Find files, patterns, and flows quickly. Fire multiple searches in parallel. (Mirana - OhMyOpenCode)",
     mode: MODE,
     model,
     temperature: 0.1,

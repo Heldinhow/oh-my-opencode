@@ -57,7 +57,7 @@ describe("migrateAgentNames", () => {
     const agents = {
       SISYPHUS: { model: "test" },
       "planner-sisyphus": { prompt: "test" },
-      "Orchestrator-Sisyphus": { model: "openai/gpt-5.2" },
+      "Orchestrator-Invoker": { model: "openai/gpt-5.2" },
     }
 
     // when: Migrate agent names
@@ -112,15 +112,15 @@ describe("migrateAgentNames", () => {
     expect(migrated["atlas"]).toEqual({ model: "anthropic/claude-opus-4-6" })
   })
 
-  test("migrates Sisyphus variants to lowercase", () => {
-    // given agents config with "Sisyphus" key
+  test("migrates Invoker variants to lowercase", () => {
+    // given agents config with "Invoker" key
     // when migrateAgentNames called
     // then key becomes "sisyphus"
-    const agents = { "Sisyphus": { model: "test" } }
+    const agents = { "Invoker": { model: "test" } }
     const { migrated, changed } = migrateAgentNames(agents)
     expect(changed).toBe(true)
     expect(migrated["sisyphus"]).toEqual({ model: "test" })
-    expect(migrated["Sisyphus"]).toBeUndefined()
+    expect(migrated["Invoker"]).toBeUndefined()
   })
 
   test("migrates omo key to sisyphus", () => {
@@ -134,26 +134,26 @@ describe("migrateAgentNames", () => {
     expect(migrated["omo"]).toBeUndefined()
   })
 
-  test("migrates Atlas variants to lowercase", () => {
-    // given agents config with "Atlas" key
+  test("migrates Axe variants to lowercase", () => {
+    // given agents config with "Axe" key
     // when migrateAgentNames called
     // then key becomes "atlas"
-    const agents = { "Atlas": { model: "test" } }
+    const agents = { "Axe": { model: "test" } }
     const { migrated, changed } = migrateAgentNames(agents)
     expect(changed).toBe(true)
     expect(migrated["atlas"]).toEqual({ model: "test" })
-    expect(migrated["Atlas"]).toBeUndefined()
+    expect(migrated["Axe"]).toBeUndefined()
   })
 
-  test("migrates Prometheus variants to lowercase", () => {
-    // given agents config with "Prometheus (Planner)" key
+  test("migrates Tinker variants to lowercase", () => {
+    // given agents config with "Tinker (Planner)" key
     // when migrateAgentNames called
     // then key becomes "prometheus"
-    const agents = { "Prometheus (Planner)": { model: "test" } }
+    const agents = { "Tinker (Planner)": { model: "test" } }
     const { migrated, changed } = migrateAgentNames(agents)
     expect(changed).toBe(true)
     expect(migrated["prometheus"]).toEqual({ model: "test" })
-    expect(migrated["Prometheus (Planner)"]).toBeUndefined()
+    expect(migrated["Tinker (Planner)"]).toBeUndefined()
   })
 
   test("migrates Metis variants to lowercase", () => {
@@ -178,15 +178,15 @@ describe("migrateAgentNames", () => {
     expect(migrated["Momus (Plan Reviewer)"]).toBeUndefined()
   })
 
-  test("migrates Sisyphus-Junior to lowercase", () => {
-    // given agents config with "Sisyphus-Junior" key
+  test("migrates Invoker-Junior to lowercase", () => {
+    // given agents config with "Invoker-Junior" key
     // when migrateAgentNames called
     // then key becomes "sisyphus-junior"
-    const agents = { "Sisyphus-Junior": { model: "test" } }
+    const agents = { "Invoker-Junior": { model: "test" } }
     const { migrated, changed } = migrateAgentNames(agents)
     expect(changed).toBe(true)
     expect(migrated["sisyphus-junior"]).toEqual({ model: "test" })
-    expect(migrated["Sisyphus-Junior"]).toBeUndefined()
+    expect(migrated["Invoker-Junior"]).toBeUndefined()
   })
 
   test("preserves lowercase passthrough", () => {
@@ -456,7 +456,7 @@ describe("migration maps", () => {
     expect(AGENT_NAME_MAP["OmO"]).toBe("sisyphus")
     expect(AGENT_NAME_MAP["OmO-Plan"]).toBe("prometheus")
     expect(AGENT_NAME_MAP["omo-plan"]).toBe("prometheus")
-    expect(AGENT_NAME_MAP["Planner-Sisyphus"]).toBe("prometheus")
+    expect(AGENT_NAME_MAP["Planner-Invoker"]).toBe("prometheus")
     expect(AGENT_NAME_MAP["plan-consultant"]).toBe("metis")
   })
 

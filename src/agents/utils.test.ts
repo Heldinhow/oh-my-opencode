@@ -11,7 +11,7 @@ import * as shared from "../shared"
 const TEST_DEFAULT_MODEL = "anthropic/claude-opus-4-6"
 
 describe("createBuiltinAgents with model overrides", () => {
-  test("Sisyphus with default model has thinking config when all models available", async () => {
+  test("Invoker with default model has thinking config when all models available", async () => {
     // #given
     const fetchSpy = spyOn(shared, "fetchAvailableModels").mockResolvedValue(
       new Set([
@@ -36,7 +36,7 @@ describe("createBuiltinAgents with model overrides", () => {
     }
   })
 
-  test("Sisyphus with GPT model override has reasoningEffort, no thinking", async () => {
+  test("Invoker with GPT model override has reasoningEffort, no thinking", async () => {
     // #given
     const overrides = {
       sisyphus: { model: "github-copilot/gpt-5.2" },
@@ -51,7 +51,7 @@ describe("createBuiltinAgents with model overrides", () => {
     expect(agents.sisyphus.thinking).toBeUndefined()
   })
 
-  test("Atlas uses uiSelectedModel when provided", async () => {
+  test("Axe uses uiSelectedModel when provided", async () => {
     // #given
     const fetchSpy = spyOn(shared, "fetchAvailableModels").mockResolvedValue(
       new Set(["openai/gpt-5.2", "anthropic/claude-sonnet-4-5"])
@@ -147,7 +147,7 @@ describe("createBuiltinAgents with model overrides", () => {
     }
   })
 
-  test("Sisyphus is created on first run when no availableModels or cache exist", async () => {
+  test("Invoker is created on first run when no availableModels or cache exist", async () => {
     // #given
     const systemDefaultModel = "anthropic/claude-opus-4-6"
     const cacheSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(null)
@@ -1209,7 +1209,7 @@ describe("Deadlock prevention - fetchAvailableModels must not receive client", (
      fetchSpy.mockRestore?.()
      cacheSpy.mockRestore?.()
    })
-  test("Hephaestus variant override respects user config over hardcoded default", async () => {
+  test("Enigma variant override respects user config over hardcoded default", async () => {
     // #given - user provides variant in config
     const overrides = {
       hephaestus: { variant: "high" },
@@ -1223,7 +1223,7 @@ describe("Deadlock prevention - fetchAvailableModels must not receive client", (
     expect(agents.hephaestus.variant).toBe("high")
   })
 
-  test("Hephaestus uses default variant when no user override provided", async () => {
+  test("Enigma uses default variant when no user override provided", async () => {
     // #given - no variant override in config
     const overrides = {}
 

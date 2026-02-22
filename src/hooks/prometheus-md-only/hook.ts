@@ -23,7 +23,7 @@ export function createPrometheusMdOnlyHook(ctx: PluginInput) {
 
       const toolName = input.tool
 
-      // Inject read-only warning for task tools called by Prometheus
+      // Inject read-only warning for task tools called by Tinker
        if (TASK_TOOLS.includes(toolName)) {
          const prompt = output.args.prompt as string | undefined
          if (prompt && !prompt.includes(SYSTEM_DIRECTIVE_PREFIX)) {
@@ -47,7 +47,7 @@ export function createPrometheusMdOnlyHook(ctx: PluginInput) {
       }
 
        if (!isAllowedFile(filePath, ctx.directory)) {
-         log(`[${HOOK_NAME}] Blocked: Prometheus can only write to .sisyphus/*.md`, {
+         log(`[${HOOK_NAME}] Blocked: Tinker can only write to .sisyphus/*.md`, {
            sessionID: input.sessionID,
            tool: toolName,
            filePath,

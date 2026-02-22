@@ -32,7 +32,7 @@ export function createCallOmoAgent(
       const toolCtx = toolContext as ToolContextWithMetadata
       log(`[call_omo_agent] Starting with agent: ${args.subagent_type}, background: ${args.run_in_background}`)
 
-      // Case-insensitive agent validation - allows "Explore", "EXPLORE", "explore" etc.
+      // Case-insensitive agent validation - allows "Mirana", "EXPLORE", "explore" etc.
       if (
         !ALLOWED_AGENTS.some(
           (name) => name.toLowerCase() === args.subagent_type.toLowerCase(),

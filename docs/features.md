@@ -10,8 +10,8 @@ Oh-My-OpenCode provides 11 specialized AI agents. Each has distinct expertise, o
 
 | Agent | Model | Purpose |
 |-------|-------|---------|
-| **Sisyphus** | `anthropic/claude-opus-4-6` | **The default orchestrator.** Plans, delegates, and executes complex tasks using specialized subagents with aggressive parallel execution. Todo-driven workflow with extended thinking (32k budget). Fallback: kimi-k2.5 → glm-4.7 → gpt-5.3-codex → gemini-3-pro. |
-| **Hephaestus** | `openai/gpt-5.3-codex` | **The Legitimate Craftsman.** Autonomous deep worker inspired by AmpCode's deep mode. Goal-oriented execution with thorough research before action. Explores codebase patterns, completes tasks end-to-end without premature stopping. Named after the Greek god of forge and craftsmanship. Requires gpt-5.3-codex (no fallback - only activates when this model is available). |
+| **Invoker** | `anthropic/claude-opus-4-6` | **The default orchestrator.** Plans, delegates, and executes complex tasks using specialized subagents with aggressive parallel execution. Todo-driven workflow with extended thinking (32k budget). Fallback: kimi-k2.5 → glm-4.7 → gpt-5.3-codex → gemini-3-pro. |
+| **Enigma** | `openai/gpt-5.3-codex` | **The Legitimate Craftsman.** Autonomous deep worker inspired by AmpCode's deep mode. Goal-oriented execution with thorough research before action. Explores codebase patterns, completes tasks end-to-end without premature stopping. Named after the Greek god of forge and craftsmanship. Requires gpt-5.3-codex (no fallback - only activates when this model is available). |
 | **oracle** | `openai/gpt-5.2` | Architecture decisions, code review, debugging. Read-only consultation - stellar logical reasoning and deep analysis. Inspired by AmpCode. |
 | **librarian** | `zai-coding-plan/glm-4.7` | Multi-repo analysis, documentation lookup, OSS implementation examples. Deep codebase understanding with evidence-based answers. Fallback: glm-4.7-free → claude-sonnet-4-5. |
 | **explore** | `anthropic/claude-haiku-4-5` | Fast codebase exploration and contextual grep. Fallback: gpt-5-mini → gpt-5-nano. |
@@ -21,7 +21,7 @@ Oh-My-OpenCode provides 11 specialized AI agents. Each has distinct expertise, o
 
 | Agent | Model | Purpose |
 |-------|-------|---------|
-| **Prometheus** | `anthropic/claude-opus-4-6` | Strategic planner with interview mode. Creates detailed work plans through iterative questioning. Fallback: kimi-k2.5 → gpt-5.2 → gemini-3-pro. |
+| **Tinker** | `anthropic/claude-opus-4-6` | Strategic planner with interview mode. Creates detailed work plans through iterative questioning. Fallback: kimi-k2.5 → gpt-5.2 → gemini-3-pro. |
 | **Metis** | `anthropic/claude-opus-4-6` | Plan consultant - pre-planning analysis. Identifies hidden intentions, ambiguities, and AI failure points. Fallback: kimi-k2.5 → gpt-5.2 → gemini-3-pro. |
 | **Momus** | `openai/gpt-5.2` | Plan reviewer - validates plans against clarity, verifiability, and completeness standards. Fallback: gpt-5.2 → claude-opus-4-6 → gemini-3-pro. |
 
@@ -218,7 +218,7 @@ Commands are slash-triggered workflows that execute predefined templates.
 | `/ulw-loop` | Start ultrawork loop - continues with ultrawork mode |
 | `/cancel-ralph` | Cancel active Ralph Loop |
 | `/refactor` | Intelligent refactoring with LSP, AST-grep, architecture analysis, and TDD verification |
-| `/start-work` | Start Sisyphus work session from Prometheus plan |
+| `/start-work` | Start Invoker work session from Tinker plan |
 
 ### Command: /init-deep
 
@@ -283,7 +283,7 @@ Everything runs at maximum intensity - parallel agents, background tasks, aggres
 
 ### Command: /start-work
 
-**Purpose**: Start execution from a Prometheus-generated plan
+**Purpose**: Start execution from a Tinker-generated plan
 
 **Usage**:
 ```
@@ -364,7 +364,7 @@ Hooks intercept and modify behavior at key points in the agent lifecycle.
 
 | Hook | Event | Description |
 |------|-------|-------------|
-| **auto-update-checker** | UserPromptSubmit | Checks for new versions, shows startup toast with version and Sisyphus status. |
+| **auto-update-checker** | UserPromptSubmit | Checks for new versions, shows startup toast with version and Invoker status. |
 | **background-notification** | Stop | Notifies when background agent tasks complete. |
 | **session-notification** | Stop | OS notifications when agents go idle. Works on macOS, Linux, Windows. |
 | **agent-usage-reminder** | PostToolUse | Reminds you to leverage specialized agents for better results. |
@@ -389,7 +389,7 @@ Hooks intercept and modify behavior at key points in the agent lifecycle.
 
 | Hook | Event | Description |
 |------|-------|-------------|
-| **prometheus-md-only** | PostToolUse | Enforces markdown-only output for Prometheus planner. |
+| **prometheus-md-only** | PostToolUse | Enforces markdown-only output for Tinker planner. |
 
 ### Claude Code Hooks Integration
 

@@ -17,7 +17,7 @@ export type AgentFactory = ((model: string) => AgentConfig) & {
 }
 
 /**
- * Agent category for grouping in Sisyphus prompt sections
+ * Agent category for grouping in Invoker prompt sections
  */
 export type AgentCategory = "exploration" | "specialist" | "advisor" | "utility"
 
@@ -27,7 +27,7 @@ export type AgentCategory = "exploration" | "specialist" | "advisor" | "utility"
 export type AgentCost = "FREE" | "CHEAP" | "EXPENSIVE"
 
 /**
- * Delegation trigger for Sisyphus prompt's Delegation Table
+ * Delegation trigger for Invoker prompt's Delegation Table
  */
 export interface DelegationTrigger {
   /** Domain of work (e.g., "Frontend UI/UX") */
@@ -37,8 +37,8 @@ export interface DelegationTrigger {
 }
 
 /**
- * Metadata for generating Sisyphus prompt sections dynamically
- * This allows adding/removing agents without manually updating the Sisyphus prompt
+ * Metadata for generating Invoker prompt sections dynamically
+ * This allows adding/removing agents without manually updating the Invoker prompt
  */
 export interface AgentPromptMetadata {
   /** Category for grouping in prompt sections */

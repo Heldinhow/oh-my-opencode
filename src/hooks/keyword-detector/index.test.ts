@@ -589,7 +589,7 @@ describe("keyword-detector agent-specific ultrawork messages", () => {
     }
 
     // when - ultrawork keyword detected with planner agent
-    await hook["chat.message"]({ sessionID, agent: "Prometheus (Planner)" }, output)
+    await hook["chat.message"]({ sessionID, agent: "Tinker (Planner)" }, output)
 
     // then - ultrawork should be skipped, text unchanged
     const textPart = output.parts.find(p => p.type === "text")
@@ -618,8 +618,8 @@ describe("keyword-detector agent-specific ultrawork messages", () => {
     expect(textPart!.text).not.toContain("YOU ARE A PLANNER, NOT AN IMPLEMENTER")
   })
 
-  test("should use normal ultrawork message when agent is Sisyphus", async () => {
-    // given - collector and Sisyphus agent
+  test("should use normal ultrawork message when agent is Invoker", async () => {
+    // given - collector and Invoker agent
     const collector = new ContextCollector()
     const hook = createKeywordDetectorHook(createMockPluginInput(), collector)
     const sessionID = "sisyphus-session"
@@ -628,7 +628,7 @@ describe("keyword-detector agent-specific ultrawork messages", () => {
       parts: [{ type: "text", text: "ultrawork implement this feature" }],
     }
 
-    // when - ultrawork keyword detected with Sisyphus agent
+    // when - ultrawork keyword detected with Invoker agent
     await hook["chat.message"]({ sessionID, agent: "sisyphus" }, output)
 
     // then - should use normal ultrawork message with agent utilization instructions
@@ -707,10 +707,10 @@ describe("keyword-detector agent-specific ultrawork messages", () => {
       parts: [{ type: "text", text: "ultrawork implement this" }],
     }
 
-    // when - hook receives stale input.agent="prometheus" but session state says "Sisyphus"
+    // when - hook receives stale input.agent="prometheus" but session state says "Invoker"
     await hook["chat.message"]({ sessionID, agent: "prometheus" }, output)
 
-    // then - should use Sisyphus from session state, NOT prometheus from stale input
+    // then - should use Invoker from session state, NOT prometheus from stale input
     const textPart = output.parts.find(p => p.type === "text")
     expect(textPart).toBeDefined()
     expect(textPart!.text).toContain("YOU MUST LEVERAGE ALL AVAILABLE AGENTS")

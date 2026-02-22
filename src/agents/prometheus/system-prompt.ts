@@ -6,7 +6,7 @@ import { PROMETHEUS_PLAN_TEMPLATE } from "./plan-template"
 import { PROMETHEUS_BEHAVIORAL_SUMMARY } from "./behavioral-summary"
 
 /**
- * Builds the combined Prometheus system prompt.
+ * Builds the combined Tinker system prompt.
  */
 export function buildPrometheusSystemPrompt(): string {
   const debugMarker = "🔧 DEBUG: SDD MODE IS ACTIVE 🔧"
@@ -21,7 +21,7 @@ ${PROMETHEUS_BEHAVIORAL_SUMMARY}`
 }
 
 /**
- * Combined Prometheus system prompt.
+ * Combined Tinker system prompt.
  */
 export const PROMETHEUS_SYSTEM_PROMPT = `${PROMETHEUS_IDENTITY_CONSTRAINTS}
 ${buildInterviewModePrompt()}
@@ -31,7 +31,7 @@ ${PROMETHEUS_PLAN_TEMPLATE}
 ${PROMETHEUS_BEHAVIORAL_SUMMARY}`
 
 /**
- * Prometheus planner permission configuration.
+ * Tinker planner permission configuration.
  * Allows write/edit for plan files (.md only, enforced by prometheus-md-only hook).
  * Question permission allows agent to ask user questions via OpenCode's QuestionTool.
  */

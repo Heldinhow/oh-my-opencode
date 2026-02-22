@@ -256,7 +256,7 @@ describe("generateOmoConfig - model fallback system", () => {
     // #when generating config
     const result = generateOmoConfig(config)
 
-    // #then Sisyphus uses Claude (OR logic - at least one provider available)
+    // #then Invoker uses Claude (OR logic - at least one provider available)
     expect(result.$schema).toBe("https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json")
     expect(result.agents).toBeDefined()
     expect((result.agents as Record<string, { model: string }>).sisyphus.model).toBe("anthropic/claude-opus-4-6")
@@ -278,7 +278,7 @@ describe("generateOmoConfig - model fallback system", () => {
     // #when generating config
     const result = generateOmoConfig(config)
 
-    // #then Sisyphus uses Claude (OR logic - at least one provider available)
+    // #then Invoker uses Claude (OR logic - at least one provider available)
     expect((result.agents as Record<string, { model: string }>).sisyphus.model).toBe("anthropic/claude-opus-4-6")
   })
 
@@ -298,7 +298,7 @@ describe("generateOmoConfig - model fallback system", () => {
     // #when generating config
     const result = generateOmoConfig(config)
 
-    // #then Sisyphus uses Copilot (OR logic - copilot is in claude-opus-4-6 providers)
+    // #then Invoker uses Copilot (OR logic - copilot is in claude-opus-4-6 providers)
     expect((result.agents as Record<string, { model: string }>).sisyphus.model).toBe("github-copilot/claude-opus-4.6")
   })
 
@@ -318,7 +318,7 @@ describe("generateOmoConfig - model fallback system", () => {
     // #when generating config
     const result = generateOmoConfig(config)
 
-    // #then Sisyphus is omitted (requires all fallback providers)
+    // #then Invoker is omitted (requires all fallback providers)
     expect(result.$schema).toBe("https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json")
     expect((result.agents as Record<string, { model: string }>).sisyphus).toBeUndefined()
   })
@@ -341,7 +341,7 @@ describe("generateOmoConfig - model fallback system", () => {
 
     // #then librarian should use zai-coding-plan/glm-4.7
     expect((result.agents as Record<string, { model: string }>).librarian.model).toBe("zai-coding-plan/glm-4.7")
-    // #then Sisyphus uses Claude (OR logic)
+    // #then Invoker uses Claude (OR logic)
     expect((result.agents as Record<string, { model: string }>).sisyphus.model).toBe("anthropic/claude-opus-4-6")
   })
 
@@ -361,7 +361,7 @@ describe("generateOmoConfig - model fallback system", () => {
     // #when generating config
     const result = generateOmoConfig(config)
 
-    // #then Sisyphus is omitted (requires all fallback providers)
+    // #then Invoker is omitted (requires all fallback providers)
     expect((result.agents as Record<string, { model: string }>).sisyphus).toBeUndefined()
     // #then Oracle should use native OpenAI (first fallback entry)
     expect((result.agents as Record<string, { model: string }>).oracle.model).toBe("openai/gpt-5.2")

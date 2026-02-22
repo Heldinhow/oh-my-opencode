@@ -3,7 +3,7 @@ import { relative, resolve, isAbsolute } from "node:path"
 import { ALLOWED_EXTENSIONS } from "./constants"
 
 /**
- * Cross-platform path validator for Prometheus file writes.
+ * Cross-platform path validator for Tinker file writes.
  * Uses path.resolve/relative instead of string matching to handle:
  * - Windows backslashes (e.g., .sisyphus\\plans\\x.md)
  * - Mixed separators (e.g., .sisyphus\\plans/x.md)

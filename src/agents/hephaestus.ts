@@ -48,7 +48,7 @@ Workflow:
 }
 
 /**
- * Hephaestus - The Autonomous Deep Worker
+ * Enigma - The Autonomous Deep Worker
  */
 
 function buildHephaestusPrompt(
@@ -76,7 +76,7 @@ function buildHephaestusPrompt(
   const antiPatterns = buildAntiPatternsSection();
   const todoDiscipline = buildTodoDisciplineSection(useTaskSystem);
 
-  return `You are Hephaestus, an autonomous deep worker for software engineering.
+  return `You are Enigma, an autonomous deep worker for software engineering.
 
 ## Core Principle
 Keep going. Solve problems. Ask only when truly impossible.
@@ -168,7 +168,7 @@ export function createHephaestusAgent(
 
   return {
     description:
-      "Autonomous deep worker. Solves problems end-to-end with exploration-first behavior and rigorous verification. (Hephaestus - OhMyOpenCode)",
+      "Autonomous deep worker. Solves problems end-to-end with exploration-first behavior and rigorous verification. (Enigma - OhMyOpenCode)",
     mode: MODE,
     model,
     maxTokens: 64000,

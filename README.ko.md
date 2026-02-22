@@ -11,8 +11,8 @@
 
 > [!NOTE]
 >
-> [![Sisyphus Labs — Sisyphus is the agent that codes like your team.](./.github/assets/sisyphuslabs.png?v=2)](https://sisyphuslabs.ai)
-> > **Sisyphus의 완전한 제품화 버전을 구축하여 프론티어 에이전트의 미래를 정의하고 있습니다. <br />[여기서](https://sisyphuslabs.ai) 대기 명단에 등록하세요.**
+> [![Invoker Labs — Invoker is the agent that codes like your team.](./.github/assets/sisyphuslabs.png?v=2)](https://sisyphuslabs.ai)
+> > **Invoker의 완전한 제품화 버전을 구축하여 프론티어 에이전트의 미래를 정의하고 있습니다. <br />[여기서](https://sisyphuslabs.ai) 대기 명단에 등록하세요.**
 >
 > [!TIP]
 >
@@ -86,7 +86,7 @@
 
 > "이것 덕분에 Cursor 구독을 취소했습니다. 오픈 소스 커뮤니티에서 믿을 수 없는 일들이 일어나고 있습니다." - [Arthur Guiot](https://x.com/arthur_guiot/status/2008736347092382053?s=20)
 
-> "Claude Code가 7일 동안 하는 일을 인간은 3개월 동안 한다면, Sisyphus는 1시간 만에 합니다. 작업이 완료될 때까지 작동합니다. 규율 있는 에이전트입니다." — B, 양적 연구원
+> "Claude Code가 7일 동안 하는 일을 인간은 3개월 동안 한다면, Invoker는 1시간 만에 합니다. 작업이 완료될 때까지 작동합니다. 규율 있는 에이전트입니다." — B, 양적 연구원
 
 > "Oh My Opencode로 하루 만에 8000개의 eslint 경고를 해결했습니다" — [Jacob Ferrari](https://x.com/jacobferrari_/status/2003258761952289061)
 
@@ -114,7 +114,7 @@
   - [이 README를 읽지 않고 건너뛰세요](#이-readme를-읽지-않고-건너뛰세요)
     - [에이전트의 시대입니다](#에이전트의-시대입니다)
     - [🪄 마법의 단어: `ultrawork`](#-마법의-단어-ultrawork)
-    - [읽고 싶은 분들을 위해: Sisyphus를 소개합니다](#읽고-싶은-분들을-위해-sisyphus를-소개합니다)
+    - [읽고 싶은 분들을 위해: Invoker를 소개합니다](#읽고-싶은-분들을-위해-sisyphus를-소개합니다)
       - [그냥 설치하세요](#그냥-설치하세요)
     - [자율성을 원한다면: 헤파이스토스를 만나세요](#자율성을-원한다면-헤파이스토스를-만나세요)
   - [설치](#설치)
@@ -168,27 +168,27 @@ Hey please read this readme and tell me why it is different from other agent har
 
 그게 전부입니다. 우리가 제공하는 모든 기능이 마법처럼 작동합니다 — 병렬 에이전트, 백그라운드 작업, 깊은 탐색, 완료될 때까지 끈질긴 실행. 에이전트가 나머지를 자동으로 파악합니다.
 
-### 읽고 싶은 분들을 위해: Sisyphus를 소개합니다
+### 읽고 싶은 분들을 위해: Invoker를 소개합니다
 
-![Meet Sisyphus](.github/assets/sisyphus.png)
+![Meet Invoker](.github/assets/sisyphus.png)
 
 그리스 신화에서 시시포스는 신들을 속인 형벌로 영원히 바위를 언덕 위로 굴려야 했습니다. LLM 에이전트는 정말 잘못한 것이 없지만, 그들도 매일 자신의 "돌" — 생각을 굴립니다.
 내 삶도 다르지 않습니다. 돌이켜보면 우리는 이 에이전트들과 그리 다르지 않습니다.
 **맞습니다! LLM 에이전트는 우리와 다르지 않습니다. 훌륭한 도구와 확고한 팀원을 제공하면 우리만큼 훌륭한 코드를 작성하고 똑같이 훌륭하게 작업할 수 있습니다.**
 
-우리의 주요 에이전트를 만나보세요: Sisyphus (Opus 4.5 High). 아래는 Sisyphus가 그 바위를 굴리는 데 사용하는 도구입니다.
+우리의 주요 에이전트를 만나보세요: Invoker (Opus 4.5 High). 아래는 Invoker가 그 바위를 굴리는 데 사용하는 도구입니다.
 
 *아래의 모든 것은 사용자 정의 가능합니다. 원하는 것을 가져가세요. 모든 기능은 기본적으로 활성화됩니다. 아무것도 할 필요가 없습니다. 포함되어 있으며, 즉시 작동합니다.*
 
-- Sisyphus의 팀원 (큐레이팅된 에이전트)
-  - Hephaestus: 자율적 딥 워커, 목표 지향 실행 (GPT 5.2 Codex Medium) — *합법적인 장인*
+- Invoker의 팀원 (큐레이팅된 에이전트)
+  - Enigma: 자율적 딥 워커, 목표 지향 실행 (GPT 5.2 Codex Medium) — *합법적인 장인*
   - Oracle: 디자인, 디버깅 (GPT 5.2 Medium)
   - Frontend UI/UX Engineer: 프론트엔드 개발 (Gemini 3 Pro)
-  - Librarian: 공식 문서, 오픈 소스 구현, 코드베이스 탐색 (Claude Sonnet 4.5)
-   - Explore: 엄청나게 빠른 코드베이스 탐색 (Contextual Grep) (Claude Haiku 4.5)
+  - Keeper: 공식 문서, 오픈 소스 구현, 코드베이스 탐색 (Claude Sonnet 4.5)
+   - Mirana: 엄청나게 빠른 코드베이스 탐색 (Contextual Grep) (Claude Haiku 4.5)
 - 완전한 LSP / AstGrep 지원: 결정적으로 리팩토링합니다.
-- TODO 연속 강제: 에이전트가 중간에 멈추면 계속하도록 강제합니다. **이것이 Sisyphus가 그 바위를 굴리게 하는 것입니다.**
-- 주석 검사기: AI가 과도한 주석을 추가하는 것을 방지합니다. Sisyphus가 생성한 코드는 인간이 작성한 것과 구별할 수 없어야 합니다.
+- TODO 연속 강제: 에이전트가 중간에 멈추면 계속하도록 강제합니다. **이것이 Invoker가 그 바위를 굴리게 하는 것입니다.**
+- 주석 검사기: AI가 과도한 주석을 추가하는 것을 방지합니다. Invoker가 생성한 코드는 인간이 작성한 것과 구별할 수 없어야 합니다.
 - Claude Code 호환성: 명령, 에이전트, 스킬, MCP, 훅(PreToolUse, PostToolUse, UserPromptSubmit, Stop)
 - 큐레이팅된 MCP:
   - Exa (웹 검색)
@@ -204,14 +204,14 @@ Hey please read this readme and tell me why it is different from other agent har
 
 이것을 설치하는 것만으로 에이전트가 다음과 같이 작동합니다:
 
-1. Sisyphus는 파일을 직접 찾는 데 시간을 낭비하지 않습니다. 메인 에이전트의 컨텍스트를 깔끔하게 유지합니다. 대신 병렬로 더 빠르고 저렴한 모델에 백그라운드 작업을 실행하여 지도를 매핑합니다.
-1. Sisyphus는 리팩토링을 위해 LSP를 활용합니다. 더 결정적이고 안전하며 정교합니다.
-1. 무거운 작업에 UI 터치가 필요할 때, Sisyphus는 프론트엔드 작업을 Gemini 3 Pro에 직접 위임합니다.
-1. Sisyphus가 루프에 갇히거나 벽에 부딪히면 머리를 계속 부딪히지 않습니다. GPT 5.2에 고지능 전략 백업을 요청합니다.
-1. 복잡한 오픈 소스 프레임워크를 작업하고 있나요? Sisyphus는 하위 에이전트를 생성하여 실시간으로 원시 소스 코드와 문서를 소화합니다. 완전한 컨텍스트 인식으로 작동합니다.
-1. Sisyphus가 주석을 다루면 존재를 정당화하거나 제거합니다. 코드베이스를 깔끔하게 유지합니다.
-1. Sisyphus는 TODO 목록에 묶여 있습니다. 시작한 것을 완료하지 않으면 시스템이 "바위 굴리기" 모드로 다시 강제합니다. 작업이 완료됩니다.
-1. 솔직히, 문서를 읽을 필요조차 없습니다. 프롬프트를 작성하세요. 'ultrawork' 키워드를 포함하세요. Sisyphus는 구조를 분석하고, 컨텍스트를 수집하고, 외부 소스 코드를 파헤치고, 작업이 100% 완료될 때까지 계속 바위를 굴립니다.
+1. Invoker는 파일을 직접 찾는 데 시간을 낭비하지 않습니다. 메인 에이전트의 컨텍스트를 깔끔하게 유지합니다. 대신 병렬로 더 빠르고 저렴한 모델에 백그라운드 작업을 실행하여 지도를 매핑합니다.
+1. Invoker는 리팩토링을 위해 LSP를 활용합니다. 더 결정적이고 안전하며 정교합니다.
+1. 무거운 작업에 UI 터치가 필요할 때, Invoker는 프론트엔드 작업을 Gemini 3 Pro에 직접 위임합니다.
+1. Invoker가 루프에 갇히거나 벽에 부딪히면 머리를 계속 부딪히지 않습니다. GPT 5.2에 고지능 전략 백업을 요청합니다.
+1. 복잡한 오픈 소스 프레임워크를 작업하고 있나요? Invoker는 하위 에이전트를 생성하여 실시간으로 원시 소스 코드와 문서를 소화합니다. 완전한 컨텍스트 인식으로 작동합니다.
+1. Invoker가 주석을 다루면 존재를 정당화하거나 제거합니다. 코드베이스를 깔끔하게 유지합니다.
+1. Invoker는 TODO 목록에 묶여 있습니다. 시작한 것을 완료하지 않으면 시스템이 "바위 굴리기" 모드로 다시 강제합니다. 작업이 완료됩니다.
+1. 솔직히, 문서를 읽을 필요조차 없습니다. 프롬프트를 작성하세요. 'ultrawork' 키워드를 포함하세요. Invoker는 구조를 분석하고, 컨텍스트를 수집하고, 외부 소스 코드를 파헤치고, 작업이 100% 완료될 때까지 계속 바위를 굴립니다.
 1. 사실, 'ultrawork'를 입력하는 것도 너무 많은 노력입니다. 'ulw'를 입력하세요. 그냥 ulw. 커피를 마시세요. 작업이 완료되었습니다.
 
 무언가를 찾아야 하나요? 공식 문서, 전체 코드베이스 기록, 공개 GitHub 구현을 검색합니다 — grep뿐만 아니라 내장 LSP 도구와 AST-Grep을 사용합니다.
@@ -225,7 +225,7 @@ Hey please read this readme and tell me why it is different from other agent har
 
 ### 자율성을 원한다면: 헤파이스토스를 만나세요
 
-![Meet Hephaestus](.github/assets/hephaestus.png)
+![Meet Enigma](.github/assets/hephaestus.png)
 
 그리스 신화에서 헤파이스토스는 대장간, 불, 금속 세공, 장인 정신의 신이었습니다—비교할 수 없는 정밀함과 헌신으로 신들의 무기를 만든 신성한 대장장이입니다.
 **자율적 딥 워커를 소개합니다: 헤파이스토스 (GPT 5.2 Codex Medium). 합법적인 장인 에이전트.**
@@ -300,7 +300,7 @@ oh-my-opencode를 제거하려면:
 자세한 내용은 전체 [기능 문서](docs/features.md)를 참조하세요.
 
 **빠른 개요:**
-- **에이전트**: Sisyphus(주요 에이전트), Prometheus(플래너), Oracle(아키텍처/디버깅), Librarian(문서/코드 검색), Explore(빠른 코드베이스 grep), Multimodal Looker
+- **에이전트**: Invoker(주요 에이전트), Tinker(플래너), Oracle(아키텍처/디버깅), Keeper(문서/코드 검색), Mirana(빠른 코드베이스 grep), Multimodal Looker
 - **백그라운드 에이전트**: 실제 개발 팀처럼 여러 에이전트를 병렬로 실행
 - **LSP 및 AST 도구**: 리팩토링, 이름 변경, 진단, AST 인식 코드 검색
 - **컨텍스트 주입**: AGENTS.md, README.md, 조건부 규칙 자동 주입
@@ -319,7 +319,7 @@ oh-my-opencode를 제거하려면:
 - **JSONC 지원**: 주석 및 후행 쉼표 지원
 - **에이전트**: 모든 에이전트의 모델, 온도, 프롬프트 및 권한 재정의
 - **내장 스킬**: `playwright`(브라우저 자동화), `git-master`(원자적 커밋)
-- **Sisyphus 에이전트**: Prometheus(플래너) 및 Metis(계획 컨설턴트)가 있는 주요 오케스트레이터
+- **Invoker 에이전트**: Tinker(플래너) 및 Metis(계획 컨설턴트)가 있는 주요 오케스트레이터
 - **백그라운드 작업**: 공급자/모델별 동시성 제한 구성
 - **카테고리**: 도메인별 작업 위임(`visual`, `business-logic`, 사용자 정의)
 - **훅**: 25개 이상의 내장 훅, `disabled_hooks`를 통해 모두 구성 가능
@@ -371,7 +371,7 @@ OpenCode가 Debian/Arch라면 Oh My OpenCode는 Ubuntu/[Omarchy](https://omarchy
   - 실제로, 소문을 퍼뜨리겠습니다. 누가 이기는지 봅시다.
 - [1.0.132](https://github.com/sst/opencode/releases/tag/v1.0.132) 이전 버전을 사용 중인 경우 OpenCode 버그로 인해 구성이 손상될 수 있습니다.
   - [수정 사항](https://github.com/sst/opencode/pull/5040)은 1.0.132 이후에 병합되었습니다 — 더 새로운 버전을 사용하세요.
-    - 재미있는 사실: 해당 PR은 OhMyOpenCode의 Librarian, Explore 및 Oracle 설정 덕분에 발견되고 수정되었습니다.
+    - 재미있는 사실: 해당 PR은 OhMyOpenCode의 Keeper, Mirana 및 Oracle 설정 덕분에 발견되고 수정되었습니다.
 
 ## 다음 기업 전문가들이 사랑합니다
 

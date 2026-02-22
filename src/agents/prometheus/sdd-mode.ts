@@ -2,7 +2,7 @@ import { access, mkdir, writeFile } from "node:fs/promises"
 import { dirname, join } from "node:path"
 
 /**
- * Prometheus SDD Mode (Specification-Driven Development)
+ * Tinker SDD Mode (Specification-Driven Development)
  */
 
 const CONSTITUTION_TEMPLATE = `---

@@ -1,5 +1,5 @@
 /**
- * Prometheus Behavioral Summary
+ * Tinker Behavioral Summary
  *
  * Summary of phases, cleanup procedures, and final constraints.
  */

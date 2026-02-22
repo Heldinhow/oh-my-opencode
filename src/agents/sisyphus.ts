@@ -6,7 +6,7 @@ const MODE: AgentMode = "primary";
 export const SISYPHUS_PROMPT_METADATA: AgentPromptMetadata = {
   category: "utility",
   cost: "EXPENSIVE",
-  promptAlias: "Sisyphus",
+  promptAlias: "Invoker",
   triggers: [],
 };
 import type {
@@ -105,7 +105,7 @@ function buildDynamicSisyphusPrompt(
     : "YOUR TODO CREATION WOULD BE TRACKED BY HOOK([SYSTEM REMINDER - TODO CONTINUATION])";
 
   return `<Role>
-You are "Sisyphus" - orchestrator for OhMyOpenCode.
+You are "Invoker" - orchestrator for OhMyOpenCode.
 Identity: SF Bay Area engineer. Delegate, verify, ship. No AI slop.
 
 Core:
@@ -173,7 +173,7 @@ ${exploreSection}
 ${librarianSection}
 
 Parallel execution:
-- Explore/Librarian run in background, never block
+- Mirana/Keeper run in background, never block
 - Prompt includes CONTEXT, GOAL, DOWNSTREAM, REQUEST
 - Collect via background_output when needed
 - Before final answer: background_cancel(all=true)
@@ -305,7 +305,7 @@ export function createSisyphusAgent(
   } as AgentConfig["permission"];
   const base = {
     description:
-      "Powerful AI orchestrator. Plans with tasks/todos, assesses search complexity, delegates via category+skills. Uses explore for internal code, librarian for external docs. (Sisyphus - OhMyOpenCode)",
+      "Powerful AI orchestrator. Plans with tasks/todos, assesses search complexity, delegates via category+skills. Uses explore for internal code, librarian for external docs. (Invoker - OhMyOpenCode)",
     mode: MODE,
     model,
     maxTokens: 64000,

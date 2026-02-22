@@ -393,8 +393,8 @@ describe("BuiltinCategoryNameSchema", () => {
   })
 })
 
-describe("Sisyphus-Junior agent override", () => {
-  test("schema accepts agents['Sisyphus-Junior'] and retains the key after parsing", () => {
+describe("Invoker-Junior agent override", () => {
+  test("schema accepts agents['Invoker-Junior'] and retains the key after parsing", () => {
     // given
     const config = {
       agents: {

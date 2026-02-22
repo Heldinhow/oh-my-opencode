@@ -647,13 +647,13 @@ describe("todo-continuation-enforcer", () => {
   }, { timeout: 15000 })
 
   test("should accept skipAgents option without error", async () => {
-    // given - session with skipAgents configured for Prometheus
+    // given - session with skipAgents configured for Tinker
     const sessionID = "main-prometheus-option"
     setMainSession(sessionID)
 
     // when - create hook with skipAgents option (should not throw)
     const hook = createTodoContinuationEnforcer(createMockPluginInput(), {
-      skipAgents: ["Prometheus (Planner)", "custom-agent"],
+      skipAgents: ["Tinker (Planner)", "custom-agent"],
     })
 
     // then - handler works without error
@@ -1198,7 +1198,7 @@ describe("todo-continuation-enforcer", () => {
   // ============================================================
 
   test("should skip compaction agent messages when resolving agent info", async () => {
-    // given - session where last message is from compaction agent but previous was Sisyphus
+    // given - session where last message is from compaction agent but previous was Invoker
     const sessionID = "main-compaction-filter"
     setMainSession(sessionID)
 
@@ -1247,7 +1247,7 @@ describe("todo-continuation-enforcer", () => {
      await hook.handler({ event: { type: "session.idle", properties: { sessionID } } })
      await fakeTimers.advanceBy(2500)
 
-     // then - continuation uses Sisyphus (skipped compaction agent)
+     // then - continuation uses Invoker (skipped compaction agent)
      expect(promptCalls.length).toBe(1)
     expect(promptCalls[0].agent).toBe("sisyphus")
   })

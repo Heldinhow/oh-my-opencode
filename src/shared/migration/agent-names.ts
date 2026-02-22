@@ -1,21 +1,25 @@
 export const AGENT_NAME_MAP: Record<string, string> = {
-  // Sisyphus variants → "sisyphus"
+  // Invoker variants → "sisyphus"
   omo: "sisyphus",
   OmO: "sisyphus",
   Sisyphus: "sisyphus",
+  Invoker: "sisyphus",
   sisyphus: "sisyphus",
 
-  // Prometheus variants → "prometheus"
+  // Tinker variants → "prometheus"
   "OmO-Plan": "prometheus",
   "omo-plan": "prometheus",
   "Planner-Sisyphus": "prometheus",
   "planner-sisyphus": "prometheus",
+  "Planner-Invoker": "prometheus",
   "Prometheus (Planner)": "prometheus",
+  "Tinker (Planner)": "prometheus",
   prometheus: "prometheus",
 
-  // Atlas variants → "atlas"
+  // Axe variants → "atlas"
   "orchestrator-sisyphus": "atlas",
   Atlas: "atlas",
+  Axe: "atlas",
   atlas: "atlas",
 
   // Metis variants → "metis"
@@ -27,8 +31,9 @@ export const AGENT_NAME_MAP: Record<string, string> = {
   "Momus (Plan Reviewer)": "momus",
   momus: "momus",
 
-  // Sisyphus-Junior → "sisyphus-junior"
+  // Invoker-Junior → "sisyphus-junior"
   "Sisyphus-Junior": "sisyphus-junior",
+  "Invoker-Junior": "sisyphus-junior",
   "sisyphus-junior": "sisyphus-junior",
 
   // Already lowercase - passthrough
@@ -40,15 +45,15 @@ export const AGENT_NAME_MAP: Record<string, string> = {
 }
 
 export const BUILTIN_AGENT_NAMES = new Set([
-  "sisyphus", // was "Sisyphus"
+  "sisyphus", // was "Sisyphus" (display: Invoker)
   "oracle",
   "librarian",
   "explore",
   "multimodal-looker",
   "metis", // was "Metis (Plan Consultant)"
   "momus", // was "Momus (Plan Reviewer)"
-  "prometheus", // was "Prometheus (Planner)"
-  "atlas", // was "Atlas"
+  "prometheus", // was "Prometheus (Planner)" (display: Tinker)
+  "atlas", // was "Atlas" (display: Axe)
   "build",
 ])
 

@@ -11,8 +11,8 @@
 
 > [!NOTE]
 >
-> [![Sisyphus Labs — Sisyphus is the agent that codes like your team.](./.github/assets/sisyphuslabs.png?v=2)](https://sisyphuslabs.ai)
-> > **Sisyphusの完全製品化バージョンを構築中です。フロンティアエージェントの未来を定義します。<br />[こちら](https://sisyphuslabs.ai)からウェイトリストに参加してください。**
+> [![Invoker Labs — Invoker is the agent that codes like your team.](./.github/assets/sisyphuslabs.png?v=2)](https://sisyphuslabs.ai)
+> > **Invokerの完全製品化バージョンを構築中です。フロンティアエージェントの未来を定義します。<br />[こちら](https://sisyphuslabs.ai)からウェイトリストに参加してください。**
 
 > [!TIP]
 >
@@ -85,7 +85,7 @@
 
 > "Cursorのサブスクリプションを解約しました。オープンソースコミュニティで信じられないことが起きています。" - [Arthur Guiot](https://x.com/arthur_guiot/status/2008736347092382053?s=20)
 
-> "人間が3ヶ月かかる仕事をClaude Codeが7日でやるなら、Sisyphusは1時間でやります。タスクが完了するまでただ動き続ける。It is a discipline agent." — B, Quant Researcher
+> "人間が3ヶ月かかる仕事をClaude Codeが7日でやるなら、Invokerは1時間でやります。タスクが完了するまでただ動き続ける。It is a discipline agent." — B, Quant Researcher
 
 > "Oh My Opencodeを使って、たった1日で8000個のeslint警告を解消しました" — [Jacob Ferrari](https://x.com/jacobferrari_/status/2003258761952289061)
 
@@ -166,22 +166,22 @@ Windows から Linux に初めて乗り換えた時のこと、自分の思い�
 
 ### 読みたい方のために：シジフォスに会う
 
-![Meet Sisyphus](.github/assets/sisyphus.png)
+![Meet Invoker](.github/assets/sisyphus.png)
 
 神話の中のシジフォスは、神々を欺いた罪として、永遠に岩を転がし続けなければなりませんでした。LLMエージェントたちは特に悪いことをしたわけではありませんが、毎日その頭（思考）をフル回転させています。
 私の人生もそうです。振り返ってみれば、私たち人間と何ら変わりありません。
 **はい！LLMエージェントたちは私たちと変わりません。優れたツールと最高の仲間がいれば、彼らも私たちと同じくらい優れたコードを書き、立派に仕事をこなすことができます。**
 
-私たちのメインエージェント、Sisyphus（Opus 4.5 High）を紹介します。以下は、シジフォスが岩を転がすために使用するツールです。
+私たちのメインエージェント、Invoker（Opus 4.5 High）を紹介します。以下は、シジフォスが岩を転がすために使用するツールです。
 
 *以下の内容はすべてカスタマイズ可能です。必要なものだけを使ってください。デフォルトではすべての機能が有効になっています。何もしなくても大丈夫です。*
 
 - シジフォスのチームメイト (Curated Agents)
-  - Hephaestus: 自律型ディープワーカー、目標指向実行 (GPT 5.2 Codex Medium) — *正当な職人*
+  - Enigma: 自律型ディープワーカー、目標指向実行 (GPT 5.2 Codex Medium) — *正当な職人*
   - Oracle: 設計、デバッグ (GPT 5.2 Medium)
   - Frontend UI/UX Engineer: フロントエンド開発 (Gemini 3 Pro)
-  - Librarian: 公式ドキュメント、オープンソース実装、コードベース探索 (Claude Sonnet 4.5)
-   - Explore: 超高速コードベース探索 (Contextual Grep) (Claude Haiku 4.5)
+  - Keeper: 公式ドキュメント、オープンソース実装、コードベース探索 (Claude Sonnet 4.5)
+   - Mirana: 超高速コードベース探索 (Contextual Grep) (Claude Haiku 4.5)
 - Full LSP / AstGrep Support: 決定的にリファクタリングしましょう。
 - Todo Continuation Enforcer: 途中で諦めたら、続行を強制します。これがシジフォスに岩を転がし続けさせる秘訣です。
 - Comment Checker: AIが過剰なコメントを付けないようにします。シジフォスが生成したコードは、人間が書いたものと区別がつかないべきです。
@@ -196,7 +196,7 @@ Windows から Linux に初めて乗り換えた時のこと、自分の思い�
 
 ### 自律性を求めるなら: ヘパイストスに会おう
 
-![Meet Hephaestus](.github/assets/hephaestus.png)
+![Meet Enigma](.github/assets/hephaestus.png)
 
 ギリシャ神話において、ヘパイストスは鍛冶、火、金属加工、職人技の神でした—比類のない精密さと献身で神々の武器を作り上げた神聖な鍛冶師です。
 **自律型ディープワーカーを紹介します: ヘパイストス (GPT 5.2 Codex Medium)。正当な職人エージェント。**
@@ -218,14 +218,14 @@ Windows から Linux に初めて乗り換えた時のこと、自分の思い�
 
 インストールするだけで、エージェントは以下のようなワークフローで働けるようになります：
 
-1. Sisyphusは自分自身でファイルを探し回るような時間の無駄はしません。メインエージェントのコンテキストを軽量に保つため、より高速で安価なモデルへ並列でバックグラウンドタスクを飛ばし、自身の代わりに領域の調査を完了させます。
-1. SisyphusはリファクタリングにLSPを活用します。その方が確実で、安全、かつ的確だからです。
-1. UIに関わる重い作業が必要な場合、SisyphusはフロントエンドのタスクをGemini 3 Proに直接デリゲートします。
-1. もしSisyphusがループに陥ったり壁にぶつかったりしても、無駄に悩み続けることはありません。高IQな戦略的バックアップとしてGPT 5.2を呼び出します。
-1. 複雑なオープンソースフレームワークを扱っていますか？Sisyphusはサブエージェントを生成し、生のソースコードやドキュメントをリアルタイムで消化します。彼は完全なコンテキスト認識を持って動作します。
-1. Sisyphusがコメントに触れるとき、その存在意義を証明するか、さもなくば削除します。あなたのコードベースを常にクリーンに保ちます。
-1. Sisyphusは自身のTODOリストに縛られています。もし始めたことを終わらせられなければ、システムは彼を強制的に「bouldering」モードに戻します。あなたのタスクは、何があろうと完了します。
-1. 正直、ドキュメントなんて読む必要はありません。ただプロンプトを書いてください。「ultrawork」というキーワードを含めるだけで十分です。Sisyphusが構造を分析し、コンテキストを集め、外部のソースコードまで掘り下げ、仕事が100%完了するまでboulderingを続けます。
+1. Invokerは自分自身でファイルを探し回るような時間の無駄はしません。メインエージェントのコンテキストを軽量に保つため、より高速で安価なモデルへ並列でバックグラウンドタスクを飛ばし、自身の代わりに領域の調査を完了させます。
+1. InvokerはリファクタリングにLSPを活用します。その方が確実で、安全、かつ的確だからです。
+1. UIに関わる重い作業が必要な場合、InvokerはフロントエンドのタスクをGemini 3 Proに直接デリゲートします。
+1. もしInvokerがループに陥ったり壁にぶつかったりしても、無駄に悩み続けることはありません。高IQな戦略的バックアップとしてGPT 5.2を呼び出します。
+1. 複雑なオープンソースフレームワークを扱っていますか？Invokerはサブエージェントを生成し、生のソースコードやドキュメントをリアルタイムで消化します。彼は完全なコンテキスト認識を持って動作します。
+1. Invokerがコメントに触れるとき、その存在意義を証明するか、さもなくば削除します。あなたのコードベースを常にクリーンに保ちます。
+1. Invokerは自身のTODOリストに縛られています。もし始めたことを終わらせられなければ、システムは彼を強制的に「bouldering」モードに戻します。あなたのタスクは、何があろうと完了します。
+1. 正直、ドキュメントなんて読む必要はありません。ただプロンプトを書いてください。「ultrawork」というキーワードを含めるだけで十分です。Invokerが構造を分析し、コンテキストを集め、外部のソースコードまで掘り下げ、仕事が100%完了するまでboulderingを続けます。
 1. ぶっちゃけ、「ultrawork」と打つのすら面倒ですよね。それなら「ulw」だけでOKです。ただulwと打ち、コーヒーでも飲んでいてください。仕事は終わっています。
 
 このような機能が不要であれば、前述の通り、特定の機能だけを選んで使うことができます。
@@ -291,7 +291,7 @@ oh-my-opencode を削除するには：
 詳細は [Features Documentation](docs/features.md) を参照してください。
 
 **概要:**
-- **エージェント**: Sisyphus（メインエージェント）、Prometheus（プランナー）、Oracle（アーキテクチャ/デバッグ）、Librarian（ドキュメント/コード検索）、Explore（高速コードベース grep）、Multimodal Looker
+- **エージェント**: Invoker（メインエージェント）、Tinker（プランナー）、Oracle（アーキテクチャ/デバッグ）、Keeper（ドキュメント/コード検索）、Mirana（高速コードベース grep）、Multimodal Looker
 - **バックグラウンドエージェント**: 本物の開発チームのように複数エージェントを並列実行
 - **LSP & AST ツール**: リファクタリング、リネーム、診断、AST 認識コード検索
 - **コンテキスト注入**: AGENTS.md、README.md、条件付きルールの自動注入
@@ -310,7 +310,7 @@ oh-my-opencode を削除するには：
 - **JSONC のサポート**: コメントと末尾のカンマをサポート
 - **エージェント**: 任意のエージェントのモデル、温度、プロンプト、権限をオーバーライド
 - **内蔵スキル**: `playwright` (ブラウザ自動化), `git-master` (アトミックコミット)
-- **Sisyphus エージェント**: Prometheus (Planner) と Metis (Plan Consultant) を備えたメインオーケストレーター
+- **Invoker エージェント**: Tinker (Planner) と Metis (Plan Consultant) を備えたメインオーケストレーター
 - **バックグラウンドタスク**: プロバイダー/モデルごとの同時実行制限を設定
 - **カテゴリ**: ドメイン固有のタスク委任 (`visual`, `business-logic`, カスタム)
 - **フック**: 25以上の内蔵フック、すべて `disabled_hooks` で設定可能
@@ -362,7 +362,7 @@ OpenCode が Debian / ArchLinux だとしたら、Oh My OpenCode は Ubuntu / [O
   - とはいえ、私が言いふらしますけどね。誰が勝つか賭けましょう。
 - [1.0.132](https://github.com/sst/opencode/releases/tag/v1.0.132) またはそれ以下のバージョンを使用している場合、OpenCode のバグにより設定が正しく行われない可能性があります。
   - [修正 PR](https://github.com/sst/opencode/pull/5040) は 1.0.132 以降にマージされたため、新しいバージョンを使用してください。
-    - 余談：この PR も、OhMyOpenCode の Librarian、Explore、Oracle セットアップを活用して偶然発見され、修正されました。
+    - 余談：この PR も、OhMyOpenCode の Keeper、Mirana、Oracle セットアップを活用して偶然発見され、修正されました。
 
 ## こちらの企業の専門家にご愛用いただいています
 

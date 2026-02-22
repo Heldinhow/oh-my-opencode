@@ -291,7 +291,7 @@ describe("createSisyphusJuniorAgentWithOverrides", () => {
       const result = createSisyphusJuniorAgentWithOverrides(override)
 
       // then
-      expect(result.prompt).toContain("Sisyphus-Junior")
+      expect(result.prompt).toContain("Invoker-Junior")
       expect(result.prompt).toContain("You work ALONE")
     })
 

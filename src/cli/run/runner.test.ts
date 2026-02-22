@@ -12,11 +12,11 @@ describe("resolveRunAgent", () => {
   it("uses CLI agent over env and config", () => {
     // given
     const config = createConfig({ default_run_agent: "prometheus" })
-    const env = { OPENCODE_DEFAULT_AGENT: "Atlas" }
+    const env = { OPENCODE_DEFAULT_AGENT: "Axe" }
 
     // when
     const agent = resolveRunAgent(
-      { message: "test", agent: "Hephaestus" },
+      { message: "test", agent: "Enigma" },
       config,
       env
     )
@@ -28,7 +28,7 @@ describe("resolveRunAgent", () => {
   it("uses env agent over config", () => {
     // given
     const config = createConfig({ default_run_agent: "prometheus" })
-    const env = { OPENCODE_DEFAULT_AGENT: "Atlas" }
+    const env = { OPENCODE_DEFAULT_AGENT: "Axe" }
 
     // when
     const agent = resolveRunAgent({ message: "test" }, config, env)
@@ -39,7 +39,7 @@ describe("resolveRunAgent", () => {
 
   it("uses config agent over default", () => {
     // given
-    const config = createConfig({ default_run_agent: "Prometheus" })
+    const config = createConfig({ default_run_agent: "Tinker" })
 
     // when
     const agent = resolveRunAgent({ message: "test" }, config, {})

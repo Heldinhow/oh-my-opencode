@@ -10,7 +10,7 @@ plugin-handlers/
 ├── config-handler.ts                  # Main orchestrator (45 lines) — 6-phase loading
 ├── agent-config-handler.ts            # Agent loading pipeline (197 lines)
 ├── plan-model-inheritance.ts          # Plan demotion logic (28 lines)
-├── prometheus-agent-config-builder.ts # Prometheus config builder (99 lines)
+├── prometheus-agent-config-builder.ts # Tinker config builder (99 lines)
 ├── plugin-components-loader.ts        # Claude Code plugin discovery (71 lines, 10s timeout)
 ├── provider-config-handler.ts         # Provider config + model context limits cache
 ├── tool-config-handler.ts             # Permission migration (101 lines)
@@ -35,7 +35,7 @@ plugin-handlers/
 ## PLAN MODEL INHERITANCE
 
 When `sisyphus_agent.planner_enabled === true`:
-1. Prometheus config → extract model settings (model, variant, temperature, ...)
+1. Tinker config → extract model settings (model, variant, temperature, ...)
 2. Apply user `agents.plan` overrides (plan override wins)
 3. Set `mode: "subagent"` (plan becomes subagent, not primary)
 4. Strip prompt/permission/description (only model settings inherited)
@@ -43,9 +43,9 @@ When `sisyphus_agent.planner_enabled === true`:
 ## AGENT LOADING ORDER
 
 1. Builtin agents (sisyphus, hephaestus, oracle, ...)
-2. Sisyphus-Junior (if sisyphus enabled)
+2. Invoker-Junior (if sisyphus enabled)
 3. OpenCode-Builder (if `default_builder_enabled`)
-4. Prometheus (if `planner_enabled`)
+4. Tinker (if `planner_enabled`)
 5. User agents → Project agents → Plugin agents → Custom agents
 
 **Reordered** by `reorderAgentsByPriority()`: sisyphus, hephaestus, prometheus, atlas first.

@@ -57,7 +57,7 @@ export function createDelegateTask(options: DelegateTaskToolOptions): ToolDefini
 MUTUALLY EXCLUSIVE: Provide EITHER category OR subagent_type, not both (unless continuing a session).
 
 - load_skills: ALWAYS REQUIRED. Pass at least one skill name (e.g., ["playwright"], ["git-master", "frontend-ui-ux"]).
-- category: Use predefined category → Spawns Sisyphus-Junior with category config
+- category: Use predefined category → Spawns Invoker-Junior with category config
   Available categories:
 ${categoryList}
 - subagent_type: Use specific agent directly (e.g., "oracle", "explore")

@@ -65,7 +65,7 @@ Oh-My-OpenCode is a **plugin for OpenCode**. You will frequently need to examine
 
 3. **Clean up** when done (optional, temp dirs are ephemeral)
 
-### Librarian Agent: YOUR PRIMARY TOOL for Plugin Work
+### Keeper Agent: YOUR PRIMARY TOOL for Plugin Work
 
 **CRITICAL**: When working on plugin-related tasks or answering plugin questions:
 
@@ -216,17 +216,17 @@ OhMyOpenCodePlugin(ctx)
 
 | Agent | Model | Temp | Purpose |
 |-------|-------|------|---------|
-| Sisyphus | anthropic/claude-opus-4-6 | 0.1 | Primary orchestrator (fallback: kimi-k2.5 → glm-4.7 → gpt-5.3-codex → gemini-3-pro) |
-| Hephaestus | openai/gpt-5.3-codex | 0.1 | Autonomous deep worker (NO fallback) |
-| Atlas | anthropic/claude-sonnet-4-5 | 0.1 | Master orchestrator (fallback: kimi-k2.5 → gpt-5.2) |
-| Prometheus | anthropic/claude-opus-4-6 | 0.1 | Strategic planning (fallback: kimi-k2.5 → gpt-5.2) |
+| Invoker | anthropic/claude-opus-4-6 | 0.1 | Primary orchestrator (fallback: kimi-k2.5 → glm-4.7 → gpt-5.3-codex → gemini-3-pro) |
+| Enigma | openai/gpt-5.3-codex | 0.1 | Autonomous deep worker (NO fallback) |
+| Axe | anthropic/claude-sonnet-4-5 | 0.1 | Master orchestrator (fallback: kimi-k2.5 → gpt-5.2) |
+| Tinker | anthropic/claude-opus-4-6 | 0.1 | Strategic planning (fallback: kimi-k2.5 → gpt-5.2) |
 | oracle | openai/gpt-5.2 | 0.1 | Consultation, debugging (fallback: claude-opus-4-6) |
 | librarian | zai-coding-plan/glm-4.7 | 0.1 | Docs, GitHub search (fallback: glm-4.7-free) |
 | explore | xai/grok-code-fast-1 | 0.1 | Fast codebase grep (fallback: claude-haiku-4-5 → gpt-5-mini → gpt-5-nano) |
 | multimodal-looker | google/gemini-3-flash | 0.1 | PDF/image analysis |
 | Metis | anthropic/claude-opus-4-6 | 0.3 | Pre-planning analysis (fallback: kimi-k2.5 → gpt-5.2) |
 | Momus | openai/gpt-5.2 | 0.1 | Plan validation (fallback: claude-opus-4-6) |
-| Sisyphus-Junior | anthropic/claude-sonnet-4-5 | 0.1 | Category-spawned executor |
+| Invoker-Junior | anthropic/claude-sonnet-4-5 | 0.1 | Category-spawned executor |
 
 ## OPENCODE PLUGIN API
 

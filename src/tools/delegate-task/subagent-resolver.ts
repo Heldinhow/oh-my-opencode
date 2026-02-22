@@ -27,7 +27,7 @@ export async function resolveSubagentExecution(
       categoryModel: undefined,
       error: `Cannot use subagent_type="${SISYPHUS_JUNIOR_AGENT}" directly. Use category parameter instead (e.g., ${categoryExamples}).
 
-Sisyphus-Junior is spawned automatically when you specify a category. Pick the appropriate category for your task domain.`,
+Invoker-Junior is spawned automatically when you specify a category. Pick the appropriate category for your task domain.`,
     }
   }
 
