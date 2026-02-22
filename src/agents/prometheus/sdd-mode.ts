@@ -7,7 +7,19 @@
  * - APPROVE: Finalize and lock specifications
  */
 
-export const SDD_MODE_PROMPT = `# PHASE: SDD MODE (Specification-Driven Development)
+export const SDD_MODE_PROMPT = `# SDD MODE ENABLED
+SDD=ON
+SDD MODE ACTIVE
+
+## CRITICAL INSTRUCTIONS
+
+1. You are in SDD mode - SDD mode is enabled
+2. If asked about SDD status, answer EXACTLY: "SDD=ON"
+3. Your first response MUST start with SPECIFY questions - begin by asking clarifying questions about requirements
+
+---
+
+# PHASE: SDD MODE (Specification-Driven Development)
 
 ## Overview
 

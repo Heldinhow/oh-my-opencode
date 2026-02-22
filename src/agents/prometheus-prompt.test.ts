@@ -1,5 +1,5 @@
 import { describe, test, expect } from "bun:test"
-import { PROMETHEUS_SYSTEM_PROMPT } from "./prometheus"
+import { PROMETHEUS_SYSTEM_PROMPT, buildPrometheusSystemPrompt } from "./prometheus"
 
 describe("PROMETHEUS_SYSTEM_PROMPT Momus invocation policy", () => {
   test("should direct providing ONLY the file path string when invoking Momus", () => {
@@ -80,5 +80,22 @@ describe("PROMETHEUS_SYSTEM_PROMPT zero human intervention", () => {
     expect(lowerPrompt).toMatch(/every task has agent-executed qa scenarios/)
     expect(lowerPrompt).toMatch(/happy-path and negative/)
     expect(lowerPrompt).toMatch(/zero acceptance criteria require human/)
+  })
+})
+
+describe("PROMETHEUS_SYSTEM_PROMPT SDD Mode", () => {
+  test("should include explicit SDD=ON instruction when sddEnabled is true", () => {
+    //#given
+    const prompt = buildPrometheusSystemPrompt({ sddEnabled: true })
+
+    //#when / #then
+    // Must explicitly state SDD is enabled and in what mode
+    expect(prompt.toLowerCase()).toMatch(/sdd.*on|sdd.*mode.*active/)
+    // Must explicitly state being in SDD mode
+    expect(prompt.toLowerCase()).toMatch(/you are in sdd mode|sdd mode is enabled/)
+    // Must explicitly answer SDD=ON when asked
+    expect(prompt.toLowerCase()).toMatch(/answer.*sdd.*on|if asked.*sdd.*on/)
+    // First response must start with SPECIFY questions
+    expect(prompt.toLowerCase()).toMatch(/first response.*specify|start with specify/)
   })
 })
