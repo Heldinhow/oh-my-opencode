@@ -12,6 +12,7 @@ import { createModelCacheState } from "./plugin-state"
 import { createFirstMessageVariantGate } from "./shared/first-message-variant"
 import { injectServerAuthIntoClient, log } from "./shared"
 import { startTmuxCheck } from "./tools"
+import { bootstrapSpecKit } from "./features/speckit/bootstrap"
 
 const OhMyOpenCodePlugin: Plugin = async (ctx) => {
   log("[OhMyOpenCodePlugin] ENTRY - plugin loading", {
@@ -22,6 +23,7 @@ const OhMyOpenCodePlugin: Plugin = async (ctx) => {
   startTmuxCheck()
 
   const pluginConfig = loadPluginConfig(ctx.directory, ctx)
+  await bootstrapSpecKit(ctx.directory)
   const disabledHooks = new Set(pluginConfig.disabled_hooks ?? [])
 
   const isHookEnabled = (hookName: HookName): boolean => !disabledHooks.has(hookName)

@@ -11,6 +11,8 @@ import {
 } from "../../features/boulder-state"
 import { log } from "../../shared/logger"
 import { getSessionAgent, updateSessionAgent } from "../../features/claude-code-session-state"
+import { access } from "node:fs/promises"
+import { join } from "node:path"
 
 export const HOOK_NAME = "start-work" as const
 
@@ -23,6 +25,17 @@ interface StartWorkHookInput {
 
 interface StartWorkHookOutput {
   parts: Array<{ type: string; text?: string }>
+}
+
+async function resolveSpecKitTasksPath(projectRoot: string, planName: string): Promise<string | null> {
+  const relPath = `.specify/specs/${planName}/tasks.md`
+  const absPath = join(projectRoot, relPath)
+  try {
+    await access(absPath)
+    return relPath
+  } catch {
+    return null
+  }
 }
 
 function extractUserRequestPlanName(promptText: string): string | null {
@@ -103,6 +116,14 @@ All ${progress.total} tasks are done. Create a new plan with: /plan "your task"`
               clearBoulderState(ctx.directory)
             }
             const newState = createBoulderState(matchedPlan, sessionId, "atlas")
+            const tasksFilePath = await resolveSpecKitTasksPath(
+              ctx.directory,
+              getPlanName(matchedPlan)
+            )
+            if (tasksFilePath) {
+              newState.tasksFilePath = tasksFilePath
+              newState.useSpecKitTasks = true
+            }
             writeBoulderState(ctx.directory, newState)
             
             contextInfo = `
@@ -146,6 +167,20 @@ No incomplete plans available. Create a new plan with: /plan "your task"`
         
         if (!progress.isComplete) {
           appendSessionId(ctx.directory, sessionId)
+          if (!existingState.useSpecKitTasks) {
+            const tasksFilePath = await resolveSpecKitTasksPath(
+              ctx.directory,
+              existingState.plan_name
+            )
+            if (tasksFilePath) {
+              const updatedState = {
+                ...existingState,
+                tasksFilePath,
+                useSpecKitTasks: true,
+              }
+              writeBoulderState(ctx.directory, updatedState)
+            }
+          }
           contextInfo = `
 ## Active Work Session Found
 
@@ -188,6 +223,14 @@ All ${plans.length} plan(s) are complete. Create a new plan with: /plan "your ta
           const planPath = incompletePlans[0]
           const progress = getPlanProgress(planPath)
           const newState = createBoulderState(planPath, sessionId, "atlas")
+          const tasksFilePath = await resolveSpecKitTasksPath(
+            ctx.directory,
+            getPlanName(planPath)
+          )
+          if (tasksFilePath) {
+            newState.tasksFilePath = tasksFilePath
+            newState.useSpecKitTasks = true
+          }
           writeBoulderState(ctx.directory, newState)
 
           contextInfo += `

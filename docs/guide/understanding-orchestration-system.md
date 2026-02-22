@@ -341,7 +341,6 @@ task(
 
 | Before | After |
 |--------|-------|
-| Hardcoded: `frontend-ui-ux-engineer` (Gemini 3 Pro) | `category="visual-engineering" + load_skills=["frontend-ui-ux"]` |
 | One-size-fits-all | `category="visual-engineering" + load_skills=["unity-master"]` |
 | Model bias | Category-based: model abstraction eliminates bias |
 

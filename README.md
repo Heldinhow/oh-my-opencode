@@ -37,7 +37,7 @@
 
 </div>
 
-> This is coding on steroids—`oh-my-opencode` in action. Run background agents, call specialized agents like oracle, librarian, and frontend engineer. Use crafted LSP/AST tools, curated MCPs, and a full Claude Code compatibility layer.
+> This is coding on steroids—`oh-my-opencode` in action. Run background agents, call specialized agents like oracle and librarian. Use crafted LSP/AST tools, curated MCPs, and a full Claude Code compatibility layer.
 
 # Claude OAuth Access Notice
 
@@ -182,7 +182,6 @@ Meet our main agent: Sisyphus (Opus 4.5 High). Below are the tools Sisyphus uses
 - Sisyphus's Teammates (Curated Agents)
   - Hephaestus: Autonomous deep worker, goal-oriented execution (GPT 5.2 Codex Medium) — *The Legitimate Craftsman*
   - Oracle: Design, debugging (GPT 5.2 Medium)
-  - Frontend UI/UX Engineer: Frontend development (Gemini 3 Pro)
   - Librarian: Official docs, open source implementations, codebase exploration (Claude Sonnet 4.5)
   - Explore: Blazing fast codebase exploration (Contextual Grep) (Claude Haiku 4.5)
 - Full LSP / AstGrep Support: Refactor decisively.
@@ -205,7 +204,6 @@ Just by installing this, you make your agents to work like:
 
 1. Sisyphus doesn't waste time hunting for files himself; he keeps the main agent's context lean. Instead, he fires off background tasks to faster, cheaper models in parallel to map the territory for him.
 1. Sisyphus leverages LSP for refactoring; it's more deterministic, safer, and surgical.
-1. When the heavy lifting requires a UI touch, Sisyphus delegates frontend tasks directly to Gemini 3 Pro.
 1. If Sisyphus gets stuck in a loop or hits a wall, he doesn't keep banging his head—he calls GPT 5.2 for high-IQ strategic backup.
 1. Working with a complex open-source framework? Sisyphus spawns subagents to digest the raw source code and documentation in real-time. He operates with total contextual awareness.
 1. When Sisyphus touches comments, he either justifies their existence or nukes them. He keeps your codebase clean.

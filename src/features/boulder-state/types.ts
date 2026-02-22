@@ -16,6 +16,10 @@ export interface BoulderState {
   plan_name: string
   /** Agent type to use when resuming (e.g., 'atlas') */
   agent?: string
+  /** Optional path to spec-kit tasks file */
+  tasksFilePath?: string
+  /** Whether spec-kit tasks integration is enabled */
+  useSpecKitTasks?: boolean
 }
 
 export interface PlanProgress {

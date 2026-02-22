@@ -84,18 +84,14 @@ describe("PROMETHEUS_SYSTEM_PROMPT zero human intervention", () => {
 })
 
 describe("PROMETHEUS_SYSTEM_PROMPT SDD Mode", () => {
-  test("should include explicit SDD=ON instruction when sddEnabled is true", () => {
+  test("should include explicit SDD=ON instruction", () => {
     //#given
-    const prompt = buildPrometheusSystemPrompt({ sddEnabled: true })
+    const prompt = buildPrometheusSystemPrompt()
 
     //#when / #then
-    // Must explicitly state SDD is enabled and in what mode
     expect(prompt.toLowerCase()).toMatch(/sdd.*on|sdd.*mode.*active/)
-    // Must explicitly state being in SDD mode
     expect(prompt.toLowerCase()).toMatch(/you are in sdd mode|sdd mode is enabled/)
-    // Must explicitly answer SDD=ON when asked
     expect(prompt.toLowerCase()).toMatch(/answer.*sdd.*on|if asked.*sdd.*on/)
-    // First response must start with SPECIFY questions
     expect(prompt.toLowerCase()).toMatch(/first response.*specify|start with specify/)
   })
 })

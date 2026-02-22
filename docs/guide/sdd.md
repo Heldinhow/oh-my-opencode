@@ -39,7 +39,6 @@ SDD is disabled by default. To enable it, add the following to your configuratio
 // ~/.config/opencode/oh-my-opencode.jsonc
 {
   "sisyphus_agent": {
-    "sdd_enabled": true
   }
 }
 ```
@@ -48,7 +47,6 @@ SDD is disabled by default. To enable it, add the following to your configuratio
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `sdd_enabled` | boolean | `false` | Enable SDD workflow for Sisyphus |
 
 ---
 
@@ -58,7 +56,7 @@ SDD is disabled by default. To enable it, add the following to your configuratio
 
 **Goal**: Transform user intent into detailed, unambiguous specifications.
 
-When you describe a feature you want to build, Prometheus (the planner) will create a detailed specification file at `.sisyphus/specs/{feature-name}.md`.
+When you describe a feature you want to build, Prometheus (the planner) will create a detailed specification file at `.specify/specs/{feature-name}/spec.md`.
 
 Every specification includes:
 
@@ -113,7 +111,7 @@ This ensures no implementation begins without explicit specification approval.
 
 ## SDD State File
 
-Each plan has a state file at `.sisyphus/specs/{plan-name}/sdd-state.json`:
+Each plan has a state file at `.specify/specs/{plan-name}/sdd-state.json`:
 
 ```json
 {
@@ -146,7 +144,6 @@ Each plan has a state file at `.sisyphus/specs/{plan-name}/sdd-state.json`:
 {
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
   "sisyphus_agent": {
-    "sdd_enabled": true,
     "model": "anthropic/claude-opus-4-6"
   }
 }

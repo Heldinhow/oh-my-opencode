@@ -183,7 +183,6 @@ Hey please read this readme and tell me why it is different from other agent har
 - Sisyphus의 팀원 (큐레이팅된 에이전트)
   - Hephaestus: 자율적 딥 워커, 목표 지향 실행 (GPT 5.2 Codex Medium) — *합법적인 장인*
   - Oracle: 디자인, 디버깅 (GPT 5.2 Medium)
-  - Frontend UI/UX Engineer: 프론트엔드 개발 (Gemini 3 Pro)
   - Librarian: 공식 문서, 오픈 소스 구현, 코드베이스 탐색 (Claude Sonnet 4.5)
    - Explore: 엄청나게 빠른 코드베이스 탐색 (Contextual Grep) (Claude Haiku 4.5)
 - 완전한 LSP / AstGrep 지원: 결정적으로 리팩토링합니다.
@@ -206,7 +205,6 @@ Hey please read this readme and tell me why it is different from other agent har
 
 1. Sisyphus는 파일을 직접 찾는 데 시간을 낭비하지 않습니다. 메인 에이전트의 컨텍스트를 깔끔하게 유지합니다. 대신 병렬로 더 빠르고 저렴한 모델에 백그라운드 작업을 실행하여 지도를 매핑합니다.
 1. Sisyphus는 리팩토링을 위해 LSP를 활용합니다. 더 결정적이고 안전하며 정교합니다.
-1. 무거운 작업에 UI 터치가 필요할 때, Sisyphus는 프론트엔드 작업을 Gemini 3 Pro에 직접 위임합니다.
 1. Sisyphus가 루프에 갇히거나 벽에 부딪히면 머리를 계속 부딪히지 않습니다. GPT 5.2에 고지능 전략 백업을 요청합니다.
 1. 복잡한 오픈 소스 프레임워크를 작업하고 있나요? Sisyphus는 하위 에이전트를 생성하여 실시간으로 원시 소스 코드와 문서를 소화합니다. 완전한 컨텍스트 인식으로 작동합니다.
 1. Sisyphus가 주석을 다루면 존재를 정당화하거나 제거합니다. 코드베이스를 깔끔하게 유지합니다.

@@ -27,7 +27,6 @@ export async function buildPrometheusAgentConfig(params: {
   pluginPrometheusOverride: PrometheusOverride | undefined;
   userCategories: Record<string, CategoryConfig> | undefined;
   currentModel: string | undefined;
-  sddEnabled?: boolean;
 }): Promise<Record<string, unknown>> {
   const categoryConfig = params.pluginPrometheusOverride?.category
     ? resolveCategoryConfig(params.pluginPrometheusOverride.category, params.userCategories)
@@ -71,7 +70,7 @@ export async function buildPrometheusAgentConfig(params: {
     ...(resolvedModel ? { model: resolvedModel } : {}),
     ...(variantToUse ? { variant: variantToUse } : {}),
     mode: "all",
-    prompt: buildPrometheusSystemPrompt({ sddEnabled: params.sddEnabled }),
+    prompt: buildPrometheusSystemPrompt(),
     permission: PROMETHEUS_PERMISSION,
     description: `${(params.configAgentPlan?.description as string) ?? "Plan agent"} (Prometheus - OhMyOpenCode)`,
     color: (params.configAgentPlan?.color as string) ?? "#FF5722",

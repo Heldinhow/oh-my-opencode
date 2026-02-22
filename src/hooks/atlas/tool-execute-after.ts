@@ -1,5 +1,8 @@
 import type { PluginInput } from "@opencode-ai/plugin"
+import { readFile } from "node:fs/promises"
+import { join } from "node:path"
 import { appendSessionId, getPlanProgress, readBoulderState } from "../../features/boulder-state"
+import { allTasksDone, getTasksSummary, markTaskDone } from "../../features/speckit/tasks-parser"
 import { log } from "../../shared/logger"
 import { isCallerOrchestrator } from "../../shared/session-utils"
 import { collectGitDiffStats, formatFileChanges } from "../../shared/git-worktree"
@@ -10,6 +13,21 @@ import { extractSessionIdFromOutput } from "./subagent-session-id"
 import { buildOrchestratorReminder, buildStandaloneVerificationReminder } from "./verification-reminders"
 import { isWriteOrEditToolName } from "./write-edit-tool-policy"
 import type { ToolExecuteAfterInput, ToolExecuteAfterOutput } from "./types"
+
+function extractCheckedTaskIds(planContent: string): string[] {
+  const ids: string[] = []
+  const lines = planContent.split(/\r?\n/)
+  for (const line of lines) {
+    const match = line.match(/^\s*-\s*\[(x|X)\]\s*(.+)$/)
+    if (!match) continue
+    const description = match[2].trim()
+    const token = description.split(/\s+/)[0]
+    if (token && /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z0-9-]+$/.test(token)) {
+      ids.push(token)
+    }
+  }
+  return Array.from(new Set(ids))
+}
 
 export function createToolExecuteAfterHandler(input: {
   ctx: PluginInput
@@ -71,6 +89,26 @@ export function createToolExecuteAfterHandler(input: {
             sessionID: toolInput.sessionID,
             plan: boulderState.plan_name,
           })
+        }
+
+        if (boulderState.useSpecKitTasks && boulderState.tasksFilePath) {
+          try {
+            const planContent = await readFile(boulderState.active_plan, "utf8")
+            const checkedIds = extractCheckedTaskIds(planContent)
+            const tasksPath = join(ctx.directory, boulderState.tasksFilePath)
+
+            for (const id of checkedIds) {
+              await markTaskDone(tasksPath, id)
+            }
+
+            if (await allTasksDone(tasksPath)) {
+              const summary = await getTasksSummary(tasksPath)
+              console.log(`\n✅ ${summary}`)
+              console.log(`📋 tasks.md atualizado: ${boulderState.tasksFilePath}`)
+            }
+          } catch (error) {
+            log(`[${HOOK_NAME}] Spec-kit tasks update failed`, { error })
+          }
         }
 
         // Preserve original subagent response - critical for debugging failed tasks
