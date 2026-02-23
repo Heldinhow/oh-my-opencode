@@ -7,6 +7,37 @@
 
 import { SDD_MODE_PROMPT } from "./sdd-mode"
 
+export interface ClarifyEvaluation {
+  required: boolean
+  score: number
+  reasons: string[]
+}
+
+const CLARIFY_SIGNAL_PATTERNS: Array<{ pattern: RegExp; reason: string; score: number }> = [
+  { pattern: /\[NEEDS CLARIFICATION[:\]]/i, reason: "has-needs-clarification-marker", score: 3 },
+  { pattern: /\bTBD\b/i, reason: "has-tbd", score: 2 },
+  { pattern: /\bTODO\b/i, reason: "has-todo", score: 1 },
+  { pattern: /\bambiguous\b/i, reason: "mentions-ambiguity", score: 1 },
+  { pattern: /\bunclear\b/i, reason: "mentions-unclear", score: 1 },
+]
+
+export function evaluateClarifyNeed(specContent: string, threshold = 3): ClarifyEvaluation {
+  let score = 0
+  const reasons: string[] = []
+
+  for (const signal of CLARIFY_SIGNAL_PATTERNS) {
+    if (!signal.pattern.test(specContent)) continue
+    score += signal.score
+    reasons.push(signal.reason)
+  }
+
+  return {
+    required: score >= threshold,
+    score,
+    reasons,
+  }
+}
+
 /**
  * Builds the interview mode prompt with SDD workflow prepended.
  */

@@ -110,6 +110,7 @@ Yes, technically possible. But I cannot recommend using it.
 ## Contents
 
 - [Oh My OpenCode](#oh-my-opencode)
+  - [Fork Improvements (SDD Migration)](#fork-improvements-sdd-migration)
   - [Just Skip Reading This Readme](#just-skip-reading-this-readme)
     - [It's the Age of Agents](#its-the-age-of-agents)
     - [🪄 The Magic Word: `ultrawork`](#-the-magic-word-ultrawork)
@@ -147,6 +148,55 @@ If you love coding and computers, OpenCode is that Linux-after-Windows moment.
 I've fixed that.
 Even if you're not a hacker, invest a few minutes. Multiply your skills and productivity.
 Hand this doc to an agent and let them set it up.
+
+## Fork Improvements (SDD Migration)
+
+This fork includes a migration focused on SDD workflow quality, consistency, and maintainability.
+
+### Implemented improvements
+
+- Standardized planning/state workflow under `.specify/` as the canonical workspace.
+- Removed legacy planning/state path conventions to reduce ambiguity.
+- Aligned schema, runtime, hooks, and tests to a single naming convention.
+- Renamed and consolidated planning-related hooks for clearer responsibility boundaries.
+- Updated start-work flow to discover and resume plans from `.specify/plans/`.
+- Refreshed documentation, examples, and generated schema to match the migrated behavior.
+- Reduced heavy prompt injection in planning flows to keep prompts lighter and easier to follow.
+
+### Tinker planning flow (SDD / Speckit)
+
+Planning now follows a Speckit-style SDD flow under `.specify/`:
+
+1. `clarify` requirements and constraints.
+2. `specify` scope and acceptance criteria.
+3. `plan` implementation sequence and verification.
+4. `tasks` with executable checklist granularity.
+5. `implement` with start-work execution.
+
+Primary paths:
+- `.specify/plans/`
+- `.specify/drafts/`
+- `.specify/specs/`
+- `.specify/tasks/`
+
+### Planning prompt template (light)
+
+Use this when asking Tinker to create a plan:
+
+```md
+Create an SDD plan using Speckit flow.
+
+Requirements:
+- Keep instructions concise and actionable.
+- Use `.specify/` paths only.
+- Generate: clarify -> specify -> plan -> tasks.
+- Include explicit verification commands and pass/fail criteria.
+- Avoid verbose system-style prompt injection.
+```
+
+### Operational impact
+
+If you are upgrading from an older setup, migrate planning/state files and related configuration to `.specify/`.
 
 ## Just Skip Reading This Readme
 
@@ -299,7 +349,7 @@ We have lots of features that you'll think should obviously exist, and once you 
 See the full [Features Documentation](docs/features.md) for detailed information.
 
 **Quick Overview:**
-- **Agents**: Invoker (the main agent), Tinker (planner), Oracle (architecture/debugging), Keeper (docs/code search), Mirana (fast codebase grep), Multimodal Looker
+- **Agents**: Invoker (main orchestrator), Enigma (autonomous deep worker), Tinker (planner), Axe (execution orchestrator), Rubick (plan consultant), Clockwerk (plan reviewer), Oracle (architecture/debugging), Keeper (docs/code search), Mirana (fast codebase grep), Broodmother (multimodal)
 - **Background Agents**: Run multiple agents in parallel like a real dev team
 - **LSP & AST Tools**: Refactoring, rename, diagnostics, AST-aware code search
 - **Context Injection**: Auto-inject AGENTS.md, README.md, conditional rules
@@ -318,7 +368,8 @@ See the full [Configuration Documentation](docs/configurations.md) for detailed 
 - **JSONC Support**: Comments and trailing commas supported
 - **Agents**: Override models, temperatures, prompts, and permissions for any agent
 - **Built-in Skills**: `playwright` (browser automation), `git-master` (atomic commits)
-- **Invoker Agent**: Main orchestrator with Tinker (Planner) and Rubick (Plan Consultant)
+- **Planning**: Tinker uses SDD Speckit flow and writes planning artifacts under `.specify/`
+- **Invoker Agent**: Main orchestrator with Tinker (planner), Rubick (plan consultant), and Clockwerk (plan reviewer)
 - **Background Tasks**: Configure concurrency limits per provider/model
 - **Categories**: Domain-specific task delegation (`visual`, `business-logic`, custom)
 - **Hooks**: 25+ built-in hooks, all configurable via `disabled_hooks`

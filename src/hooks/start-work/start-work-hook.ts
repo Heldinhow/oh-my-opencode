@@ -11,7 +11,7 @@ import {
 } from "../../features/boulder-state"
 import { log } from "../../shared/logger"
 import { getSessionAgent, updateSessionAgent } from "../../features/claude-code-session-state"
-import { access } from "node:fs/promises"
+import { access, readdir, readFile } from "node:fs/promises"
 import { join } from "node:path"
 
 export const HOOK_NAME = "start-work" as const
@@ -27,12 +27,76 @@ interface StartWorkHookOutput {
   parts: Array<{ type: string; text?: string }>
 }
 
+interface ChecklistSummary {
+  total: number
+  completed: number
+  incomplete: number
+}
+
 async function resolveSpecKitTasksPath(projectRoot: string, planName: string): Promise<string | null> {
-  const relPath = `.specify/specs/${planName}/tasks.md`
-  const absPath = join(projectRoot, relPath)
+  const directRelPath = `.specify/specs/${planName}/tasks.md`
+  const directAbsPath = join(projectRoot, directRelPath)
   try {
+    await access(directAbsPath)
+    return directRelPath
+  } catch {
+  }
+
+  const sequenceMatch = planName.match(/^([a-z]+\/)?([0-9]{3})-/)
+  if (!sequenceMatch) {
+    return null
+  }
+
+  const prefix = sequenceMatch[2]
+  const specsRoot = join(projectRoot, ".specify/specs")
+
+  try {
+    const entries = await readdir(specsRoot, { withFileTypes: true })
+    const candidate = entries.find((entry) => entry.isDirectory() && entry.name.startsWith(`${prefix}-`))
+    if (!candidate) return null
+
+    const relPath = `.specify/specs/${candidate.name}/tasks.md`
+    const absPath = join(projectRoot, relPath)
     await access(absPath)
     return relPath
+  } catch {
+    return null
+  }
+}
+
+async function getChecklistSummary(projectRoot: string, planName: string): Promise<ChecklistSummary | null> {
+  const sequenceMatch = planName.match(/^([a-z]+\/)?([0-9]{3})-/)
+  if (!sequenceMatch) return null
+
+  const specsRoot = join(projectRoot, ".specify/specs")
+  const prefix = sequenceMatch[2]
+
+  try {
+    const entries = await readdir(specsRoot, { withFileTypes: true })
+    const featureDir = entries.find((entry) => entry.isDirectory() && entry.name.startsWith(`${prefix}-`))
+    if (!featureDir) return null
+
+    const checklistRoot = join(specsRoot, featureDir.name, "checklists")
+    const checklistEntries = await readdir(checklistRoot, { withFileTypes: true })
+    const files = checklistEntries.filter((entry) => entry.isFile() && entry.name.endsWith(".md"))
+    if (files.length === 0) return null
+
+    let total = 0
+    let completed = 0
+    let incomplete = 0
+
+    for (const file of files) {
+      const content = await readFile(join(checklistRoot, file.name), "utf8")
+      const allMatches = content.match(/^- \[( |x|X)\]/gm) ?? []
+      const completeMatches = content.match(/^- \[(x|X)\]/gm) ?? []
+      const incompleteMatches = content.match(/^- \[ \]/gm) ?? []
+
+      total += allMatches.length
+      completed += completeMatches.length
+      incomplete += incompleteMatches.length
+    }
+
+    return { total, completed, incomplete }
   } catch {
     return null
   }
@@ -120,13 +184,31 @@ All ${progress.total} tasks are done. Create a new plan with: /plan "your task"`
               ctx.directory,
               getPlanName(matchedPlan)
             )
-            if (tasksFilePath) {
+            if (!tasksFilePath) {
+              contextInfo = `
+## Readiness Blocked
+
+Missing tasks.md for plan "${getPlanName(matchedPlan)}".
+Run /speckit.tasks first, then retry /start-work.`
+            } else {
               newState.tasksFilePath = tasksFilePath
               newState.useSpecKitTasks = true
-            }
-            writeBoulderState(ctx.directory, newState)
-            
-            contextInfo = `
+              newState.readinessDecision = "proceed"
+
+              const checklist = await getChecklistSummary(ctx.directory, getPlanName(matchedPlan))
+              if (checklist && checklist.incomplete > 0) {
+                newState.readinessDecision = "block"
+                newState.checklistProgress = `${checklist.completed}/${checklist.total}`
+                contextInfo = `
+## Readiness Checklists Incomplete
+
+Plan: ${getPlanName(matchedPlan)}
+Checklist progress: ${checklist.completed}/${checklist.total} complete (${checklist.incomplete} incomplete)
+
+Some checklists are incomplete. Ask the user if they want to proceed anyway.`
+              } else {
+                writeBoulderState(ctx.directory, newState)
+                contextInfo = `
 ## Auto-Selected Plan
 
 **Plan**: ${getPlanName(matchedPlan)}
@@ -136,6 +218,8 @@ All ${progress.total} tasks are done. Create a new plan with: /plan "your task"`
 **Started**: ${timestamp}
 
 boulder.json has been created. Read the plan and begin execution.`
+              }
+            }
           }
         } else {
           const incompletePlans = allPlans.filter(p => !getPlanProgress(p).isComplete)
@@ -172,16 +256,37 @@ No incomplete plans available. Create a new plan with: /plan "your task"`
               ctx.directory,
               existingState.plan_name
             )
-            if (tasksFilePath) {
+            if (!tasksFilePath) {
+              contextInfo = `
+## Readiness Blocked
+
+Missing tasks.md for plan "${existingState.plan_name}".
+Run /speckit.tasks first, then retry /start-work.`
+            } else {
               const updatedState = {
                 ...existingState,
                 tasksFilePath,
                 useSpecKitTasks: true,
+                readinessDecision: "proceed" as "proceed" | "block",
               }
-              writeBoulderState(ctx.directory, updatedState)
+              const checklist = await getChecklistSummary(ctx.directory, existingState.plan_name)
+              if (checklist && checklist.incomplete > 0) {
+                updatedState.readinessDecision = "block"
+                updatedState.checklistProgress = `${checklist.completed}/${checklist.total}`
+                contextInfo = `
+## Readiness Checklists Incomplete
+
+Plan: ${existingState.plan_name}
+Checklist progress: ${checklist.completed}/${checklist.total} complete (${checklist.incomplete} incomplete)
+
+Some checklists are incomplete. Ask the user if they want to proceed anyway.`
+              } else {
+                writeBoulderState(ctx.directory, updatedState)
+              }
             }
           }
-          contextInfo = `
+          if (!contextInfo) {
+            contextInfo = `
 ## Active Work Session Found
 
 **Status**: RESUMING existing work
@@ -193,6 +298,7 @@ No incomplete plans available. Create a new plan with: /plan "your task"`
 
 The current session (${sessionId}) has been added to session_ids.
 Read the plan file and continue from the first unchecked task.`
+          }
         } else {
           contextInfo = `
 ## Previous Work Complete
@@ -227,13 +333,33 @@ All ${plans.length} plan(s) are complete. Create a new plan with: /plan "your ta
             ctx.directory,
             getPlanName(planPath)
           )
-          if (tasksFilePath) {
+          if (!tasksFilePath) {
+            contextInfo += `
+
+## Readiness Blocked
+
+Missing tasks.md for plan "${getPlanName(planPath)}".
+Run /speckit.tasks first, then retry /start-work.`
+          } else {
             newState.tasksFilePath = tasksFilePath
             newState.useSpecKitTasks = true
-          }
-          writeBoulderState(ctx.directory, newState)
+            newState.readinessDecision = "proceed"
+            const checklist = await getChecklistSummary(ctx.directory, getPlanName(planPath))
+            if (checklist && checklist.incomplete > 0) {
+              newState.readinessDecision = "block"
+              newState.checklistProgress = `${checklist.completed}/${checklist.total}`
+              contextInfo += `
 
-          contextInfo += `
+## Readiness Checklists Incomplete
+
+Plan: ${getPlanName(planPath)}
+Checklist progress: ${checklist.completed}/${checklist.total} complete (${checklist.incomplete} incomplete)
+
+Some checklists are incomplete. Ask the user if they want to proceed anyway.`
+            } else {
+              writeBoulderState(ctx.directory, newState)
+
+              contextInfo += `
 
 ## Auto-Selected Plan
 
@@ -244,6 +370,8 @@ All ${plans.length} plan(s) are complete. Create a new plan with: /plan "your ta
 **Started**: ${timestamp}
 
 boulder.json has been created. Read the plan and begin execution.`
+            }
+          }
         } else {
           const planList = incompletePlans.map((p, i) => {
             const progress = getPlanProgress(p)

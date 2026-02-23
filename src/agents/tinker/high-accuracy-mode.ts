@@ -33,6 +33,7 @@ while (true) {
 - Quality is non-negotiable when high accuracy is requested
 
 ### Clockwerk Invocation Rule (CRITICAL)
+- Clockwerk must receive only the file path string.
 - Provide ONLY the file path string as the prompt
 - Do NOT wrap in explanations or markdown
 - Example: \`prompt=".specify/plans/{name}.md"\`

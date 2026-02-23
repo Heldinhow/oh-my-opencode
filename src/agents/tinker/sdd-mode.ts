@@ -1,5 +1,23 @@
 import { access, mkdir, writeFile } from "node:fs/promises"
 import { dirname, join } from "node:path"
+import { classifyPrefixFromContext } from "../../shared/branch-governance"
+
+export const CANONICAL_SDD_SEQUENCE = ["constitution", "specify", "clarify", "plan", "start-work"] as const
+
+export function getCanonicalSddSequence(): readonly string[] {
+  return CANONICAL_SDD_SEQUENCE
+}
+
+export function detectSddBranchPrefix(request: string): {
+  prefix: string
+  requiresConfirmation: boolean
+} {
+  const result = classifyPrefixFromContext(request)
+  return {
+    prefix: result.detectedPrefix ?? "feat",
+    requiresConfirmation: result.requiresUserConfirmation,
+  }
+}
 
 /**
  * Tinker SDD Mode (Specification-Driven Development)

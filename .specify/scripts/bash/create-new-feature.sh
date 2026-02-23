@@ -5,6 +5,7 @@ set -e
 JSON_MODE=false
 SHORT_NAME=""
 BRANCH_NUMBER=""
+BRANCH_PREFIX=""
 ARGS=()
 i=1
 while [ $i -le $# ]; do
@@ -40,13 +41,27 @@ while [ $i -le $# ]; do
             fi
             BRANCH_NUMBER="$next_arg"
             ;;
+        --prefix)
+            if [ $((i + 1)) -gt $# ]; then
+                echo 'Error: --prefix requires a value' >&2
+                exit 1
+            fi
+            i=$((i + 1))
+            next_arg="${!i}"
+            if [[ "$next_arg" == --* ]]; then
+                echo 'Error: --prefix requires a value' >&2
+                exit 1
+            fi
+            BRANCH_PREFIX="$next_arg"
+            ;;
         --help|-h) 
-            echo "Usage: $0 [--json] [--short-name <name>] [--number N] <feature_description>"
+            echo "Usage: $0 [--json] [--short-name <name>] [--number N] [--prefix <value>] <feature_description>"
             echo ""
             echo "Options:"
             echo "  --json              Output in JSON format"
             echo "  --short-name <name> Provide a custom short name (2-4 words) for the branch"
             echo "  --number N          Specify branch number manually (overrides auto-detection)"
+            echo "  --prefix <value>    Specify branch prefix (feat|fix|test|docs|chore|refactor|perf|ci)"
             echo "  --help, -h          Show this help message"
             echo ""
             echo "Examples:"
@@ -112,9 +127,8 @@ get_highest_from_branches() {
             # Clean branch name: remove leading markers and remote prefixes
             clean_branch=$(echo "$branch" | sed 's/^[* ]*//; s|^remotes/[^/]*/||')
             
-            # Extract feature number if branch matches pattern ###-*
-            if echo "$clean_branch" | grep -q '^[0-9]\{3\}-'; then
-                number=$(echo "$clean_branch" | grep -o '^[0-9]\{3\}' || echo "0")
+            if echo "$clean_branch" | grep -qE '^([a-z]+/)?[0-9]{3}-'; then
+                number=$(echo "$clean_branch" | sed -E 's|^([a-z]+/)?([0-9]{3})-.*|\2|' || echo "0")
                 number=$((10#$number))
                 if [ "$number" -gt "$highest" ]; then
                     highest=$number
@@ -147,6 +161,57 @@ check_existing_branches() {
 
     # Return next number
     echo $((max_num + 1))
+}
+
+detect_branch_prefix() {
+    local description="$1"
+    local lowered
+    lowered=$(echo "$description" | tr '[:upper:]' '[:lower:]')
+
+    if echo "$lowered" | grep -qE '\b(fix|bug|hotfix|erro)\b'; then
+        echo "fix"
+        return
+    fi
+
+    if echo "$lowered" | grep -qE '\b(test|tests|spec|coverage)\b'; then
+        echo "test"
+        return
+    fi
+
+    if echo "$lowered" | grep -qE '\b(doc|docs|documentation|readme|changelog)\b'; then
+        echo "docs"
+        return
+    fi
+
+    if echo "$lowered" | grep -qE '\b(refactor|cleanup|restructure)\b'; then
+        echo "refactor"
+        return
+    fi
+
+    if echo "$lowered" | grep -qE '\b(perf|performance|optimiz)\b'; then
+        echo "perf"
+        return
+    fi
+
+    if echo "$lowered" | grep -qE '\b(ci|workflow|pipeline|github actions)\b'; then
+        echo "ci"
+        return
+    fi
+
+    if echo "$lowered" | grep -qE '\b(chore|maintenance|dependency|upgrade)\b'; then
+        echo "chore"
+        return
+    fi
+
+    echo "feat"
+}
+
+validate_branch_prefix() {
+    local prefix="$1"
+    case "$prefix" in
+        feat|fix|test|docs|chore|refactor|perf|ci) return 0 ;;
+        *) return 1 ;;
+    esac
 }
 
 # Function to clean and format a branch name
@@ -234,6 +299,15 @@ else
     BRANCH_SUFFIX=$(generate_branch_name "$FEATURE_DESCRIPTION")
 fi
 
+if [ -z "$BRANCH_PREFIX" ]; then
+    BRANCH_PREFIX=$(detect_branch_prefix "$FEATURE_DESCRIPTION")
+fi
+
+if ! validate_branch_prefix "$BRANCH_PREFIX"; then
+    echo "Error: Invalid prefix '$BRANCH_PREFIX'. Allowed: feat, fix, test, docs, chore, refactor, perf, ci" >&2
+    exit 1
+fi
+
 # Determine branch number
 if [ -z "$BRANCH_NUMBER" ]; then
     if [ "$HAS_GIT" = true ]; then
@@ -248,15 +322,15 @@ fi
 
 # Force base-10 interpretation to prevent octal conversion (e.g., 010 → 8 in octal, but should be 10 in decimal)
 FEATURE_NUM=$(printf "%03d" "$((10#$BRANCH_NUMBER))")
-BRANCH_NAME="${FEATURE_NUM}-${BRANCH_SUFFIX}"
+BRANCH_BASE_NAME="${FEATURE_NUM}-${BRANCH_SUFFIX}"
+BRANCH_NAME="${BRANCH_PREFIX}/${BRANCH_BASE_NAME}"
 
 # GitHub enforces a 244-byte limit on branch names
 # Validate and truncate if necessary
 MAX_BRANCH_LENGTH=244
 if [ ${#BRANCH_NAME} -gt $MAX_BRANCH_LENGTH ]; then
     # Calculate how much we need to trim from suffix
-    # Account for: feature number (3) + hyphen (1) = 4 chars
-    MAX_SUFFIX_LENGTH=$((MAX_BRANCH_LENGTH - 4))
+    MAX_SUFFIX_LENGTH=$((MAX_BRANCH_LENGTH - ${#BRANCH_PREFIX} - 5))
     
     # Truncate suffix at word boundary if possible
     TRUNCATED_SUFFIX=$(echo "$BRANCH_SUFFIX" | cut -c1-$MAX_SUFFIX_LENGTH)
@@ -264,7 +338,8 @@ if [ ${#BRANCH_NAME} -gt $MAX_BRANCH_LENGTH ]; then
     TRUNCATED_SUFFIX=$(echo "$TRUNCATED_SUFFIX" | sed 's/-$//')
     
     ORIGINAL_BRANCH_NAME="$BRANCH_NAME"
-    BRANCH_NAME="${FEATURE_NUM}-${TRUNCATED_SUFFIX}"
+    BRANCH_BASE_NAME="${FEATURE_NUM}-${TRUNCATED_SUFFIX}"
+    BRANCH_NAME="${BRANCH_PREFIX}/${BRANCH_BASE_NAME}"
     
     >&2 echo "[specify] Warning: Branch name exceeded GitHub's 244-byte limit"
     >&2 echo "[specify] Original: $ORIGINAL_BRANCH_NAME (${#ORIGINAL_BRANCH_NAME} bytes)"
@@ -277,7 +352,7 @@ else
     >&2 echo "[specify] Warning: Git repository not detected; skipped branch creation for $BRANCH_NAME"
 fi
 
-FEATURE_DIR="$SPECS_DIR/$BRANCH_NAME"
+FEATURE_DIR="$SPECS_DIR/$BRANCH_BASE_NAME"
 mkdir -p "$FEATURE_DIR"
 
 TEMPLATE="$REPO_ROOT/.specify/templates/spec-template.md"
@@ -288,10 +363,11 @@ if [ -f "$TEMPLATE" ]; then cp "$TEMPLATE" "$SPEC_FILE"; else touch "$SPEC_FILE"
 export SPECIFY_FEATURE="$BRANCH_NAME"
 
 if $JSON_MODE; then
-    printf '{"BRANCH_NAME":"%s","SPEC_FILE":"%s","FEATURE_NUM":"%s"}\n' "$BRANCH_NAME" "$SPEC_FILE" "$FEATURE_NUM"
+    printf '{"BRANCH_NAME":"%s","SPEC_FILE":"%s","FEATURE_NUM":"%s","FEATURE_DIR":"%s","PREFIX":"%s"}\n' "$BRANCH_NAME" "$SPEC_FILE" "$FEATURE_NUM" "$FEATURE_DIR" "$BRANCH_PREFIX"
 else
     echo "BRANCH_NAME: $BRANCH_NAME"
     echo "SPEC_FILE: $SPEC_FILE"
     echo "FEATURE_NUM: $FEATURE_NUM"
+    echo "PREFIX: $BRANCH_PREFIX"
     echo "SPECIFY_FEATURE environment variable set to: $BRANCH_NAME"
 fi

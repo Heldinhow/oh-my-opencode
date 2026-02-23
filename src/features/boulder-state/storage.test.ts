@@ -9,6 +9,7 @@ import {
   clearBoulderState,
   getPlanProgress,
   getPlanName,
+  getFeatureSequenceFromBranch,
   createBoulderState,
   findTinkerPlans,
 } from "./storage"
@@ -317,6 +318,23 @@ describe("boulder-state", () => {
       const name = getPlanName(path)
       // then
       expect(name).toBe("my-feature")
+    })
+  })
+
+  describe("getFeatureSequenceFromBranch", () => {
+    test("should parse legacy branch format", () => {
+      const sequence = getFeatureSequenceFromBranch("001-align-sdd-speckit-flow")
+      expect(sequence).toBe(1)
+    })
+
+    test("should parse prefixed branch format", () => {
+      const sequence = getFeatureSequenceFromBranch("fix/012-branch-prefix-bug")
+      expect(sequence).toBe(12)
+    })
+
+    test("should return null for invalid branch format", () => {
+      const sequence = getFeatureSequenceFromBranch("main")
+      expect(sequence).toBeNull()
     })
   })
 

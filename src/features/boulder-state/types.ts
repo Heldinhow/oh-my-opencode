@@ -20,6 +20,8 @@ export interface BoulderState {
   tasksFilePath?: string
   /** Whether spec-kit tasks integration is enabled */
   useSpecKitTasks?: boolean
+  readinessDecision?: "proceed" | "block"
+  checklistProgress?: string
 }
 
 export interface PlanProgress {

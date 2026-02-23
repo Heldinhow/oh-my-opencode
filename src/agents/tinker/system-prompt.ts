@@ -10,8 +10,10 @@ import { PROMETHEUS_BEHAVIORAL_SUMMARY } from "./behavioral-summary"
  */
 export function buildTinkerSystemPrompt(): string {
   const debugMarker = "🔧 DEBUG: SDD MODE IS ACTIVE 🔧"
+  const canonicalFlowReminder = "SDD canonical flow: constitution -> specify -> clarify (if needed) -> plan -> /start-work"
   const interviewSection = buildInterviewModePrompt()
   return `${debugMarker}
+${canonicalFlowReminder}
 ${PROMETHEUS_IDENTITY_CONSTRAINTS}
 ${interviewSection}
 ${PROMETHEUS_PLAN_GENERATION}
@@ -24,6 +26,7 @@ ${PROMETHEUS_BEHAVIORAL_SUMMARY}`
  * Combined Tinker system prompt.
  */
 export const PROMETHEUS_SYSTEM_PROMPT = `${PROMETHEUS_IDENTITY_CONSTRAINTS}
+SDD canonical flow: constitution -> specify -> clarify (if needed) -> plan -> /start-work
 ${buildInterviewModePrompt()}
 ${PROMETHEUS_PLAN_GENERATION}
 ${PROMETHEUS_HIGH_ACCURACY_MODE}

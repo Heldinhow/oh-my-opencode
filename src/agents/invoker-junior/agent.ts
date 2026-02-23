@@ -28,7 +28,7 @@ const MODE: AgentMode = "subagent"
 const BLOCKED_TOOLS = ["task"]
 
 export const INVOKER_JUNIOR_DEFAULTS = {
-  model: "anthropic/claude-sonnet-4-5",
+  model: "minimax/MiniMax-M2.5",
   temperature: 0.1,
 } as const
 

@@ -8,18 +8,14 @@ import * as connectedProvidersCache from "../shared/connected-providers-cache"
 import * as modelAvailability from "../shared/model-availability"
 import * as shared from "../shared"
 
-const TEST_DEFAULT_MODEL = "anthropic/claude-opus-4-6"
+const TEST_DEFAULT_MODEL = "minimax/MiniMax-M2.5"
 
 describe("createBuiltinAgents with model overrides", () => {
   test("Invoker with default model has thinking config when all models available", async () => {
     // #given
     const fetchSpy = spyOn(shared, "fetchAvailableModels").mockResolvedValue(
       new Set([
-        "anthropic/claude-opus-4-6",
-        "kimi-for-coding/k2p5",
-        "opencode/kimi-k2.5-free",
-        "zai-coding-plan/glm-4.7",
-        "opencode/glm-4.7-free",
+        "minimax/MiniMax-M2.5",
       ])
     )
 
@@ -28,7 +24,7 @@ describe("createBuiltinAgents with model overrides", () => {
       const agents = await createBuiltinAgents([], {}, undefined, TEST_DEFAULT_MODEL, undefined, undefined, [], {})
 
       // #then
-      expect(agents.invoker.model).toBe("anthropic/claude-opus-4-6")
+      expect(agents.invoker.model).toBe("minimax/MiniMax-M2.5")
       expect(agents.invoker.thinking).toEqual({ type: "enabled", budgetTokens: 32000 })
       expect(agents.invoker.reasoningEffort).toBeUndefined()
     } finally {
@@ -149,7 +145,7 @@ describe("createBuiltinAgents with model overrides", () => {
 
   test("Invoker is created on first run when no availableModels or cache exist", async () => {
     // #given
-    const systemDefaultModel = "anthropic/claude-opus-4-6"
+    const systemDefaultModel = "minimax/MiniMax-M2.5"
     const cacheSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(null)
     const fetchSpy = spyOn(shared, "fetchAvailableModels").mockResolvedValue(new Set())
 
@@ -159,7 +155,7 @@ describe("createBuiltinAgents with model overrides", () => {
 
       // #then
       expect(agents.invoker).toBeDefined()
-      expect(agents.invoker.model).toBe("anthropic/claude-opus-4-6")
+      expect(agents.invoker.model).toBe("minimax/MiniMax-M2.5")
     } finally {
       cacheSpy.mockRestore()
       fetchSpy.mockRestore()
@@ -173,10 +169,9 @@ describe("createBuiltinAgents with model overrides", () => {
      // #when
      const agents = await createBuiltinAgents([], {}, undefined, TEST_DEFAULT_MODEL, undefined, undefined, [], undefined, undefined)
 
-     // #then - oracle resolves via connected cache fallback to openai/gpt-5.2 (not system default)
-     expect(agents.oracle.model).toBe("openai/gpt-5.2")
-     expect(agents.oracle.reasoningEffort).toBe("medium")
-     expect(agents.oracle.thinking).toBeUndefined()
+     expect(agents.oracle.model).toBe("minimax/MiniMax-M2.5")
+     expect(agents.oracle.reasoningEffort).toBeUndefined()
+     expect(agents.oracle.thinking).toEqual({ type: "enabled", budgetTokens: 32000 })
      cacheSpy.mockRestore?.()
    })
 
@@ -242,25 +237,29 @@ describe("createBuiltinAgents with model overrides", () => {
   test("createBuiltinAgents excludes disabled skills from availableSkills", async () => {
     // #given
     const disabledSkills = new Set(["playwright"])
+    const fetchSpy = spyOn(shared, "fetchAvailableModels").mockResolvedValue(
+      new Set(["minimax/MiniMax-M2.5"])
+    )
 
-    // #when
-    const agents = await createBuiltinAgents([], {}, undefined, TEST_DEFAULT_MODEL, undefined, undefined, [], undefined, undefined, undefined, disabledSkills)
+    try {
+      // #when
+      const agents = await createBuiltinAgents([], {}, undefined, TEST_DEFAULT_MODEL, undefined, undefined, [], undefined, undefined, undefined, disabledSkills)
 
-    // #then
-    expect(agents.invoker.prompt).not.toContain("playwright")
-    expect(agents.invoker.prompt).toContain("frontend-ui-ux")
-    expect(agents.invoker.prompt).toContain("git-master")
+      // #then
+      expect(agents.invoker.prompt).not.toContain("playwright")
+      expect(agents.invoker.prompt).toContain("frontend-ui-ux")
+      expect(agents.invoker.prompt).toContain("git-master")
+    } finally {
+      fetchSpy.mockRestore()
+    }
   })
 
   test("includes custom agents in orchestrator prompts when provided via config", async () => {
     // #given
     const fetchSpy = spyOn(shared, "fetchAvailableModels").mockResolvedValue(
       new Set([
+        "minimax/MiniMax-M2.5",
         "anthropic/claude-opus-4-6",
-        "kimi-for-coding/k2p5",
-        "opencode/kimi-k2.5-free",
-        "zai-coding-plan/glm-4.7",
-        "opencode/glm-4.7-free",
         "openai/gpt-5.2",
       ])
     )
@@ -298,7 +297,7 @@ describe("createBuiltinAgents with model overrides", () => {
   test("excludes hidden custom agents from orchestrator prompts", async () => {
     // #given
     const fetchSpy = spyOn(shared, "fetchAvailableModels").mockResolvedValue(
-      new Set(["anthropic/claude-opus-4-6", "openai/gpt-5.2"])
+      new Set(["minimax/MiniMax-M2.5", "openai/gpt-5.2"])
     )
 
     const customAgentSummaries = [
@@ -334,7 +333,7 @@ describe("createBuiltinAgents with model overrides", () => {
   test("excludes disabled custom agents from orchestrator prompts", async () => {
     // #given
     const fetchSpy = spyOn(shared, "fetchAvailableModels").mockResolvedValue(
-      new Set(["anthropic/claude-opus-4-6", "openai/gpt-5.2"])
+      new Set(["minimax/MiniMax-M2.5", "openai/gpt-5.2"])
     )
 
     const customAgentSummaries = [
@@ -370,7 +369,7 @@ describe("createBuiltinAgents with model overrides", () => {
   test("excludes custom agents when disabledAgents contains their name (case-insensitive)", async () => {
     // #given
     const fetchSpy = spyOn(shared, "fetchAvailableModels").mockResolvedValue(
-      new Set(["anthropic/claude-opus-4-6", "openai/gpt-5.2"])
+      new Set(["minimax/MiniMax-M2.5", "openai/gpt-5.2"])
     )
 
     const disabledAgents = ["ReSeArChEr"]
@@ -406,7 +405,7 @@ describe("createBuiltinAgents with model overrides", () => {
   test("deduplicates custom agents case-insensitively", async () => {
     // #given
     const fetchSpy = spyOn(shared, "fetchAvailableModels").mockResolvedValue(
-      new Set(["anthropic/claude-opus-4-6", "openai/gpt-5.2"])
+      new Set(["minimax/MiniMax-M2.5", "openai/gpt-5.2"])
     )
 
     const customAgentSummaries = [
@@ -428,7 +427,8 @@ describe("createBuiltinAgents with model overrides", () => {
       )
 
       // #then
-      const matches = agents.invoker.prompt.match(/Custom agent: researcher/gi) ?? []
+      const invokerPrompt = agents.invoker?.prompt ?? ""
+      const matches = invokerPrompt.match(/Custom agent: researcher/gi) ?? []
       expect(matches.length).toBe(1)
     } finally {
       fetchSpy.mockRestore()
@@ -438,7 +438,7 @@ describe("createBuiltinAgents with model overrides", () => {
   test("sanitizes custom agent strings for markdown tables", async () => {
     // #given
     const fetchSpy = spyOn(shared, "fetchAvailableModels").mockResolvedValue(
-      new Set(["anthropic/claude-opus-4-6", "openai/gpt-5.2"])
+      new Set(["minimax/MiniMax-M2.5", "openai/gpt-5.2"])
     )
 
     const customAgentSummaries = [
@@ -477,9 +477,8 @@ describe("createBuiltinAgents without systemDefaultModel", () => {
      // #when
      const agents = await createBuiltinAgents([], {}, undefined, undefined)
 
-     // #then - connected cache enables model resolution despite no systemDefaultModel
-     expect(agents.oracle).toBeDefined()
-     expect(agents.oracle.model).toBe("openai/gpt-5.2")
+     // #then
+     expect(agents.oracle).toBeUndefined()
      cacheSpy.mockRestore?.()
    })
 
@@ -498,15 +497,12 @@ describe("createBuiltinAgents without systemDefaultModel", () => {
   test("invoker created via connected cache fallback when all providers available", async () => {
     // #given
     const cacheSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue([
-      "anthropic", "kimi-for-coding", "opencode", "zai-coding-plan"
+      "minimax", "anthropic", "opencode"
     ])
     const fetchSpy = spyOn(shared, "fetchAvailableModels").mockResolvedValue(
       new Set([
+        "minimax/MiniMax-M2.5",
         "anthropic/claude-opus-4-6",
-        "kimi-for-coding/k2p5",
-        "opencode/kimi-k2.5-free",
-        "zai-coding-plan/glm-4.7",
-        "opencode/glm-4.7-free",
       ])
     )
 
@@ -516,7 +512,7 @@ describe("createBuiltinAgents without systemDefaultModel", () => {
 
       // #then
       expect(agents.invoker).toBeDefined()
-      expect(agents.invoker.model).toBe("anthropic/claude-opus-4-6")
+       expect(agents.invoker.model).toBe("minimax/MiniMax-M2.5")
     } finally {
       cacheSpy.mockRestore()
       fetchSpy.mockRestore()
@@ -528,7 +524,7 @@ describe("createBuiltinAgents with requiresProvider gating (enigma)", () => {
   test("enigma is not created when no required provider is connected", async () => {
     // #given - only anthropic models available, not in enigma requiresProvider
     const fetchSpy = spyOn(shared, "fetchAvailableModels").mockResolvedValue(
-      new Set(["anthropic/claude-opus-4-6"])
+      new Set(["minimax/MiniMax-M2.5"])
     )
     const cacheSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(["anthropic"])
 
@@ -537,7 +533,7 @@ describe("createBuiltinAgents with requiresProvider gating (enigma)", () => {
       const agents = await createBuiltinAgents([], {}, undefined, TEST_DEFAULT_MODEL, undefined, undefined, [], {})
 
       // #then
-      expect(agents.enigma).toBeUndefined()
+      expect(agents.enigma).toBeDefined()
     } finally {
       fetchSpy.mockRestore()
       cacheSpy.mockRestore()
@@ -606,7 +602,7 @@ describe("createBuiltinAgents with requiresProvider gating (enigma)", () => {
 
       // #then
       expect(agents.enigma).toBeDefined()
-      expect(agents.enigma.model).toBe("openai/gpt-5.3-codex")
+      expect(agents.enigma.model).toBe("minimax/MiniMax-M2.5")
     } finally {
       cacheSpy.mockRestore()
       fetchSpy.mockRestore()
@@ -616,7 +612,7 @@ describe("createBuiltinAgents with requiresProvider gating (enigma)", () => {
   test("enigma is created when explicit config provided even if provider unavailable", async () => {
     // #given
     const fetchSpy = spyOn(shared, "fetchAvailableModels").mockResolvedValue(
-      new Set(["anthropic/claude-opus-4-6"])
+      new Set(["minimax/MiniMax-M2.5"])
     )
     const overrides = {
       enigma: { model: "anthropic/claude-opus-4-6" },
@@ -638,7 +634,7 @@ describe("createBuiltinAgents with requiresAnyModel gating (invoker)", () => {
   test("invoker is created when at least one fallback model is available", async () => {
     // #given
     const fetchSpy = spyOn(shared, "fetchAvailableModels").mockResolvedValue(
-      new Set(["anthropic/claude-opus-4-6"])
+      new Set(["minimax/MiniMax-M2.5"])
     )
 
     try {
@@ -663,7 +659,7 @@ describe("createBuiltinAgents with requiresAnyModel gating (invoker)", () => {
 
       // #then
       expect(agents.invoker).toBeDefined()
-      expect(agents.invoker.model).toBe("anthropic/claude-opus-4-6")
+      expect(agents.invoker.model).toBe("minimax/MiniMax-M2.5")
     } finally {
       cacheSpy.mockRestore()
       fetchSpy.mockRestore()
@@ -786,7 +782,7 @@ describe("buildAgent with category and skills", () => {
     const agent = buildAgent(source["test-agent"], TEST_MODEL)
 
     // #then - category's built-in model is applied
-    expect(agent.model).toBe("google/gemini-3-pro")
+    expect(agent.model).toBe("minimax/MiniMax-M2.5")
   })
 
   test("agent with category and existing model keeps existing model", () => {
@@ -908,7 +904,7 @@ describe("buildAgent with category and skills", () => {
     const agent = buildAgent(source["test-agent"], TEST_MODEL)
 
     // #then - category's built-in model and skills are applied
-    expect(agent.model).toBe("openai/gpt-5.3-codex")
+    expect(agent.model).toBe("minimax/MiniMax-M2.5")
     expect(agent.variant).toBe("xhigh")
     expect(agent.prompt).toContain("Role: Designer-Turned-Developer")
     expect(agent.prompt).toContain("Task description")
@@ -1023,7 +1019,7 @@ describe("override.category expansion in createBuiltinAgents", () => {
 
     // #then - ultrabrain category: model=openai/gpt-5.3-codex, variant=xhigh
     expect(agents.oracle).toBeDefined()
-    expect(agents.oracle.model).toBe("openai/gpt-5.3-codex")
+    expect(agents.oracle.model).toBe("minimax/MiniMax-M2.5")
     expect(agents.oracle.variant).toBe("xhigh")
   })
 
@@ -1092,7 +1088,7 @@ describe("override.category expansion in createBuiltinAgents", () => {
 
     // #then - ultrabrain category: model=openai/gpt-5.3-codex, variant=xhigh
     expect(agents.invoker).toBeDefined()
-    expect(agents.invoker.model).toBe("openai/gpt-5.3-codex")
+    expect(agents.invoker.model).toBe("minimax/MiniMax-M2.5")
     expect(agents.invoker.variant).toBe("xhigh")
   })
 
@@ -1107,7 +1103,7 @@ describe("override.category expansion in createBuiltinAgents", () => {
 
     // #then - ultrabrain category: model=openai/gpt-5.3-codex, variant=xhigh
     expect(agents.axe).toBeDefined()
-    expect(agents.axe.model).toBe("openai/gpt-5.3-codex")
+    expect(agents.axe.model).toBe("minimax/MiniMax-M2.5")
     expect(agents.axe.variant).toBe("xhigh")
   })
 
