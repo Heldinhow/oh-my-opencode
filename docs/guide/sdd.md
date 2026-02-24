@@ -6,42 +6,102 @@ Learn how to use SDD to create structured, high-quality specifications before im
 
 ## What is SDD?
 
-**Specification-Driven Development (SDD)** is a structured three-phase workflow that transforms ambiguous requirements into precise, actionable specifications before any implementation begins.
+Specification-Driven Development (SDD) is a disciplined workflow that converts ambiguous requirements into precise, testable specifications before any implementation begins.
 
 ### Why SDD?
 
-- **Reduces Rework**: Ambiguity at the specification stage compounds into bugs later. Investing time upfront saves debugging time.
-- **Explicit Approval**: No implementation begins until you explicitly approve the specification.
-- **Traceable Decisions**: Every requirement, edge case, and assumption is documented.
-- **Better Planning**: Plans generated from approved specs are more accurate and complete.
+- Reduces rework by removing ambiguity early.
+- Explicit governance: the workflow is driven by a living constitution and clear artifacts.
+- Traceable decisions: each requirement, edge case, and assumption is documented.
+- Better planning: plans generated from well-defined specs are more accurate.
 
-### The SDD Workflow
+## The Canonical SDD Workflow (Speckit)
+
+The canonical flow moves through:
+
+Constitution -> Specify -> Clarify -> Plan -> Tasks -> /start-work
+
+To illustrate:
 
 ```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────┐     ┌────────────┐
-│  SPECIFY    │ ──▶ │  CLARIFY    │ ──▶ │  APPROVE    │ ──▶ │  PLAN   │ ──▶ │ /start-work│
-└─────────────┘     └─────────────┘     └─────────────┘     └─────────┘     └────────────┘
-      │                   │                   │                   │
-      ▼                   ▼                   ▼                   ▼
- Transform          Resolve            Lock spec,          Generate          Execute
- requirements       ambiguities        establish          work plan         with
- into detailed      and edge           baseline            from              orchestrator
- specs              cases                                 approved spec
+CONSTITUTION -> SPECIFY -> CLARIFY -> PLAN -> TASKS -> /start-work
 ```
+
+Each stage produces concrete artifacts in the specs workspace.
+
+---
+
+## Constitution
+
+Goal: Establish governance, constraints, and success criteria that guide the rest of the workflow.
+
+- Stored under `.specify/memory/constitution.md` (created automatically as part of constitution management).
+- Lightweight and focused on guardrails, not feature detail.
+
+---
+
+## Phase 1: SPECIFY
+
+**Goal**: Transform user intent into a detailed specification.
+
+When you describe a feature, Tinker will create a specification at:
+`specs/{NNN-feature-slug}/spec.md`
+
+Every specification includes:
+- Feature Name
+- Problem Statement
+- Success Criteria
+- Functional Requirements
+- Non-Functional Requirements
+- Edge Cases
+- Dependencies
+
+### Phase 2: CLARIFY
+
+**Goal**: Resolve ambiguities, edge cases, and unknowns.
+
+Tinker will:
+- Research codebase patterns
+- Ask clarifying questions
+- Document assumptions
+- Flag conflicts or missing information
+
+### Phase 3: PLAN
+
+**Goal**: Generate an implementation plan from the clarified spec.
+
+The plan describes the sequence of work, verification steps, and acceptance criteria.
+
+The output can be used to drive the next stage.
+
+### Phase 4: TASKS
+
+**Goal**: Break the plan down into executable tasks.
+
+Create `specs/{NNN-feature-slug}/tasks.md` with a checklist.
+
+- Each task should be atomic and executable.
+- Include clear verification steps and pass/fail criteria.
+
+--- 
+
+## How SDD Integrates with /start-work
+
+Readiness for starting work is defined by the presence of core artifacts:
+
+- specs/{NNN-feature-slug}/spec.md
+- specs/{NNN-feature-slug}/plan.md
+- specs/{NNN-feature-slug}/tasks.md
+
+If you've migrated to a new workspace, legacy artifacts under `.specify/specs/` may be used as a fallback, but the canonical per-feature artifacts live in `specs/` and the planning workspace is under `.specify/`. Legacy artifacts under `.specify/specs/` are supported as a fallback.
 
 ---
 
 ## Enabling SDD
 
-SDD is disabled by default. To enable it, add the following to your configuration:
+SDD can be enabled by configuring your workspace to follow the Speckit/SDD workflow. Canonical per-feature artifacts live in `specs/`, planning artifacts reside under `.specify/`, and legacy artifacts under `.specify/specs/` are supported as a fallback. Constitution is stored at `.specify/memory/constitution.md`.
 
-```jsonc
-// ~/.config/opencode/oh-my-opencode.jsonc
-{
-  "sisyphus_agent": {
-  }
-}
-```
+ (No specific default behavior is asserted in this document; enablement is environment-specific.)
 
 ### Configuration Options
 
@@ -50,104 +110,7 @@ SDD is disabled by default. To enable it, add the following to your configuratio
 
 ---
 
-## The Three Phases
-
-### Phase 1: SPECIFY
-
-**Goal**: Transform user intent into detailed, unambiguous specifications.
-
-When you describe a feature you want to build, Tinker (the planner) will create a detailed specification file at `specs/{NNN-feature-slug}/spec.md`.
-
-Every specification includes:
-
-| Section | Purpose |
-|---------|---------|
-| **Feature Name** | Clear identifier |
-| **Problem Statement** | Why this feature matters |
-| **Success Criteria** | How we know it's done |
-| **Functional Requirements** | What the feature does |
-| **Non-Functional Requirements** | Quality attributes (performance, security, etc.) |
-| **Edge Cases** | Boundary conditions and failure modes |
-| **Dependencies** | External requirements |
-
-### Phase 2: CLARIFY
-
-**Goal**: Resolve ambiguities, edge cases, and unknown unknowns.
-
-Tinker will:
-- Research your codebase to understand existing patterns
-- Ask clarifying questions about requirements
-- Document assumptions explicitly
-- Flag conflicts or missing information
-
-### Phase 3: APPROVE
-
-**Goal**: Lock the specification and establish a baseline.
-
-Before presenting for approval, Tinker verifies:
-- All requirements have acceptance criteria
-- All acceptance criteria are verifiable
-- Edge cases are documented
-- No open questions remain (or explicitly deferred)
-- Dependencies are confirmed
-
-You can then:
-- **Approve** - Proceed to plan generation and implementation
-- **Request Changes** - Go back to SPECIFY or CLARIFY
-- **Defer** - Save the spec for later
-
----
-
-## How SDD Integrates with /start-work
-
-When SDD is enabled, the `/start-work` command is gated:
-
-1. **Without an approved spec**, `/start-work` is blocked with an error
-2. **Only after spec approval** can you proceed to plan generation and execution
-
-This ensures no implementation begins without explicit specification approval.
-
----
-
-## SDD State File
-
-Each plan has a state file at `specs/{NNN-plan-slug}/sdd-state.json`:
-
-```json
-{
-  "spec_status": "approved",
-  "spec_version": "1.0.0",
-  "approved_at": "2025-02-21T10:30:00Z",
-  "approved_by": "user"
-}
-```
-
-### Status Values
-
-| Status | Description |
-|--------|-------------|
-| `draft` | Specification is being created |
-| `clarifying` | Resolving ambiguities and questions |
-| `pending_approval` | Ready for user review |
-| `approved` | Specification locked, can proceed to /start-work |
-| `changes_requested` | User requested modifications |
-| `deferred` | Saved for later |
-
----
-
 ## Examples
-
-### Example 1: Enabling SDD
-
-```jsonc
-// ~/.config/opencode/oh-my-opencode.jsonc
-{
-  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
-  "sisyphus_agent": {
-    "model": "anthropic/claude-opus-4-6"
-  }
-}
-```
 
 ### Example 2: Typical SDD Session
 
@@ -155,51 +118,31 @@ Each plan has a state file at `specs/{NNN-plan-slug}/sdd-state.json`:
 > I want to add user authentication to my app
 
 [Tinker responds in SPECIFY mode]
-I'll create a detailed specification for user authentication. Let me first explore your codebase to understand existing patterns, then create a comprehensive spec covering:
-
-1. Login flow (email/password, OAuth)
-2. Registration flow
-3. Password reset
-4. Session management
-5. Security requirements
-
-I'll ask clarifying questions about:
-- Which OAuth providers do you want to support?
-- Do you have existing user database schema?
-- What authentication library do you prefer?
-
-[You answer questions]
-
-[Tinker moves to APPROVE]
-Here's the complete specification. Do you approve to proceed with implementation?
+I'll create a detailed specification for user authentication...
 ```
 
-### Example 3: Blocked /start-work
-
-When SDD is enabled and spec is not approved:
+### Example 3: Starting Work
 
 ```
 > /start-work my-feature
 
-[Error]
-Cannot start work: SDD spec for plan "my-feature" has not been approved.
-Current status: "draft". Please approve the specification before starting work.
+[Starts work after ensuring spec.md, plan.md, and tasks.md exist]
 ```
 
 ---
 
 ## Best Practices
 
-1. **Be Thorough in SPECIFY**: Spend time on requirements. It's easier to change a spec than code.
-2. **Resolve All Questions**: Don't proceed to APPROVE with open questions unless explicitly deferred.
-3. **Quantify Acceptance Criteria**: Instead of "fast", specify "<500ms response time".
-4. **Document Edge Cases**: Handle failure modes upfront.
-5. **Review Before Approving**: Take time to review the specification carefully.
+1. Be thorough in SPECIFY.
+2. Resolve all questions before moving to PLAN.
+3. Quantify acceptance criteria in spec.
+4. Document edge cases.
+5. Review before starting work.
 
 ---
 
 ## Related Documentation
 
-- [Understanding the Orchestration System](./understanding-orchestration-system.md) - Deep dive into Tinker → Orchestrator workflow
-- [Tinker Planner](../features.md#prometheus) - More about the planner agent
-- [Configuration Guide](../configurations.md) - Full configuration reference
+- Understanding the Orchestration System
+- Tinker Planner
+- Configuration Guide
