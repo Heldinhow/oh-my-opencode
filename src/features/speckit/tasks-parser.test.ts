@@ -124,7 +124,7 @@ describe("tasks-parser", () => {
     const summary = await getTasksSummary(file)
 
     //#then
-    expect(summary).toBe("2/3 tasks concluídas")
+    expect(summary).toBe("2/3 tasks completed")
   })
 
   test("does not break with empty file", async () => {
