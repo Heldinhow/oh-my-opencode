@@ -5,6 +5,13 @@
 **Status**: Draft  
 **Input**: User description: "$ARGUMENTS"
 
+## Clarifications
+
+- For each clarification session, append Q/A bullets to this section.
+- Use Q: / A: lines (or bullet pairs) to capture clarifications discussed with the user.
+- Number each clarification sequentially (e.g., Clarification 1, Clarification 2) to track progress.
+- Update this section after every clarifying exchange during Spec development.
+
 ## User Scenarios & Testing *(mandatory)*
 
 <!--
