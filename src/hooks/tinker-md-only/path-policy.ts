@@ -25,30 +25,36 @@ export function isAllowedFile(filePath: string, workspaceRoot: string): boolean 
 
   const relLower = rel.toLowerCase()
 
-  // 4. Determine allowed roots: .specify/ OR specs/
-  // - .specify/ is the canonical planning workspace (and may include nested paths like .specify/specs/)
-  // - specs/ represents a separate workspace root for specifications
-  const inSpecifyRoot = /(^|[\\/])\.specify([\\/]|$)/i.test(rel)
-  const inSpecsRoot = /(^|[\\/])specs([\\/]|$)/i.test(rel)
+  // 4. Determine earliest allowed root segment in the relative path
+  //    - Allowed roots of interest: ".specify" and "specs"
+  //    - Choose the earliest segment (by position) among these two as the
+  //      authoritative root for extension policy. This prevents bypasses
+  //      where a later segment would incorrectly grant access.
+  const segments = rel.split(/[\\/]+/).filter((s) => s.length > 0)
+  let earliestRoot: ".specify" | "specs" | null = null
+  for (let i = 0; i < segments.length; i++) {
+    const seg = segments[i].toLowerCase()
+    if (seg === ".specify") {
+      earliestRoot = ".specify"
+      break
+    }
+    if (seg === "specs") {
+      earliestRoot = "specs"
+      break
+    }
+  }
 
-  // If outside both allowed roots, block
-  if (!inSpecifyRoot && !inSpecsRoot) {
+  if (!earliestRoot) {
+    // No recognized root segment found
     return false
   }
 
-  // 5. Per-root extension policy
-  if (inSpecifyRoot) {
-    // If under .specify/ (even if it also contains a specs/ segment), allow
-    // extensions based on ALLOWED_EXTENSIONS (md/json)
-    const hasAllowedExtension = ALLOWED_EXTENSIONS.some(ext => relLower.endsWith(ext.toLowerCase()))
-    if (!hasAllowedExtension) return false
-  } else if (inSpecsRoot) {
-    // Path under specs/ root (not within .specify) — only allow .md
-    if (!relLower.endsWith(".md")) return false
+  // 5. Per-root extension policy based on the earliest root segment
+  if (earliestRoot === ".specify") {
+    // Under .specify/, allow both md and json (as defined by ALLOWED_EXTENSIONS)
+    return ALLOWED_EXTENSIONS.some(ext => relLower.endsWith(ext.toLowerCase()))
   } else {
-    // Fallback: not in a recognized root
-    return false
+    // Under specs/ root (not within .specify), only allow md files
+    return relLower.endsWith(".md")
   }
-
-  return true
 }

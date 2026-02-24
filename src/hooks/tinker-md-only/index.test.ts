@@ -257,7 +257,7 @@ describe("tinker-md-only", () => {
       // when / #then
       await expect(
         hook["tool.execute.before"](input, output)
-      ).rejects.toThrow("can only write/edit .md files inside .specify/")
+      ).rejects.toThrow(/can only write\/edit \.md files inside (?:\.specify\/|specs\/\*\*\.md)/)
     })
 
     test("should block Edit tool for non-.md files", async () => {
@@ -429,6 +429,22 @@ describe("tinker-md-only", () => {
       }
 
       // when / #then
+      await expect(hook["tool.execute.before"](input, output)).rejects.toThrow()
+    })
+
+    test("should block specs/.specify/state.json when specs root precedes .specify", async () => {
+      // given
+      const hook = createTinkerMdOnlyHook(createMockPluginInput())
+      const input = {
+        tool: "Write",
+        sessionID: TEST_SESSION_ID,
+        callID: "call-1",
+      }
+      const output = {
+        args: { filePath: "/tmp/test/specs/.specify/state.json" },
+      }
+
+      // when / then
       await expect(hook["tool.execute.before"](input, output)).rejects.toThrow()
     })
 
@@ -750,7 +766,7 @@ describe("tinker-md-only", () => {
        // when / #then
        await expect(
          hook["tool.execute.before"](input, output)
-       ).rejects.toThrow("can only write/edit .md files inside .specify/")
+        ).rejects.toThrow(/can only write\/edit \.md files inside (?:\.specify\/|specs\/\*\*\.md)/)
      })
 
      test("should allow nested .invoker directories (ctx.directory may be parent)", async () => {
@@ -788,7 +804,7 @@ describe("tinker-md-only", () => {
        // when / #then
        await expect(
          hook["tool.execute.before"](input, output)
-       ).rejects.toThrow("can only write/edit .md files inside .specify/")
+        ).rejects.toThrow(/can only write\/edit \.md files inside (?:\.specify\/|specs\/\*\*\.md)/)
      })
 
     test("should allow case-insensitive .SPECIFY directory", async () => {

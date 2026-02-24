@@ -46,20 +46,20 @@ export function createTinkerMdOnlyHook(ctx: PluginInput) {
         return
       }
 
-       if (!isAllowedFile(filePath, ctx.directory)) {
-         log(`[${HOOK_NAME}] Blocked: Tinker can only write to .specify/*.md`, {
-           sessionID: input.sessionID,
-           tool: toolName,
-           filePath,
-           agent: agentName,
-         })
-         throw new Error(
-           `[${HOOK_NAME}] ${getAgentDisplayName("tinker")} can only write/edit .md files inside .specify/ directory. ` +
-           `Attempted to modify: ${filePath}. ` +
-           `${getAgentDisplayName("tinker")} is a READ-ONLY planner. Use /start-work to execute the plan. ` +
-           `APOLOGIZE TO THE USER, REMIND OF YOUR PLAN WRITING PROCESSES, TELL USER WHAT YOU WILL GOING TO DO AS THE PROCESS, WRITE THE PLAN`
-         )
-       }
+      if (!isAllowedFile(filePath, ctx.directory)) {
+          log(`[${HOOK_NAME}] Blocked: Tinker can only write to .specify/*.md and specs/**/*.md`, {
+            sessionID: input.sessionID,
+            tool: toolName,
+            filePath,
+            agent: agentName,
+          })
+          throw new Error(
+            `[${HOOK_NAME}] ${getAgentDisplayName("tinker")} can only write/edit .md files inside .specify/ or specs/**/*.md. ` +
+            `Attempted to modify: ${filePath}. ` +
+            `${getAgentDisplayName("tinker")} is a READ-ONLY planner. Use /start-work to execute the plan. ` +
+            `APOLOGIZE TO THE USER, REMIND OF YOUR PLAN WRITING PROCESSES, TELL USER WHAT YOU WILL GOING TO DO AS THE PROCESS, WRITE THE PLAN`
+          )
+        }
 
       const normalizedPath = filePath.toLowerCase().replace(/\\/g, "/")
       if (normalizedPath.includes(".specify/plans/") || normalizedPath.includes(".specify\\plans\\")) {
