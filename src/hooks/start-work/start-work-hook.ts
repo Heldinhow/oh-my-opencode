@@ -10,7 +10,7 @@ import {
   clearBoulderState,
 } from "../../features/boulder-state"
 import { log } from "../../shared/logger"
-import { getSessionAgent, updateSessionAgent } from "../../features/claude-code-session-state"
+import { updateSessionAgent } from "../../features/claude-code-session-state"
 import { access, readdir, readFile, stat } from "node:fs/promises"
 import { join } from "node:path"
 
@@ -178,7 +178,7 @@ async function resolveSpecKitReadiness(projectRoot: string, planName: string): P
     return {
       decision: "block",
       message: readinessBlockedMessage(
-        `No feature directory found for plan "${resolution.normalizedPlanName}" under specs/.`,
+        `No feature directory found for plan "${resolution.normalizedPlanName}" under specs/ or .specify/specs/ (specs/ is preferred).`,
         `\n\nRun /speckit.specify first, then retry /start-work.`,
       ),
     }

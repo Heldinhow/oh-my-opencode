@@ -611,6 +611,33 @@ describe("start-work hook", () => {
       expect(output.parts[0].text).toContain("Run /speckit.tasks first")
       expect(output.parts[0].text).toContain("Readiness Blocked")
     })
+
+    test("should not-found readiness mention both roots and precedence", async () => {
+      const plansDir = join(testDir, ".specify/plans")
+      mkdirSync(plansDir, { recursive: true })
+
+      const planPath = join(plansDir, "001-not-found.md")
+      writeFileSync(planPath, "# Plan\n- [ ] Task 1")
+
+      
+      const hook = createStartWorkHook(createMockPluginInput())
+      const output = {
+        parts: [
+          {
+            type: "text",
+            text: `<session-context>
+<user-request>001-not-found</user-request>
+</session-context>`,
+          },
+        ],
+      }
+
+      // when
+      await hook["chat.message"]({ sessionID: "session-123" }, output)
+
+      // then - not-found readiness message should reference both roots and precedence
+      expect(output.parts[0].text).toContain("No feature directory found for plan \"001-not-found\" under specs/ or .specify/specs/ (specs/ is preferred).")
+    })
   })
 
   describe("session agent management", () => {
