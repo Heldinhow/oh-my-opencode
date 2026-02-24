@@ -95,3 +95,36 @@ describe("PROMETHEUS_SYSTEM_PROMPT SDD Mode", () => {
     expect(prompt.toLowerCase()).toMatch(/first response.*specify|start with specify/)
   })
 })
+ 
+describe("buildTinkerSystemPrompt canonical Speckit flow and artifacts", () => {
+  test("should include canonical Speckit stage order and tasks stage", () => {
+    //#given
+    const prompt = buildTinkerSystemPrompt()
+
+    //#when / #then
+    // Ensure the canonical Speckit flow order is present: constitution -> specify -> clarify -> plan -> tasks
+    expect(prompt).toMatch(/constitution[\s\S]*specify[\s\S]*clarify[\s\S]*plan[\s\S]*tasks/i)
+  })
+
+  test("should mention specs/ workspace and create-new-feature script with --json", () => {
+    //#given
+    const prompt = buildTinkerSystemPrompt()
+
+    //#when / #then
+    expect(prompt).toMatch(/specs\//)
+    expect(prompt).toMatch(/create-new-feature\.sh/)
+    expect(prompt).toMatch(/--json/)
+  })
+
+  test("should contain required JSON keys for feature creation", () => {
+    //#given
+    const prompt = buildTinkerSystemPrompt()
+
+    //#when / #then
+    expect(prompt).toMatch(/"BRANCH_NAME"\s*:/)
+    expect(prompt).toMatch(/"SPEC_FILE"\s*:/)
+    expect(prompt).toMatch(/"FEATURE_DIR"\s*:/)
+    expect(prompt).toMatch(/"FEATURE_NUM"\s*:/)
+    expect(prompt).toMatch(/"PREFIX"\s*:/)
+  })
+})

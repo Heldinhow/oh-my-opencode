@@ -16,7 +16,7 @@ The plugin calls bootstrapSpecKit() which creates:
 - .specify/memory/constitution.md
 - .specify/templates/spec-template.md
 - .specify/templates/tasks-template.md
-- .specify/specs/ directory
+- specs/ directory
 
 Verify these exist.
 
@@ -93,11 +93,22 @@ Example:
 This helps create a more informed spec with actual codebase context.
 
 ### STAGE 2: SPECIFY (create spec.md)
-Generate branch name: {prefix}/{NNN}-{short-name}
-- Detect prefix: feat/fix/test/docs/chore/refactor/perf/ci from request context
-- Find next available number (check .specify/specs/, git branches)
-- Create directory: .specify/specs/{NNN-short-name}/
-- Create file: .specify/specs/{NNN-short-name}/spec.md with sections:
+Generate the feature branch and canonical specs directory in ONE run using the script:
+
+- Run (single-run): .specify/scripts/bash/create-new-feature.sh --json "{short-name}"
+- Use the emitted JSON values as the source of truth (do NOT re-derive paths):
+  JSON example:
+  {"BRANCH_NAME":"...","SPEC_FILE":"...","FEATURE_NUM":"...","FEATURE_DIR":"...","PREFIX":"..."}
+  Required keys:
+  - "BRANCH_NAME": full branch name like feat/001-add-user
+  - "SPEC_FILE": path to spec.md like specs/001-add-user/spec.md
+  - "FEATURE_DIR": path to feature dir like specs/001-add-user
+  - "FEATURE_NUM": padded number like 001
+  - "PREFIX": branch prefix like feat
+
+Stage order: constitution -> specify -> clarify (if needed) -> plan -> tasks
+
+Create file: specs/{NNN-short-name}/spec.md with sections:
   - Feature Branch, Created, Status, Input
   - Clarifications (section for Q&A)
   - User Scenarios & Testing (with priorities P1, P2, P3)
@@ -111,29 +122,29 @@ Generate branch name: {prefix}/{NNN}-{short-name}
 - When all clarified, proceed to next stage
 
 ### STAGE 4: RESEARCH (create research.md)
-Create file: .specify/specs/{NNN-short-name}/research.md
+Create file: specs/{NNN-short-name}/research.md
 - Document each design decision
 - Include: Decision, Rationale, Alternatives considered
 
 ### STAGE 5: PLAN (create plan.md)
 Copy template from .specify/templates/plan-template.md to:
-- .specify/specs/{NNN-short-name}/plan.md
+- specs/{NNN-short-name}/plan.md
 - Fill in Summary, Technical Context, Constitution Check
 - Add Project Structure section
 
 ### STAGE 6: DATA-MODEL (if applicable)
-- If feature involves data, create .specify/specs/{NNN-short-name}/data-model.md
+- If feature involves data, create specs/{NNN-short-name}/data-model.md
 - Document entities, fields, relationships
 
 ### STAGE 7: QUICKSTART (if applicable)
 - If feature needs integration docs, create quickstart.md
 
 ### STAGE 8: CONTRACTS (if applicable)
-- If feature has external interfaces, create .specify/specs/{NNN-short-name}/contracts/
+- If feature has external interfaces, create specs/{NNN-short-name}/contracts/
 
 ### STAGE 9: CHECKLISTS
-Create directory: .specify/specs/{NNN-short-name}/checklists/
-Create file: .specify/specs/{NNN-short-name}/checklists/requirements.md
+Create directory: specs/{NNN-short-name}/checklists/
+Create file: specs/{NNN-short-name}/checklists/requirements.md
 - Checklist for spec quality validation
 
 ### STAGE 10: TASKS
@@ -141,7 +152,7 @@ After plan is ready, tell user:
 - "Run /speckit.tasks to generate tasks, then /start-work to begin"
 
 ### FILE STRUCTURE TO CREATE:
-.specify/specs/{NNN-short-name}/
+specs/{NNN-short-name}/
 ├── spec.md          # Stage 2
 ├── research.md       # Stage 4
 ├── plan.md          # Stage 5
@@ -160,7 +171,7 @@ DO NOT wait for /speckit.constitution, /speckit.specify, /speckit.plan commands 
  */
 export function buildTinkerSystemPrompt(): string {
   const debugMarker = "🔧 DEBUG: SDD MODE IS ACTIVE 🔧"
-  const canonicalFlowReminder = "SDD canonical flow: constitution -> specify -> clarify (if needed) -> plan -> /start-work"
+  const canonicalFlowReminder = "SDD canonical flow: constitution -> specify -> clarify (if needed) -> plan -> tasks -> /start-work"
   const interviewSection = buildInterviewModePrompt()
   return `${debugMarker}
 ${canonicalFlowReminder}
@@ -177,7 +188,7 @@ ${PROMETHEUS_BEHAVIORAL_SUMMARY}`
  * Combined Tinker system prompt.
  */
 export const PROMETHEUS_SYSTEM_PROMPT = `${PROMETHEUS_IDENTITY_CONSTRAINTS}
-SDD canonical flow: constitution -> specify -> clarify (if needed) -> plan -> /start-work
+SDD canonical flow: constitution -> specify -> clarify (if needed) -> plan -> tasks -> /start-work
 ${AUTO_ORCHESTRATION_GUIDE}
 ${buildInterviewModePrompt()}
 ${PROMETHEUS_PLAN_GENERATION}
