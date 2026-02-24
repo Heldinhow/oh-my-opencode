@@ -23,17 +23,30 @@ export function isAllowedFile(filePath: string, workspaceRoot: string): boolean 
     return false
   }
 
-  // 4. Check if .specify/ or .specify/ exists anywhere in the path (case-insensitive)
-  // This handles direct paths and nested paths under the workspace root
-  if (!/(\.specify|\.specify)[/\\]/i.test(rel)) {
+  const relLower = rel.toLowerCase()
+
+  // 4. Determine allowed roots: .specify/ OR specs/
+  // - .specify/ is the canonical planning workspace (and may include nested paths like .specify/specs/)
+  // - specs/ represents a separate workspace root for specifications
+  const inSpecifyRoot = /(^|[\\/])\.specify([\\/]|$)/i.test(rel)
+  const inSpecsRoot = /(^|[\\/])specs([\\/]|$)/i.test(rel)
+
+  // If outside both allowed roots, block
+  if (!inSpecifyRoot && !inSpecsRoot) {
     return false
   }
 
-  // 5. Check extension matches one of ALLOWED_EXTENSIONS (case-insensitive)
-  const hasAllowedExtension = ALLOWED_EXTENSIONS.some(
-    ext => resolved.toLowerCase().endsWith(ext.toLowerCase())
-  )
-  if (!hasAllowedExtension) {
+  // 5. Per-root extension policy
+  if (inSpecifyRoot) {
+    // If under .specify/ (even if it also contains a specs/ segment), allow
+    // extensions based on ALLOWED_EXTENSIONS (md/json)
+    const hasAllowedExtension = ALLOWED_EXTENSIONS.some(ext => relLower.endsWith(ext.toLowerCase()))
+    if (!hasAllowedExtension) return false
+  } else if (inSpecsRoot) {
+    // Path under specs/ root (not within .specify) — only allow .md
+    if (!relLower.endsWith(".md")) return false
+  } else {
+    // Fallback: not in a recognized root
     return false
   }
 
