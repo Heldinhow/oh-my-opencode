@@ -51,6 +51,25 @@ describe("sdd-mode", () => {
     expect(content).toBe("custom")
   })
 
+  test("ensureConstitution replaces [DATE] tokens in existing file", async () => {
+    //#given
+    const root = await createTempDir()
+    const filePath = join(root, ".specify/memory/constitution.md")
+    await mkdir(join(root, ".specify/memory"), { recursive: true })
+    await writeFile(filePath, "custom content\nDate: [DATE]\nMore", "utf8")
+
+    //#when
+    const result = await ensureConstitution(root)
+
+    //#then
+    expect(result.created).toBe(false)
+    const content = await readFile(result.path, "utf8")
+    const today = new Date().toISOString().slice(0, 10)
+    expect(content).toContain("Date: " + today)
+    expect(content).not.toContain("[DATE]")
+    expect(content).toContain("custom content")
+  })
+
   test("canonical sequence preserves constitution before specify and plan after clarify", () => {
     //#given
     const sequence = getCanonicalSddSequence()

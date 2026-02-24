@@ -1,4 +1,4 @@
-import { access, mkdir, writeFile } from "node:fs/promises"
+import { access, mkdir, readFile, writeFile } from "node:fs/promises"
 import { dirname, join } from "node:path"
 import { classifyPrefixFromContext } from "../../shared/branch-governance"
 
@@ -127,10 +127,20 @@ export async function ensureConstitution(projectRoot: string): Promise<{ created
   const filePath = join(projectRoot, ".specify/memory/constitution.md")
   try {
     await access(filePath)
+    // If file exists, replace literal [DATE] tokens with today's date, but only the tokens
+    // and only when they exist. Do not overwrite content otherwise.
+    const existing = await readFile(filePath, "utf8")
+    if (existing.includes("[DATE]")) {
+      const today = new Date().toISOString().slice(0, 10)
+      const updated = existing.split("[DATE]").join(today)
+      await writeFile(filePath, updated, "utf8")
+    }
     return { created: false, path: filePath }
   } catch {
     await mkdir(dirname(filePath), { recursive: true })
-    await writeFile(filePath, CONSTITUTION_TEMPLATE, "utf8")
+    const today = new Date().toISOString().slice(0, 10)
+    const content = `# Oh My OpenCode Constitution\nDate: ${today}\n${CONSTITUTION_TEMPLATE}`
+    await writeFile(filePath, content, "utf8")
     return { created: true, path: filePath }
   }
 }
