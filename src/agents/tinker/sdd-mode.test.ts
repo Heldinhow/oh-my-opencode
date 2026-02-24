@@ -52,6 +52,28 @@ describe("sdd-mode", () => {
     expect(approve).not.toContain(".specify/specs")
   })
 
+  test("SPEC_FILE_OPERATIONS appendSection anchors Clarifications (not Open Questions)", () => {
+    const slug = "001-example"
+    const cmd = SPEC_FILE_OPERATIONS.appendSection(slug, "My Section", "content")
+    expect(cmd).toContain('oldText="## Clarifications"')
+    expect(cmd).not.toContain('oldText="## Open Questions"')
+  })
+
+  test("SPEC_FILE_OPERATIONS markApproved anchors on Draft status", () => {
+    const slug = "001-example"
+    const cmd = SPEC_FILE_OPERATIONS.markApproved(slug)
+    expect(cmd).toContain('oldText="**Status**: Draft"')
+    expect(cmd).toContain('newText="**Status**: APPROVED"')
+  })
+
+  test("SPEC_FILE_OPERATIONS updateAcceptanceCriterion uses criterion param", () => {
+    const slug = "001-example"
+    const cmd = SPEC_FILE_OPERATIONS.updateAcceptanceCriterion(slug, "REQ-1", "Must be secure", "Must be auditable")
+    expect(cmd).toContain('oldText="### REQ-1: *\\n**Acceptance Criteria**:"')
+    expect(cmd).toContain(': Must be secure')
+    expect(cmd).toContain("- Must be auditable")
+  })
+
   test("ensureConstitution creates file when missing", async () => {
     //#given
     const root = await createTempDir()
@@ -114,6 +136,27 @@ describe("sdd-mode", () => {
     expect(constitutionIndex).toBeLessThan(specifyIndex)
     expect(specifyIndex).toBeLessThan(clarifyIndex)
     expect(clarifyIndex).toBeLessThan(planIndex)
+  })
+
+  test("SDD_MODE_PROMPT gate excludes sdd-state.json and includes TASKS", () => {
+    //#given
+    
+    //#when / #then
+    expect(SDD_MODE_PROMPT).not.toContain("sdd-state.json")
+    expect(SDD_MODE_PROMPT).toContain("TASKS")
+  })
+
+  test("CONSTITUTION_TEMPLATE process line contains TASKS and not APPROVE", async () => {
+    //#given
+    const root = await createTempDir()
+    
+    //#when
+    const result = await ensureConstitution(root)
+    const content = await readFile(result.path, "utf8")
+
+    //#then
+    expect(content).toContain("- SPECIFY -> CLARIFY -> PLAN -> TASKS -> /start-work")
+    expect(content).not.toContain("APPROVE")
   })
 
   test("evaluateClarifyNeed requires clarify when unresolved markers exist", () => {

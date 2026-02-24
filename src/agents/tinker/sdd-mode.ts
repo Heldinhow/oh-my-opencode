@@ -37,9 +37,9 @@ const CONSTITUTION_TEMPLATE = `---
 - Edge cases documented before implementation
 
 ## Process
-- SPECIFY -> CLARIFY -> APPROVE -> PLAN -> /start-work
+- SPECIFY -> CLARIFY -> PLAN -> TASKS -> /start-work
 ---
-`
+` 
 
 export const SDD_MODE_PROMPT = `# SDD MODE ENABLED
 SDD=ON
@@ -67,10 +67,11 @@ If missing:
 - Record answers in a "Clarifications" section in spec.md.
 - Use mirana/keeper only to reduce ambiguity.
 
-## PHASE APPROVE
-- Present the spec to the user and wait for explicit approval.
-- On approval: update sdd-state.json to { "spec_status": "approved" }.
-- Do not move to planning or implementation without approval.
+// APPROVAL GATE
+- Approval is required here before moving from CLARIFY to PLAN.
+- The user must explicitly approve the spec to proceed to PLAN.
+- Do not move to planning or implementation without explicit user approval.
+- This gate occurs before advancing to PLAN and TASKS.
 `;
 
 export const SPEC_FILE_OPERATIONS = {
@@ -85,9 +86,7 @@ export const SPEC_FILE_OPERATIONS = {
    * Appends a section to an existing specification
    */
   appendSection: (slug: string, sectionTitle: string, content: string): string => {
-    return `edit("specs/${slug}/spec.md", 
-  oldText="## Open Questions", 
-  newText="## ${sectionTitle}\n${content}\n\n## Open Questions")`;
+    return `edit("specs/${slug}/spec.md", \n  oldText="## Clarifications", \n  newText="## Clarifications\\n\\n### ${sectionTitle}\\n${content}\\n")`;
   },
 
   /**
@@ -96,7 +95,7 @@ export const SPEC_FILE_OPERATIONS = {
   resolveQuestion: (slug: string, question: string, answer: string): string => {
     return `edit("specs/${slug}/spec.md",
   oldText="- [ ] ${question}",
-  newText="- [x] ${question}\n  **Answer**: ${answer}")`;
+  newText="- [x] ${question}\\n  **Answer**: ${answer}")`;
   },
 
   /**
@@ -109,8 +108,8 @@ export const SPEC_FILE_OPERATIONS = {
     newCriterion: string
   ): string => {
     return `edit("specs/${slug}/spec.md",
-  oldText="### ${reqId}: *\n**Acceptance Criteria**:",
-  newText="### ${reqId}: *\n**Acceptance Criteria**:\n- ${newCriterion}")`;
+  oldText="### ${reqId}: *\\n**Acceptance Criteria**:",
+  newText="### ${reqId}: *\\n**Acceptance Criteria**: ${criterion}\\n- ${newCriterion}")`;
   },
 
   /**
@@ -118,8 +117,8 @@ export const SPEC_FILE_OPERATIONS = {
    */
   markApproved: (slug: string): string => {
     return `edit("specs/${slug}/spec.md",
-  oldText="# Specification: ${slug}",
-  newText="# Specification: ${slug}\n\n**Status**: APPROVED")`;
+  oldText="**Status**: Draft",
+  newText="**Status**: APPROVED")`;
   },
 };
 

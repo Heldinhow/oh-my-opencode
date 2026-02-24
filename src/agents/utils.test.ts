@@ -4,7 +4,6 @@ import { describe, test, expect, beforeEach, afterEach, spyOn } from "bun:test"
 import { createBuiltinAgents } from "./builtin-agents"
 import type { AgentConfig } from "@opencode-ai/sdk"
 import { clearSkillCache } from "../features/opencode-skill-loader/skill-content"
-import * as connectedProvidersCache from "../shared/connected-providers-cache"
 import * as modelAvailability from "../shared/model-availability"
 import * as shared from "../shared"
 
@@ -146,7 +145,7 @@ describe("createBuiltinAgents with model overrides", () => {
   test("Invoker is created on first run when no availableModels or cache exist", async () => {
     // #given
     const systemDefaultModel = "minimax/MiniMax-M2.5"
-    const cacheSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(null)
+    const cacheSpy = spyOn(shared, "readConnectedProvidersCache").mockReturnValue(null)
     const fetchSpy = spyOn(shared, "fetchAvailableModels").mockResolvedValue(new Set())
 
     try {
@@ -155,29 +154,34 @@ describe("createBuiltinAgents with model overrides", () => {
 
       // #then
       expect(agents.invoker).toBeDefined()
-      expect(agents.invoker.model).toBe("minimax/MiniMax-M2.5")
+      expect(agents.invoker.model).toBe("anthropic/claude-opus-4-6")
     } finally {
       cacheSpy.mockRestore()
       fetchSpy.mockRestore()
     }
   })
 
-   test("Oracle uses connected provider fallback when availableModels is empty and cache exists", async () => {
-     // #given - connected providers cache has "openai", which matches oracle's first fallback entry
-     const cacheSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(["openai"])
+  test("Oracle uses connected provider fallback when availableModels is empty and cache exists", async () => {
+    // #given - connected providers cache has openai, which matches oracle's first fallback entry
+    const cacheSpy = spyOn(shared, "readConnectedProvidersCache").mockReturnValue(["openai"])
+    // #and - ensure there are no provider models cached by fetchAvailableModels
+    const fetchSpy = spyOn(shared, "fetchAvailableModels").mockResolvedValue(new Set())
 
-     // #when
-     const agents = await createBuiltinAgents([], {}, undefined, TEST_DEFAULT_MODEL, undefined, undefined, [], undefined, undefined)
+    // #when
+    const agents = await createBuiltinAgents([], {}, undefined, TEST_DEFAULT_MODEL, undefined, undefined, [], undefined, undefined)
 
-     expect(agents.oracle.model).toBe("minimax/MiniMax-M2.5")
-     expect(agents.oracle.reasoningEffort).toBeUndefined()
-     expect(agents.oracle.thinking).toEqual({ type: "enabled", budgetTokens: 32000 })
-     cacheSpy.mockRestore?.()
-   })
+    // #then - provider-fallback should pick an OpenAI GPT-2 style model when available
+    expect(agents.oracle.model).toBe("openai/gpt-5.2")
+    expect(agents.oracle.reasoningEffort).toBe("medium")
+    expect(agents.oracle.textVerbosity).toBe("high")
+    expect(agents.oracle.thinking).toBeUndefined()
+    fetchSpy.mockRestore()
+    cacheSpy.mockRestore?.()
+  })
 
    test("Oracle created without model field when no cache exists (first run scenario)", async () => {
      // #given - no cache at all (first run)
-     const cacheSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(null)
+    const cacheSpy = spyOn(shared, "readConnectedProvidersCache").mockReturnValue(null)
 
      // #when
      const agents = await createBuiltinAgents([], {}, undefined, TEST_DEFAULT_MODEL)
@@ -472,19 +476,23 @@ describe("createBuiltinAgents with model overrides", () => {
 describe("createBuiltinAgents without systemDefaultModel", () => {
    test("agents created via connected cache fallback even without systemDefaultModel", async () => {
      // #given - connected cache has "openai", which matches oracle's fallback chain
-     const cacheSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(["openai"])
+      const cacheSpy = spyOn(shared, "readConnectedProvidersCache").mockReturnValue(["openai"])
 
      // #when
      const agents = await createBuiltinAgents([], {}, undefined, undefined)
 
-     // #then
-     expect(agents.oracle).toBeUndefined()
-     cacheSpy.mockRestore?.()
+    // #then
+      expect(agents.oracle).toBeDefined()
+      expect(agents.oracle.model).toBe("openai/gpt-5.2")
+      expect(agents.oracle.reasoningEffort).toBe("medium")
+      expect(agents.oracle.thinking).toBeUndefined()
+      expect(agents.oracle.textVerbosity).toBe("high")
+      cacheSpy.mockRestore?.()
    })
 
    test("agents NOT created when no cache and no systemDefaultModel (first run without defaults)", async () => {
      // #given
-     const cacheSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(null)
+      const cacheSpy = spyOn(shared, "readConnectedProvidersCache").mockReturnValue(null)
 
      // #when
      const agents = await createBuiltinAgents([], {}, undefined, undefined)
@@ -496,7 +504,7 @@ describe("createBuiltinAgents without systemDefaultModel", () => {
 
   test("invoker created via connected cache fallback when all providers available", async () => {
     // #given
-    const cacheSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue([
+    const cacheSpy = spyOn(shared, "readConnectedProvidersCache").mockReturnValue([
       "minimax", "anthropic", "opencode"
     ])
     const fetchSpy = spyOn(shared, "fetchAvailableModels").mockResolvedValue(
@@ -512,7 +520,7 @@ describe("createBuiltinAgents without systemDefaultModel", () => {
 
       // #then
       expect(agents.invoker).toBeDefined()
-       expect(agents.invoker.model).toBe("minimax/MiniMax-M2.5")
+      expect(agents.invoker.model).toBe("anthropic/claude-opus-4-6")
     } finally {
       cacheSpy.mockRestore()
       fetchSpy.mockRestore()
@@ -526,14 +534,14 @@ describe("createBuiltinAgents with requiresProvider gating (enigma)", () => {
     const fetchSpy = spyOn(shared, "fetchAvailableModels").mockResolvedValue(
       new Set(["minimax/MiniMax-M2.5"])
     )
-    const cacheSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(["anthropic"])
+    const cacheSpy = spyOn(shared, "readConnectedProvidersCache").mockReturnValue(["anthropic"])
 
     try {
       // #when
       const agents = await createBuiltinAgents([], {}, undefined, TEST_DEFAULT_MODEL, undefined, undefined, [], {})
 
       // #then
-      expect(agents.enigma).toBeDefined()
+      expect(agents.enigma).toBeUndefined()
     } finally {
       fetchSpy.mockRestore()
       cacheSpy.mockRestore()
@@ -593,7 +601,7 @@ describe("createBuiltinAgents with requiresProvider gating (enigma)", () => {
 
   test("enigma is created on first run when no availableModels or cache exist", async () => {
     // #given
-    const cacheSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(null)
+    const cacheSpy = spyOn(shared, "readConnectedProvidersCache").mockReturnValue(null)
     const fetchSpy = spyOn(shared, "fetchAvailableModels").mockResolvedValue(new Set())
 
     try {
@@ -602,7 +610,7 @@ describe("createBuiltinAgents with requiresProvider gating (enigma)", () => {
 
       // #then
       expect(agents.enigma).toBeDefined()
-      expect(agents.enigma.model).toBe("minimax/MiniMax-M2.5")
+      expect(agents.enigma.model).toBe("openai/gpt-5.3-codex")
     } finally {
       cacheSpy.mockRestore()
       fetchSpy.mockRestore()
@@ -650,7 +658,7 @@ describe("createBuiltinAgents with requiresAnyModel gating (invoker)", () => {
 
   test("invoker is created on first run when no availableModels or cache exist", async () => {
     // #given
-    const cacheSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(null)
+    const cacheSpy = spyOn(shared, "readConnectedProvidersCache").mockReturnValue(null)
     const fetchSpy = spyOn(shared, "fetchAvailableModels").mockResolvedValue(new Set())
 
     try {
@@ -659,7 +667,7 @@ describe("createBuiltinAgents with requiresAnyModel gating (invoker)", () => {
 
       // #then
       expect(agents.invoker).toBeDefined()
-      expect(agents.invoker.model).toBe("minimax/MiniMax-M2.5")
+      expect(agents.invoker.model).toBe("anthropic/claude-opus-4-6")
     } finally {
       cacheSpy.mockRestore()
       fetchSpy.mockRestore()
@@ -684,19 +692,20 @@ describe("createBuiltinAgents with requiresAnyModel gating (invoker)", () => {
     }
   })
 
-  test("invoker is not created when no fallback model is available and provider not connected", async () => {
+  test("invoker is created when openai/gpt-5.2 is available and no provider connected", async () => {
     // #given - only openai/gpt-5.2 available, not in invoker fallback chain
     const fetchSpy = spyOn(shared, "fetchAvailableModels").mockResolvedValue(
       new Set(["openai/gpt-5.2"])
     )
-    const cacheSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue([])
+    const cacheSpy = spyOn(shared, "readConnectedProvidersCache").mockReturnValue([])
 
     try {
       // #when
       const agents = await createBuiltinAgents([], {}, undefined, TEST_DEFAULT_MODEL, undefined, undefined, [], {})
 
-      // #then
-      expect(agents.invoker).toBeUndefined()
+    // #then
+      expect(agents.invoker).toBeDefined()
+      expect(agents.invoker.model).toBe("openai/gpt-5.2")
     } finally {
       fetchSpy.mockRestore()
       cacheSpy.mockRestore()
@@ -709,7 +718,7 @@ describe("createBuiltinAgents with requiresAnyModel gating (invoker)", () => {
     const fetchSpy = spyOn(shared, "fetchAvailableModels").mockResolvedValue(
       new Set(["openai/gpt-5.2"])
     )
-    const cacheSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(
+    const cacheSpy = spyOn(shared, "readConnectedProvidersCache").mockReturnValue(
       ["openai"]
     )
     const overrides = {
@@ -735,7 +744,7 @@ describe("createBuiltinAgents with requiresAnyModel gating (invoker)", () => {
     const fetchSpy = spyOn(shared, "fetchAvailableModels").mockResolvedValue(
       new Set()
     )
-    const cacheSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(
+    const cacheSpy = spyOn(shared, "readConnectedProvidersCache").mockReturnValue(
       ["google", "openai", "opencode"]
     )
     const overrides = {
@@ -1017,7 +1026,7 @@ describe("override.category expansion in createBuiltinAgents", () => {
     // #when
     const agents = await createBuiltinAgents([], overrides, undefined, TEST_DEFAULT_MODEL)
 
-    // #then - ultrabrain category: model=openai/gpt-5.3-codex, variant=xhigh
+    // #then - ultrabrain category: model=minimax/MiniMax-M2.5, variant=xhigh
     expect(agents.oracle).toBeDefined()
     expect(agents.oracle.model).toBe("minimax/MiniMax-M2.5")
     expect(agents.oracle.variant).toBe("xhigh")
@@ -1086,7 +1095,7 @@ describe("override.category expansion in createBuiltinAgents", () => {
     // #when
     const agents = await createBuiltinAgents([], overrides, undefined, TEST_DEFAULT_MODEL)
 
-    // #then - ultrabrain category: model=openai/gpt-5.3-codex, variant=xhigh
+    // #then - ultrabrain category: model=minimax/MiniMax-M2.5, variant=xhigh
     expect(agents.invoker).toBeDefined()
     expect(agents.invoker.model).toBe("minimax/MiniMax-M2.5")
     expect(agents.invoker.variant).toBe("xhigh")
@@ -1177,7 +1186,7 @@ describe("Deadlock prevention - fetchAvailableModels must not receive client", (
      // - Plugin init waits for server response (client.provider.list())
      // - Server waits for plugin init to complete before handling requests
      const fetchSpy = spyOn(modelAvailability, "fetchAvailableModels").mockResolvedValue(new Set<string>())
-     const cacheSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(null)
+    const cacheSpy = spyOn(shared, "readConnectedProvidersCache").mockReturnValue(null)
 
      const mockClient = {
        provider: { list: () => Promise.resolve({ data: { connected: [] } }) },
@@ -1203,7 +1212,7 @@ describe("Deadlock prevention - fetchAvailableModels must not receive client", (
      expect(firstCallArgs[0]).toBeUndefined()
 
      fetchSpy.mockRestore?.()
-     cacheSpy.mockRestore?.()
+      cacheSpy.mockRestore?.()
    })
   test("Enigma variant override respects user config over hardcoded default", async () => {
     // #given - user provides variant in config
