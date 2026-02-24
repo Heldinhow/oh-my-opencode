@@ -396,7 +396,7 @@ describe("generateModelConfig", () => {
       expect(result.agents?.invoker?.model).toBe("anthropic/claude-opus-4-6")
     })
 
-    test("Invoker is omitted when no fallback provider is available (OpenAI not in chain)", () => {
+    test("Invoker is created when OpenAI is in the fallback chain (OpenAI available)", () => {
       // #given
       const config = createConfig({ hasOpenAI: true })
 
@@ -404,7 +404,7 @@ describe("generateModelConfig", () => {
       const result = generateModelConfig(config)
 
       // #then
-      expect(result.agents?.invoker).toBeUndefined()
+      expect(result.agents?.invoker).toEqual({ model: "openai/gpt-5.2", variant: "high" })
     })
   })
 
