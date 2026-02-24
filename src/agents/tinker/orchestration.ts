@@ -167,5 +167,5 @@ export function shouldProceedToPlan(specContent: string): boolean {
  * Get the canonical SDD sequence for display
  */
 export function getSddSequence(): readonly string[] {
-  return ["constitution", "specify", "clarify", "plan", "start-work"]
+  return ["constitution", "specify", "clarify", "plan", "tasks", "start-work"]
 }

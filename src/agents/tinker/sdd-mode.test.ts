@@ -7,7 +7,7 @@ import { getPlanningTransition } from "./plan-generation"
 import { SDD_MODE_PROMPT, ensureConstitution, getCanonicalSddSequence, detectSddBranchPrefix } from "./sdd-mode"
 import { orchestrateSpeckitFlow, shouldProceedToPlan, getSddSequence } from "./orchestration"
 
-const GOLDEN_PROMETHEUS_TO_TINKER_SEQUENCE = ["constitution", "specify", "clarify", "plan", "start-work"] as const
+const GOLDEN_PROMETHEUS_TO_TINKER_SEQUENCE = ["constitution", "specify", "clarify", "plan", "tasks", "start-work"] as const
 
 function createTempDir(): Promise<string> {
   return mkdtemp(join(tmpdir(), "sdd-mode-"))

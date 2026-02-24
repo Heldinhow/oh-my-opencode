@@ -2,7 +2,7 @@ import { access, mkdir, writeFile } from "node:fs/promises"
 import { dirname, join } from "node:path"
 import { classifyPrefixFromContext } from "../../shared/branch-governance"
 
-export const CANONICAL_SDD_SEQUENCE = ["constitution", "specify", "clarify", "plan", "start-work"] as const
+export const CANONICAL_SDD_SEQUENCE = ["constitution", "specify", "clarify", "plan", "tasks", "start-work"] as const
 
 export function getCanonicalSddSequence(): readonly string[] {
   return CANONICAL_SDD_SEQUENCE
