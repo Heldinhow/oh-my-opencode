@@ -11,6 +11,11 @@ export const AGENT_NAME_MAP: Record<string, string> = {
   "Tinker (Planner)": "tinker",
   tinker: "tinker",
 
+  // Prometheus variants → "tinker" (legacy planner alias)
+  prometheus: "tinker",
+  Prometheus: "tinker",
+  PROMETHEUS: "tinker",
+
   // Axe variants → "axe"
   "orchestrator-invoker": "axe",
   Axe: "axe",
