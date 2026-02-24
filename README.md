@@ -165,7 +165,7 @@ This fork includes a migration focused on SDD workflow quality, consistency, and
 
 ### Tinker planning flow (SDD / Speckit)
 
-Planning now follows a Speckit-style SDD flow under `.specify/`:
+Planning now follows a Speckit-style SDD flow using `.specify/` for planning workspace and `specs/` for per-feature artifacts:
 
 1. `clarify` requirements and constraints.
 2. `specify` scope and acceptance criteria.
@@ -176,7 +176,8 @@ Planning now follows a Speckit-style SDD flow under `.specify/`:
 Primary paths:
 - `.specify/plans/`
 - `.specify/drafts/`
-- `.specify/specs/`
+- `specs/`            # canonical per-feature artifacts (spec.md/plan.md/tasks.md)
+- `.specify/specs/`   # legacy fallback
 - `.specify/tasks/`
 
 ### Planning prompt template (light)

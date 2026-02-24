@@ -56,7 +56,7 @@ SDD is disabled by default. To enable it, add the following to your configuratio
 
 **Goal**: Transform user intent into detailed, unambiguous specifications.
 
-When you describe a feature you want to build, Tinker (the planner) will create a detailed specification file at `.specify/specs/{feature-name}/spec.md`.
+When you describe a feature you want to build, Tinker (the planner) will create a detailed specification file at `specs/{NNN-feature-slug}/spec.md`.
 
 Every specification includes:
 
@@ -111,7 +111,7 @@ This ensures no implementation begins without explicit specification approval.
 
 ## SDD State File
 
-Each plan has a state file at `.specify/specs/{plan-name}/sdd-state.json`:
+Each plan has a state file at `specs/{NNN-plan-slug}/sdd-state.json`:
 
 ```json
 {
