@@ -7,6 +7,8 @@ export const AGENT_DISPLAY_NAMES: Record<string, string> = {
   invoker: "Invoker (Ultraworker)",
   axe: "Axe (Plan Execution Orchestrator)",
   tinker: "Tinker (Plan Builder)",
+  // Legacy alias support: map to canonical display name
+  prometheus: "Tinker (Plan Builder)",
   "invoker-junior": "Invoker-Junior",
   rubick: "Rubick (Plan Consultant)",
   clockwerk: "Clockwerk (Plan Reviewer)",
@@ -14,6 +16,9 @@ export const AGENT_DISPLAY_NAMES: Record<string, string> = {
   keeper: "keeper",
   mirana: "mirana",
   "broodmother": "broodmother",
+  // Backwards-compat aliases -> canonical display names
+  sisyphus: "Invoker (Ultraworker)",
+  omo: "Invoker (Ultraworker)",
 }
 
 /**

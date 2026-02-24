@@ -124,7 +124,7 @@ describe("resolveVariantForModel", () => {
     expect(variant).toBe("medium")
   })
 
-  test("returns undefined for provider not in invoker chain", () => {
+  test("returns variant for provider in invoker chain", () => {
     // #given openai is not in invoker fallback chain anymore
     const config = {} as OhMyOpenCodeConfig
     const model = { providerID: "openai", modelID: "gpt-5.2" }
@@ -133,7 +133,7 @@ describe("resolveVariantForModel", () => {
     const variant = resolveVariantForModel(config, "invoker", model)
 
     // then
-    expect(variant).toBeUndefined()
+    expect(variant).toBe("high")
   })
 
   test("returns undefined for provider not in chain", () => {
