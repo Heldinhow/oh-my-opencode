@@ -34,7 +34,21 @@ interface ChecklistSummary {
 }
 
 async function resolveSpecKitTasksPath(projectRoot: string, planName: string): Promise<string | null> {
-  const directRelPath = `.specify/specs/${planName}/tasks.md`
+  // Normalize planName by stripping any leading typed prefixes (e.g., feat/001-x -> 001-x)
+  const normalizedPlanName = planName.includes("/") ? planName.substring(planName.lastIndexOf("/") + 1) : planName
+  // Priority: specs/ root first, then legacy .specify/specs/
+  const specsRootRel = `specs/${normalizedPlanName}/tasks.md`
+  const specsRootAbs = join(projectRoot, specsRootRel)
+  try {
+    await access(specsRootAbs)
+    // Return workspace-relative path
+    return specsRootRel
+  } catch {
+    // ignore and continue
+  }
+
+  // Fallback to legacy path under .specify/specs
+  const directRelPath = `.specify/specs/${normalizedPlanName}/tasks.md`
   const directAbsPath = join(projectRoot, directRelPath)
   try {
     await access(directAbsPath)
@@ -42,7 +56,7 @@ async function resolveSpecKitTasksPath(projectRoot: string, planName: string): P
   } catch {
   }
 
-  const sequenceMatch = planName.match(/^([a-z]+\/)?([0-9]{3})-/)
+  const sequenceMatch = normalizedPlanName.match(/^([a-z]+\/)?([0-9]{3})-/)
   if (!sequenceMatch) {
     return null
   }
@@ -68,15 +82,28 @@ async function getChecklistSummary(projectRoot: string, planName: string): Promi
   const sequenceMatch = planName.match(/^([a-z]+\/)?([0-9]{3})-/)
   if (!sequenceMatch) return null
 
-  const specsRoot = join(projectRoot, ".specify/specs")
   const prefix = sequenceMatch[2]
+  // Attempt to resolve using specs root first, then legacy .specify/specs
+  const specsBaseCandidates = ["specs", ".specify/specs"]
+  let featureDirName: string | null = null
+  let checklistRoot: string | null = null
+  for (const base of specsBaseCandidates) {
+    try {
+      const baseAbs = join(projectRoot, base)
+      const entries = await readdir(baseAbs, { withFileTypes: true })
+      const dir = entries.find((e) => e.isDirectory() && e.name.startsWith(`${prefix}-`))
+      if (dir) {
+        featureDirName = dir.name
+        checklistRoot = join(baseAbs, dir.name, "checklists")
+        break
+      }
+    } catch {
+      // try next base
+    }
+  }
+  if (!checklistRoot) return null
 
   try {
-    const entries = await readdir(specsRoot, { withFileTypes: true })
-    const featureDir = entries.find((entry) => entry.isDirectory() && entry.name.startsWith(`${prefix}-`))
-    if (!featureDir) return null
-
-    const checklistRoot = join(specsRoot, featureDir.name, "checklists")
     const checklistEntries = await readdir(checklistRoot, { withFileTypes: true })
     const files = checklistEntries.filter((entry) => entry.isFile() && entry.name.endsWith(".md"))
     if (files.length === 0) return null
