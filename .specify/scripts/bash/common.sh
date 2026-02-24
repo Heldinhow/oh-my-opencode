@@ -65,6 +65,7 @@ has_git() {
 check_feature_branch() {
     local branch="$1"
     local has_git_repo="$2"
+    local allowed_prefixes="feat|fix|test|docs|chore|refactor|perf|ci"
 
     # For non-git repos, we can't enforce branch naming but still provide output
     if [[ "$has_git_repo" != "true" ]]; then
@@ -72,9 +73,16 @@ check_feature_branch() {
         return 0
     fi
 
-    if [[ ! "$branch" =~ ^[0-9]{3}- ]]; then
+    if [[ ! "$branch" =~ ^(([a-z]+)\/)?[0-9]{3}- ]]; then
         echo "ERROR: Not on a feature branch. Current branch: $branch" >&2
-        echo "Feature branches should be named like: 001-feature-name" >&2
+        echo "Feature branches should be named like: 001-feature-name or feat/001-feature-name" >&2
+        return 1
+    fi
+
+    local prefix="${BASH_REMATCH[2]}"
+    if [[ -n "$prefix" ]] && [[ ! "$prefix" =~ ^($allowed_prefixes)$ ]]; then
+        echo "ERROR: Invalid feature branch prefix '$prefix'." >&2
+        echo "Allowed prefixes: feat, fix, test, docs, chore, refactor, perf, ci" >&2
         return 1
     fi
 
@@ -90,14 +98,13 @@ find_feature_dir_by_prefix() {
     local branch_name="$2"
     local specs_dir="$repo_root/specs"
 
-    # Extract numeric prefix from branch (e.g., "004" from "004-whatever")
-    if [[ ! "$branch_name" =~ ^([0-9]{3})- ]]; then
+    if [[ ! "$branch_name" =~ ^(([a-z]+)\/)?([0-9]{3})- ]]; then
         # If branch doesn't have numeric prefix, fall back to exact match
         echo "$specs_dir/$branch_name"
         return
     fi
 
-    local prefix="${BASH_REMATCH[1]}"
+    local prefix="${BASH_REMATCH[3]}"
 
     # Search for directories in specs/ that start with this prefix
     local matches=()
@@ -153,4 +160,3 @@ EOF
 
 check_file() { [[ -f "$1" ]] && echo "  ✓ $2" || echo "  ✗ $2"; }
 check_dir() { [[ -d "$1" && -n $(ls -A "$1" 2>/dev/null) ]] && echo "  ✓ $2" || echo "  ✗ $2"; }
-

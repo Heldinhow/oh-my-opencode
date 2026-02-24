@@ -74,7 +74,7 @@ Approach:
 </Category_Context>
 
 <Caller_Warning>
-THIS CATEGORY USES A LESS CAPABLE MODEL (claude-haiku-4-5).
+THIS CATEGORY USES A LIGHTWEIGHT MODEL (MiniMax-M2.5).
 
 The model executing this task has LIMITED reasoning capacity. Your prompt MUST be:
 
@@ -125,7 +125,7 @@ This is NOT a default choice - it's for genuinely unclassifiable moderate-effort
 </Category_Context>
 
 <Caller_Warning>
-THIS CATEGORY USES A MID-TIER MODEL (claude-sonnet-4-5).
+THIS CATEGORY USES MiniMax-M2.5 MODEL.
 
 **PROVIDE CLEAR STRUCTURE:**
 1. MUST DO: Enumerate required actions explicitly
@@ -208,14 +208,14 @@ You are NOT an interactive assistant. You are an autonomous problem-solver.
 
 
 export const DEFAULT_CATEGORIES: Record<string, CategoryConfig> = {
-  "visual-engineering": { model: "google/gemini-3-pro", variant: "high" },
-  ultrabrain: { model: "openai/gpt-5.3-codex", variant: "xhigh" },
-  deep: { model: "openai/gpt-5.3-codex", variant: "medium" },
-  artistry: { model: "google/gemini-3-pro", variant: "high" },
-  quick: { model: "anthropic/claude-haiku-4-5" },
-  "unspecified-low": { model: "anthropic/claude-sonnet-4-5" },
-  "unspecified-high": { model: "anthropic/claude-opus-4-6", variant: "max" },
-  writing: { model: "kimi-for-coding/k2p5" },
+  "visual-engineering": { model: "minimax/MiniMax-M2.5", variant: "high" },
+  ultrabrain: { model: "minimax/MiniMax-M2.5", variant: "xhigh" },
+  deep: { model: "minimax/MiniMax-M2.5", variant: "medium" },
+  artistry: { model: "minimax/MiniMax-M2.5", variant: "high" },
+  quick: { model: "minimax/MiniMax-M2.5" },
+  "unspecified-low": { model: "minimax/MiniMax-M2.5" },
+  "unspecified-high": { model: "minimax/MiniMax-M2.5", variant: "max" },
+  writing: { model: "minimax/MiniMax-M2.5" },
 }
 
 export const CATEGORY_PROMPT_APPENDS: Record<string, string> = {

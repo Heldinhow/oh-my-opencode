@@ -361,8 +361,9 @@ describe("generateOmoConfig - model fallback system", () => {
     // #when generating config
     const result = generateOmoConfig(config)
 
-    // #then Invoker is omitted (requires all fallback providers)
-    expect((result.agents as Record<string, { model: string }>).invoker).toBeUndefined()
+    // #then Invoker should be configured to OpenAI fallback (openai/gpt-5.2, high variant)
+    const invoker = (result.agents as Record<string, { model: string; variant?: string }>).invoker
+    expect(invoker).toEqual({ model: "openai/gpt-5.2", variant: "high" })
     // #then Oracle should use native OpenAI (first fallback entry)
     expect((result.agents as Record<string, { model: string }>).oracle.model).toBe("openai/gpt-5.2")
     // #then broodmother should use native OpenAI (fallback within native tier)

@@ -11,11 +11,16 @@ export const START_WORK_TEMPLATE = `You are starting a Invoker work session.
      - **APPEND** current session to session_ids
      - Continue work on existing plan
    - If no active plan OR plan is complete:
-     - List available plan files
-     - If ONE plan: auto-select it
-     - If MULTIPLE plans: show list with timestamps, ask user to select
+      - List available plan files
+      - If ONE plan: auto-select it
+      - If MULTIPLE plans: show list with timestamps, ask user to select
 
-4. **Create/Update boulder.json**:
+4. **Readiness checks (required)**:
+   - Ensure required execution artifacts exist (at minimum plan + tasks)
+   - If checklist files exist and are incomplete, stop and ask the user whether to proceed
+   - If readiness fails, return actionable remediation guidance before continuing
+
+5. **Create/Update boulder.json**:
    \`\`\`json
    {
      "active_plan": "/absolute/path/to/plan.md",
@@ -25,7 +30,7 @@ export const START_WORK_TEMPLATE = `You are starting a Invoker work session.
    }
    \`\`\`
 
-5. **Read the plan file** and start executing tasks according to axe workflow
+6. **Read the plan file** and start executing tasks according to axe workflow
 
 ## OUTPUT FORMAT
 
@@ -68,5 +73,6 @@ Reading plan and beginning execution...
 
 - The session_id is injected by the hook - use it directly
 - Always update boulder.json BEFORE starting work
+- Always run readiness checks before execution
 - Read the FULL plan file before delegating any tasks
 - Follow axe delegation protocols (7-section format)`

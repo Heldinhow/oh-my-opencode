@@ -10,8 +10,8 @@ import {
   clearBoulderState,
 } from "../../features/boulder-state"
 import { log } from "../../shared/logger"
-import { getSessionAgent, updateSessionAgent } from "../../features/claude-code-session-state"
-import { access } from "node:fs/promises"
+import { updateSessionAgent } from "../../features/claude-code-session-state"
+import { access, readdir, readFile, stat } from "node:fs/promises"
 import { join } from "node:path"
 
 export const HOOK_NAME = "start-work" as const
@@ -27,12 +27,228 @@ interface StartWorkHookOutput {
   parts: Array<{ type: string; text?: string }>
 }
 
-async function resolveSpecKitTasksPath(projectRoot: string, planName: string): Promise<string | null> {
-  const relPath = `.specify/specs/${planName}/tasks.md`
-  const absPath = join(projectRoot, relPath)
+interface ChecklistSummary {
+  total: number
+  completed: number
+  incomplete: number
+}
+
+const SPEC_ROOTS = ["specs", ".specify/specs"] as const
+type SpecRoot = (typeof SPEC_ROOTS)[number]
+
+type FeatureDirResolution =
+  | {
+      kind: "resolved"
+      normalizedPlanName: string
+      root: SpecRoot
+      featureDirName: string
+      featureDirRel: string
+      featureDirAbs: string
+    }
+  | {
+      kind: "ambiguous"
+      normalizedPlanName: string
+      root: SpecRoot
+      prefix: string
+      matches: string[]
+    }
+  | {
+      kind: "not_found"
+      normalizedPlanName: string
+    }
+
+type ReadinessResult =
+  | {
+      decision: "proceed"
+      featureDirAbs: string
+      featureDirRel: string
+      tasksFilePath: string
+    }
+  | {
+      decision: "block"
+      message: string
+    }
+
+function normalizePlanName(planName: string): string {
+  return planName.includes("/") ? planName.substring(planName.lastIndexOf("/") + 1) : planName
+}
+
+async function isDirectory(path: string): Promise<boolean> {
   try {
-    await access(absPath)
-    return relPath
+    const st = await stat(path)
+    return st.isDirectory()
+  } catch {
+    return false
+  }
+}
+
+async function pathExists(path: string): Promise<boolean> {
+  try {
+    await access(path)
+    return true
+  } catch {
+    return false
+  }
+}
+
+async function resolveFeatureDir(projectRoot: string, planName: string): Promise<FeatureDirResolution> {
+  const normalizedPlanName = normalizePlanName(planName)
+
+  const numericPrefixMatch = normalizedPlanName.match(/^([0-9]{3})-/)
+  const prefix = numericPrefixMatch?.[1] ?? null
+
+  for (const root of SPEC_ROOTS) {
+    const directFeatureDirRel = `${root}/${normalizedPlanName}`
+    const directFeatureDirAbs = join(projectRoot, directFeatureDirRel)
+    if (await isDirectory(directFeatureDirAbs)) {
+      return {
+        kind: "resolved",
+        normalizedPlanName,
+        root,
+        featureDirName: normalizedPlanName,
+        featureDirRel: directFeatureDirRel,
+        featureDirAbs: directFeatureDirAbs,
+      }
+    }
+
+    if (!prefix) continue
+
+    try {
+      const rootAbs = join(projectRoot, root)
+      const entries = await readdir(rootAbs, { withFileTypes: true })
+      const matches = entries
+        .filter((e) => e.isDirectory() && e.name.startsWith(`${prefix}-`))
+        .map((e) => e.name)
+
+      if (matches.length === 1) {
+        const featureDirName = matches[0]
+        const featureDirRel = `${root}/${featureDirName}`
+        const featureDirAbs = join(projectRoot, featureDirRel)
+        return {
+          kind: "resolved",
+          normalizedPlanName,
+          root,
+          featureDirName,
+          featureDirRel,
+          featureDirAbs,
+        }
+      }
+
+      if (matches.length > 1) {
+        return {
+          kind: "ambiguous",
+          normalizedPlanName,
+          root,
+          prefix,
+          matches,
+        }
+      }
+    } catch {
+      // ignore and continue
+    }
+  }
+
+  return { kind: "not_found", normalizedPlanName }
+}
+
+function readinessBlockedMessage(title: string, detail: string) {
+  return `
+## Readiness Blocked
+
+${title}${detail}`
+}
+
+async function resolveSpecKitReadiness(projectRoot: string, planName: string): Promise<ReadinessResult> {
+  const resolution = await resolveFeatureDir(projectRoot, planName)
+
+  if (resolution.kind === "ambiguous") {
+    const matchesList = resolution.matches
+      .map((m) => `- ${resolution.root}/${m}`)
+      .join("\n")
+    return {
+      decision: "block",
+      message: readinessBlockedMessage(
+        `Ambiguous feature mapping for plan "${resolution.normalizedPlanName}" (prefix "${resolution.prefix}-").`,
+        `\n\n${matchesList}\n\nRename the plan to match the intended feature directory, then retry /start-work.`,
+      ),
+    }
+  }
+
+  if (resolution.kind === "not_found") {
+    return {
+      decision: "block",
+      message: readinessBlockedMessage(
+        `No feature directory found for plan "${resolution.normalizedPlanName}" under specs/ or .specify/specs/ (specs/ is preferred).`,
+        `\n\nRun /speckit.specify first, then retry /start-work.`,
+      ),
+    }
+  }
+
+  const specAbs = join(resolution.featureDirAbs, "spec.md")
+  const planAbs = join(resolution.featureDirAbs, "plan.md")
+  const tasksAbs = join(resolution.featureDirAbs, "tasks.md")
+
+  if (!(await pathExists(specAbs))) {
+    return {
+      decision: "block",
+      message: readinessBlockedMessage(
+        `Missing spec.md for plan "${resolution.normalizedPlanName}".`,
+        `\nRun /speckit.specify first, then retry /start-work.`,
+      ),
+    }
+  }
+
+  if (!(await pathExists(planAbs))) {
+    return {
+      decision: "block",
+      message: readinessBlockedMessage(
+        `Missing plan.md for plan "${resolution.normalizedPlanName}".`,
+        `\nRun /speckit.plan first, then retry /start-work.`,
+      ),
+    }
+  }
+
+  if (!(await pathExists(tasksAbs))) {
+    return {
+      decision: "block",
+      message: readinessBlockedMessage(
+        `Missing tasks.md for plan "${resolution.normalizedPlanName}".`,
+        `\nRun /speckit.tasks first, then retry /start-work.`,
+      ),
+    }
+  }
+
+  return {
+    decision: "proceed",
+    featureDirAbs: resolution.featureDirAbs,
+    featureDirRel: resolution.featureDirRel,
+    tasksFilePath: `${resolution.featureDirRel}/tasks.md`,
+  }
+}
+
+async function getChecklistSummary(featureDirAbs: string): Promise<ChecklistSummary | null> {
+  const checklistRoot = join(featureDirAbs, "checklists")
+  try {
+    const checklistEntries = await readdir(checklistRoot, { withFileTypes: true })
+    const files = checklistEntries.filter((entry) => entry.isFile() && entry.name.endsWith(".md"))
+    if (files.length === 0) return null
+
+    let total = 0
+    let completed = 0
+    let incomplete = 0
+
+    for (const file of files) {
+      const content = await readFile(join(checklistRoot, file.name), "utf8")
+      const allMatches = content.match(/^- \[( |x|X)\]/gm) ?? []
+      const completeMatches = content.match(/^- \[(x|X)\]/gm) ?? []
+      const incompleteMatches = content.match(/^- \[ \]/gm) ?? []
+
+      total += allMatches.length
+      completed += completeMatches.length
+      incomplete += incompleteMatches.length
+    }
+
+    return { total, completed, incomplete }
   } catch {
     return null
   }
@@ -116,17 +332,28 @@ All ${progress.total} tasks are done. Create a new plan with: /plan "your task"`
               clearBoulderState(ctx.directory)
             }
             const newState = createBoulderState(matchedPlan, sessionId, "axe")
-            const tasksFilePath = await resolveSpecKitTasksPath(
-              ctx.directory,
-              getPlanName(matchedPlan)
-            )
-            if (tasksFilePath) {
-              newState.tasksFilePath = tasksFilePath
+            const readiness = await resolveSpecKitReadiness(ctx.directory, getPlanName(matchedPlan))
+            if (readiness.decision === "block") {
+              contextInfo = readiness.message
+            } else {
+              newState.tasksFilePath = readiness.tasksFilePath
               newState.useSpecKitTasks = true
-            }
-            writeBoulderState(ctx.directory, newState)
-            
-            contextInfo = `
+              newState.readinessDecision = "proceed"
+
+              const checklist = await getChecklistSummary(readiness.featureDirAbs)
+              if (checklist && checklist.incomplete > 0) {
+                newState.readinessDecision = "block"
+                newState.checklistProgress = `${checklist.completed}/${checklist.total}`
+                contextInfo = `
+## Readiness Checklists Incomplete
+
+Plan: ${getPlanName(matchedPlan)}
+Checklist progress: ${checklist.completed}/${checklist.total} complete (${checklist.incomplete} incomplete)
+
+Some checklists are incomplete. Ask the user if they want to proceed anyway.`
+              } else {
+                writeBoulderState(ctx.directory, newState)
+                contextInfo = `
 ## Auto-Selected Plan
 
 **Plan**: ${getPlanName(matchedPlan)}
@@ -136,6 +363,8 @@ All ${progress.total} tasks are done. Create a new plan with: /plan "your task"`
 **Started**: ${timestamp}
 
 boulder.json has been created. Read the plan and begin execution.`
+              }
+            }
           }
         } else {
           const incompletePlans = allPlans.filter(p => !getPlanProgress(p).isComplete)
@@ -168,20 +397,34 @@ No incomplete plans available. Create a new plan with: /plan "your task"`
         if (!progress.isComplete) {
           appendSessionId(ctx.directory, sessionId)
           if (!existingState.useSpecKitTasks) {
-            const tasksFilePath = await resolveSpecKitTasksPath(
-              ctx.directory,
-              existingState.plan_name
-            )
-            if (tasksFilePath) {
+            const readiness = await resolveSpecKitReadiness(ctx.directory, existingState.plan_name)
+            if (readiness.decision === "block") {
+              contextInfo = readiness.message
+            } else {
               const updatedState = {
                 ...existingState,
-                tasksFilePath,
+                tasksFilePath: readiness.tasksFilePath,
                 useSpecKitTasks: true,
+                readinessDecision: "proceed" as "proceed" | "block",
               }
-              writeBoulderState(ctx.directory, updatedState)
+              const checklist = await getChecklistSummary(readiness.featureDirAbs)
+              if (checklist && checklist.incomplete > 0) {
+                updatedState.readinessDecision = "block"
+                updatedState.checklistProgress = `${checklist.completed}/${checklist.total}`
+                contextInfo = `
+## Readiness Checklists Incomplete
+
+Plan: ${existingState.plan_name}
+Checklist progress: ${checklist.completed}/${checklist.total} complete (${checklist.incomplete} incomplete)
+
+Some checklists are incomplete. Ask the user if they want to proceed anyway.`
+              } else {
+                writeBoulderState(ctx.directory, updatedState)
+              }
             }
           }
-          contextInfo = `
+          if (!contextInfo) {
+            contextInfo = `
 ## Active Work Session Found
 
 **Status**: RESUMING existing work
@@ -193,6 +436,7 @@ No incomplete plans available. Create a new plan with: /plan "your task"`
 
 The current session (${sessionId}) has been added to session_ids.
 Read the plan file and continue from the first unchecked task.`
+          }
         } else {
           contextInfo = `
 ## Previous Work Complete
@@ -220,20 +464,32 @@ Use Tinker to create a work plan first: /plan "your task"`
 
 All ${plans.length} plan(s) are complete. Create a new plan with: /plan "your task"`
         } else if (incompletePlans.length === 1) {
-          const planPath = incompletePlans[0]
-          const progress = getPlanProgress(planPath)
-          const newState = createBoulderState(planPath, sessionId, "axe")
-          const tasksFilePath = await resolveSpecKitTasksPath(
-            ctx.directory,
-            getPlanName(planPath)
-          )
-          if (tasksFilePath) {
-            newState.tasksFilePath = tasksFilePath
-            newState.useSpecKitTasks = true
-          }
-          writeBoulderState(ctx.directory, newState)
+           const planPath = incompletePlans[0]
+           const progress = getPlanProgress(planPath)
+           const newState = createBoulderState(planPath, sessionId, "axe")
+           const readiness = await resolveSpecKitReadiness(ctx.directory, getPlanName(planPath))
+           if (readiness.decision === "block") {
+             contextInfo += readiness.message
+           } else {
+             newState.tasksFilePath = readiness.tasksFilePath
+             newState.useSpecKitTasks = true
+             newState.readinessDecision = "proceed"
+             const checklist = await getChecklistSummary(readiness.featureDirAbs)
+             if (checklist && checklist.incomplete > 0) {
+               newState.readinessDecision = "block"
+               newState.checklistProgress = `${checklist.completed}/${checklist.total}`
+               contextInfo += `
 
-          contextInfo += `
+## Readiness Checklists Incomplete
+
+Plan: ${getPlanName(planPath)}
+Checklist progress: ${checklist.completed}/${checklist.total} complete (${checklist.incomplete} incomplete)
+
+Some checklists are incomplete. Ask the user if they want to proceed anyway.`
+            } else {
+              writeBoulderState(ctx.directory, newState)
+
+              contextInfo += `
 
 ## Auto-Selected Plan
 
@@ -244,6 +500,8 @@ All ${plans.length} plan(s) are complete. Create a new plan with: /plan "your ta
 **Started**: ${timestamp}
 
 boulder.json has been created. Read the plan and begin execution.`
+            }
+          }
         } else {
           const planList = incompletePlans.map((p, i) => {
             const progress = getPlanProgress(p)

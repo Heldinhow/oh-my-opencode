@@ -1,3 +1,10 @@
+import { evaluateClarifyNeed } from "./interview-mode"
+
+export function getPlanningTransition(specContent: string): "clarify" | "plan" {
+  const evaluation = evaluateClarifyNeed(specContent)
+  return evaluation.required ? "clarify" : "plan"
+}
+
 /**
  * Tinker Plan Generation
  *

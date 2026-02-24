@@ -318,3 +318,10 @@ Three-tier system:
 - **Trusted deps**: @ast-grep/cli, @ast-grep/napi, @code-yeongyu/comment-checker
 - **No linter/formatter**: No ESLint, Prettier, or Biome configured
 - **License**: SUL-1.0 (Invoker Use License)
+
+## Active Technologies
+- TypeScript (Bun runtime) + `@opencode-ai/plugin`, Bun, Zod, existing speckit bash scripts under `.specify/scripts/bash/` (001-align-sdd-speckit-flow)
+- File-based markdown/json in repo (`specs/`, `.specify/`) (001-align-sdd-speckit-flow)
+
+## Recent Changes
+- 001-align-sdd-speckit-flow: Added TypeScript (Bun runtime) + `@opencode-ai/plugin`, Bun, Zod, existing speckit bash scripts under `.specify/scripts/bash/`

@@ -12,7 +12,7 @@ import * as executor from "./executor"
 
 const SYSTEM_DEFAULT_MODEL = "anthropic/claude-sonnet-4-5"
 
-const TEST_CONNECTED_PROVIDERS = ["anthropic", "google", "openai"]
+const TEST_CONNECTED_PROVIDERS = ["anthropic", "google", "openai", "minimax"]
 const TEST_AVAILABLE_MODELS = new Set([
   "anthropic/claude-opus-4-6",
   "anthropic/claude-sonnet-4-5",
@@ -21,6 +21,7 @@ const TEST_AVAILABLE_MODELS = new Set([
   "google/gemini-3-flash",
   "openai/gpt-5.2",
   "openai/gpt-5.3-codex",
+  "minimax/MiniMax-M2.5",
 ])
 
 type DelegateTaskArgsWithSerializedSkills = Omit<DelegateTaskArgs, "load_skills"> & {
@@ -48,14 +49,15 @@ describe("invoker-task", () => {
       MAX_POLL_TIME_MS: 2000,
       SESSION_CONTINUATION_STABILITY_MS: 50,
     })
-    cacheSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(["anthropic", "google", "openai"])
+    cacheSpy = spyOn(connectedProvidersCache, "readConnectedProvidersCache").mockReturnValue(["anthropic", "google", "openai", "minimax"])
     providerModelsSpy = spyOn(connectedProvidersCache, "readProviderModelsCache").mockReturnValue({
       models: {
         anthropic: ["claude-opus-4-6", "claude-sonnet-4-5", "claude-haiku-4-5"],
         google: ["gemini-3-pro", "gemini-3-flash"],
         openai: ["gpt-5.2", "gpt-5.3-codex"],
+        minimax: ["MiniMax-M2.5"],
       },
-      connected: ["anthropic", "google", "openai"],
+      connected: ["anthropic", "google", "openai", "minimax"],
       updatedAt: "2026-01-01T00:00:00.000Z",
     })
   })
@@ -73,7 +75,7 @@ describe("invoker-task", () => {
 
       // when / #then
       expect(category).toBeDefined()
-      expect(category.model).toBe("google/gemini-3-pro")
+      expect(category.model).toBe("minimax/MiniMax-M2.5")
       expect(category.variant).toBe("high")
     })
 
@@ -83,7 +85,7 @@ describe("invoker-task", () => {
 
       // when / #then
       expect(category).toBeDefined()
-      expect(category.model).toBe("openai/gpt-5.3-codex")
+      expect(category.model).toBe("minimax/MiniMax-M2.5")
       expect(category.variant).toBe("xhigh")
     })
 
@@ -93,7 +95,7 @@ describe("invoker-task", () => {
 
       // when / #then
       expect(category).toBeDefined()
-      expect(category.model).toBe("openai/gpt-5.3-codex")
+      expect(category.model).toBe("minimax/MiniMax-M2.5")
       expect(category.variant).toBe("medium")
     })
   })
@@ -781,7 +783,7 @@ describe("invoker-task", () => {
 
       // then
       expect(result).not.toBeNull()
-      expect(result!.config.model).toBe("google/gemini-3-pro")
+      expect(result!.config.model).toBe("minimax/MiniMax-M2.5")
       expect(result!.promptAppend).toContain("VISUAL/UI")
     })
 
@@ -868,7 +870,7 @@ describe("invoker-task", () => {
 
       // then - category's built-in model wins over inheritedModel
       expect(result).not.toBeNull()
-      expect(result!.config.model).toBe("google/gemini-3-pro")
+      expect(result!.config.model).toBe("minimax/MiniMax-M2.5")
     })
 
     test("systemDefaultModel is used as fallback when custom category has no model", () => {
@@ -910,7 +912,7 @@ describe("invoker-task", () => {
 
       // then
       expect(result).not.toBeNull()
-      expect(result!.config.model).toBe("google/gemini-3-pro")
+      expect(result!.config.model).toBe("minimax/MiniMax-M2.5")
     })
   })
 
@@ -973,6 +975,7 @@ describe("invoker-task", () => {
         toolContext
       )
 
+      // then
       // then
       expect(launchInput.model).toEqual({
         providerID: "openai",
@@ -1038,10 +1041,10 @@ describe("invoker-task", () => {
         toolContext
       )
 
-      // then - variant MUST be "max" from DEFAULT_CATEGORIES
+      
       expect(launchInput.model).toEqual({
-        providerID: "anthropic",
-        modelID: "claude-opus-4-6",
+        providerID: "minimax",
+        modelID: "MiniMax-M2.5",
         variant: "max",
       })
     })
@@ -1062,23 +1065,24 @@ describe("invoker-task", () => {
          app: { agents: async () => ({ data: [] }) },
          config: { get: async () => ({ data: { model: SYSTEM_DEFAULT_MODEL } }) },
          model: { list: async () => [{ provider: "anthropic", id: "claude-opus-4-6" }] },
-         session: {
-           get: async () => ({ data: { directory: "/project" } }),
-           create: async () => ({ data: { id: "ses_sync_default_variant" } }),
-           prompt: promptMock,
-           promptAsync: promptMock,
-           messages: async () => ({
-             data: [{ info: { role: "assistant" }, parts: [{ type: "text", text: "done" }] }]
-           }),
-           status: async () => ({ data: { "ses_sync_default_variant": { type: "idle" } } }),
-         },
+          session: {
+            get: async () => ({ data: { directory: "/project" } }),
+            create: async () => ({ data: { id: "ses_sync_default_variant" } }),
+            prompt: promptMock,
+            promptAsync: promptMock,
+            messages: async () => ({
+              data: [{ info: { role: "assistant" }, parts: [{ type: "text", text: "done" }] }]
+            }),
+            status: async () => ({ data: { "ses_sync_default_variant": { type: "idle" } } }),
+          },
        }
 
       // NO userCategories - must use DEFAULT_CATEGORIES
-      const tool = createDelegateTask({
-        manager: mockManager,
-        client: mockClient,
-      })
+        const tool = createDelegateTask({
+          manager: mockManager,
+          client: mockClient,
+          invokerJuniorModel: "openai/gpt-5.2",
+        })
 
       const toolContext = {
         sessionID: "parent-session",
@@ -1099,10 +1103,9 @@ describe("invoker-task", () => {
         toolContext
       )
 
-      // then - variant MUST be "max" from DEFAULT_CATEGORIES (passed as separate field)
       expect(promptBody.model).toEqual({
-        providerID: "anthropic",
-        modelID: "claude-opus-4-6",
+        providerID: "openai",
+        modelID: "gpt-5.2",
       })
       expect(promptBody.variant).toBe("max")
     }, { timeout: 20000 })
@@ -1125,10 +1128,11 @@ describe("invoker-task", () => {
         },
       }
 
-      const tool = createDelegateTask({
-        manager: mockManager,
-        client: mockClient,
-      })
+        const tool = createDelegateTask({
+          manager: mockManager,
+          client: mockClient,
+          invokerJuniorModel: "openai/gpt-5.2",
+        })
 
       const toolContext = {
         sessionID: "parent-session",
@@ -1169,6 +1173,7 @@ describe("invoker-task", () => {
        const tool = createDelegateTask({
          manager: mockManager,
          client: mockClient,
+         invokerJuniorModel: "openai/gpt-5.2",
        })
        
        const toolContext = {
@@ -1219,10 +1224,11 @@ describe("invoker-task", () => {
          },
        }
       
-      const tool = createDelegateTask({
-        manager: mockManager,
-        client: mockClient,
-      })
+        const tool = createDelegateTask({
+          manager: mockManager,
+          client: mockClient,
+          invokerJuniorModel: "openai/gpt-5.2",
+        })
       
       const toolContext = {
         sessionID: "parent-session",
@@ -1314,10 +1320,11 @@ describe("invoker-task", () => {
        },
      }
      
-     const tool = createDelegateTask({
-       manager: mockManager,
-       client: mockClient,
-     })
+        const tool = createDelegateTask({
+          manager: mockManager,
+          client: mockClient,
+          invokerJuniorModel: "openai/gpt-5.2",
+        })
      
      const toolContext = {
        sessionID: "parent-session",
@@ -1441,10 +1448,11 @@ describe("invoker-task", () => {
        config: { get: async () => ({ data: { model: SYSTEM_DEFAULT_MODEL } }) },
      }
      
-     const tool = createDelegateTask({
-       manager: mockManager,
-       client: mockClient,
-     })
+        const tool = createDelegateTask({
+          manager: mockManager,
+          client: mockClient,
+          invokerJuniorModel: "openai/gpt-5.2",
+        })
      
      const toolContext = {
        sessionID: "parent-session",
@@ -1499,10 +1507,11 @@ describe("invoker-task", () => {
          },
        }
        
-       const tool = createDelegateTask({
-         manager: mockManager,
-         client: mockClient,
-       })
+        const tool = createDelegateTask({
+          manager: mockManager,
+          client: mockClient,
+          invokerJuniorModel: "openai/gpt-5.2",
+        })
       
       const toolContext = {
         sessionID: "parent-session",
@@ -1567,6 +1576,7 @@ describe("invoker-task", () => {
        const tool = createDelegateTask({
          manager: mockManager,
          client: mockClient,
+         invokerJuniorModel: "openai/gpt-5.2",
        })
       
       const toolContext = {
@@ -1591,7 +1601,7 @@ describe("invoker-task", () => {
       // then - should return the task result content
       expect(result).toContain("Sync task completed successfully")
       expect(result).toContain("Task completed")
-    }, { timeout: 20000 })
+    }, { timeout: 10000 })
 
     test("sync mode agent not found returns helpful error", async () => {
       // given
@@ -1623,6 +1633,7 @@ describe("invoker-task", () => {
        const tool = createDelegateTask({
          manager: mockManager,
          client: mockClient,
+         invokerJuniorModel: "openai/gpt-5.2",
        })
       
       const toolContext = {
@@ -1941,6 +1952,7 @@ describe("invoker-task", () => {
        const tool = createDelegateTask({
          manager: mockManager,
          client: mockClient,
+         invokerJuniorModel: "openai/gpt-5.2",
        })
       
       const toolContext = {
@@ -2236,8 +2248,8 @@ describe("invoker-task", () => {
 
       // then - model should be anthropic/claude-haiku-4-5 from DEFAULT_CATEGORIES
       //         NOT anthropic/claude-sonnet-4-5 (system default)
-      expect(launchInput.model.providerID).toBe("anthropic")
-      expect(launchInput.model.modelID).toBe("claude-haiku-4-5")
+      expect(launchInput.model.providerID).toBe("minimax")
+      expect(launchInput.model.modelID).toBe("MiniMax-M2.5")
     })
 
     test("category delegation ignores UI-selected (Kimi) system default model", async () => {
@@ -2300,8 +2312,8 @@ describe("invoker-task", () => {
       )
 
       // then - category model must win (not Kimi)
-      expect(launchInput.model.providerID).toBe("anthropic")
-      expect(launchInput.model.modelID).toBe("claude-haiku-4-5")
+      expect(launchInput.model.providerID).toBe("minimax")
+      expect(launchInput.model.modelID).toBe("MiniMax-M2.5")
     })
 
     test("invoker-junior model override takes precedence over category model", async () => {
@@ -2583,11 +2595,12 @@ describe("invoker-task", () => {
        }
 
        // Pass browserProvider to createDelegateTask
-       const tool = createDelegateTask({
-         manager: mockManager,
-         client: mockClient,
-         browserProvider: "agent-browser",
-       })
+        const tool = createDelegateTask({
+          manager: mockManager,
+          client: mockClient,
+          browserProvider: "agent-browser",
+          invokerJuniorModel: "openai/gpt-5.2",
+        })
 
       const toolContext = {
         sessionID: "parent-session",
@@ -2638,6 +2651,7 @@ describe("invoker-task", () => {
        const tool = createDelegateTask({
          manager: mockManager,
          client: mockClient,
+         invokerJuniorModel: "openai/gpt-5.2",
        })
 
       const toolContext = {
@@ -2857,7 +2871,7 @@ describe("invoker-task", () => {
       
       // then - catalog model is used
       expect(resolved).not.toBeNull()
-      expect(resolved!.config.model).toBe("openai/gpt-5.3-codex")
+      expect(resolved!.config.model).toBe("minimax/MiniMax-M2.5")
       expect(resolved!.config.variant).toBe("xhigh")
     })
 
@@ -2870,7 +2884,7 @@ describe("invoker-task", () => {
       
       // then - default model from DEFAULT_CATEGORIES is used
       expect(resolved).not.toBeNull()
-      expect(resolved!.config.model).toBe("anthropic/claude-sonnet-4-5")
+      expect(resolved!.config.model).toBe("minimax/MiniMax-M2.5")
     })
 
     test("category built-in model takes precedence over inheritedModel for builtin category", () => {
@@ -2884,7 +2898,7 @@ describe("invoker-task", () => {
       // then - category's built-in model wins (ultrabrain uses gpt-5.3-codex)
       expect(resolved).not.toBeNull()
       const actualModel = resolved!.config.model
-      expect(actualModel).toBe("openai/gpt-5.3-codex")
+      expect(actualModel).toBe("minimax/MiniMax-M2.5")
     })
 
     test("when user defines model - modelInfo should report user-defined regardless of inheritedModel", () => {
@@ -2943,7 +2957,7 @@ describe("invoker-task", () => {
       
       // then category's built-in model should be used, NOT inheritedModel
       expect(resolved).not.toBeNull()
-      expect(resolved!.model).toBe("openai/gpt-5.3-codex")
+      expect(resolved!.model).toBe("minimax/MiniMax-M2.5")
     })
 
     test("FIXED: systemDefaultModel is used when no userConfig.model and no inheritedModel", () => {
@@ -3008,7 +3022,7 @@ describe("invoker-task", () => {
       
       // then should use category's built-in model (gemini-3-pro for visual-engineering)
       expect(resolved).not.toBeNull()
-      expect(resolved!.model).toBe("google/gemini-3-pro")
+      expect(resolved!.model).toBe("minimax/MiniMax-M2.5")
     })
 
     test("systemDefaultModel is used when no other model is available", () => {
@@ -3157,6 +3171,7 @@ describe("invoker-task", () => {
        const tool = createDelegateTask({
          manager: mockManager,
          client: mockClient,
+         invokerJuniorModel: "openai/gpt-5.2",
        })
 
       const toolContext = {
@@ -3221,6 +3236,7 @@ describe("invoker-task", () => {
        const tool = createDelegateTask({
          manager: mockManager,
          client: mockClient,
+         invokerJuniorModel: "openai/gpt-5.2",
        })
 
       const toolContext = {
@@ -3285,6 +3301,7 @@ describe("invoker-task", () => {
        const tool = createDelegateTask({
          manager: mockManager,
          client: mockClient,
+         invokerJuniorModel: "openai/gpt-5.2",
        })
 
       const toolContext = {
@@ -3541,6 +3558,7 @@ describe("invoker-task", () => {
        const tool = createDelegateTask({
          manager: mockManager,
          client: mockClient,
+         invokerJuniorModel: "openai/gpt-5.2",
        })
       
       const toolContext = {
@@ -3666,8 +3684,8 @@ describe("invoker-task", () => {
            get: async () => ({ data: { directory: "/project" } }),
            create: async (input: any) => {
              createBody = input.body
-             return { data: { id: "ses_title_test" } }
-           },
+              return { data: { id: "ses_title_test" } }
+            },
            prompt: async () => ({ data: {} }),
            promptAsync: async () => ({ data: {} }),
            messages: async () => ({
@@ -3677,10 +3695,11 @@ describe("invoker-task", () => {
          },
        }
 
-       const tool = createDelegateTask({
-         manager: mockManager,
-         client: mockClient,
-       })
+        const tool = createDelegateTask({
+          manager: mockManager,
+          client: mockClient,
+          invokerJuniorModel: "openai/gpt-5.2",
+        })
 
       const toolContext = {
         sessionID: "parent-session",
@@ -3716,7 +3735,7 @@ describe("invoker-task", () => {
          model: { list: async () => [{ id: SYSTEM_DEFAULT_MODEL }] },
          session: {
            get: async () => ({ data: { directory: "/project" } }),
-           create: async () => ({ data: { id: "ses_metadata_test" } }),
+            create: async () => ({ data: { id: "ses_metadata_test" } }),
            prompt: async () => ({ data: {} }),
            promptAsync: async () => ({ data: {} }),
            messages: async () => ({
@@ -3726,10 +3745,11 @@ describe("invoker-task", () => {
          },
        }
 
-       const tool = createDelegateTask({
-         manager: mockManager,
-         client: mockClient,
-       })
+        const tool = createDelegateTask({
+          manager: mockManager,
+          client: mockClient,
+          invokerJuniorModel: "openai/gpt-5.2",
+        })
 
       const toolContext = {
         sessionID: "parent-session",

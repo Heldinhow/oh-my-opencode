@@ -144,6 +144,16 @@ export function getPlanName(planPath: string): string {
   return basename(planPath, ".md")
 }
 
+export function getFeatureSequenceFromBranch(branchName: string): number | null {
+  const match = branchName.match(/^([a-z]+\/)?([0-9]{3})-/)
+  if (!match) return null
+
+  const value = Number.parseInt(match[2], 10)
+  if (!Number.isFinite(value) || value <= 0) return null
+
+  return value
+}
+
 /**
  * Create a new boulder state for a plan.
  */

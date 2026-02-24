@@ -142,6 +142,9 @@ describe("AGENT_DISPLAY_NAMES", () => {
       invoker: "Invoker (Ultraworker)",
       axe: "Axe (Plan Execution Orchestrator)",
       tinker: "Tinker (Plan Builder)",
+      prometheus: "Tinker (Plan Builder)",
+      sisyphus: "Invoker (Ultraworker)",
+      omo: "Invoker (Ultraworker)",
       "invoker-junior": "Invoker-Junior",
       rubick: "Rubick (Plan Consultant)",
       clockwerk: "Clockwerk (Plan Reviewer)",
@@ -149,6 +152,7 @@ describe("AGENT_DISPLAY_NAMES", () => {
       keeper: "keeper",
       mirana: "mirana",
       "broodmother": "broodmother",
+      
     }
 
     // when checking the constant

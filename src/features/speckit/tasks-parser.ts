@@ -83,9 +83,8 @@ export async function allTasksDone(filePath: string): Promise<boolean> {
   return tasks.every((t) => t.done)
 }
 
-/** "X/Y tasks concluídas" */
 export async function getTasksSummary(filePath: string): Promise<string> {
   const tasks = await parseTasksFromMarkdown(filePath)
   const doneCount = tasks.filter((t) => t.done).length
-  return `${doneCount}/${tasks.length} tasks concluídas`
+  return `${doneCount}/${tasks.length} tasks completed`
 }

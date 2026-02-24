@@ -1,10 +1,11 @@
 import { describe, expect, test, beforeEach, afterEach, spyOn } from "bun:test"
 import { existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs"
 import { join } from "node:path"
-import { tmpdir, homedir } from "node:os"
+import { tmpdir } from "node:os"
 import { randomUUID } from "node:crypto"
 import { createStartWorkHook } from "./index"
 import {
+  readBoulderState,
   writeBoulderState,
   clearBoulderState,
 } from "../../features/boulder-state"
@@ -14,6 +15,20 @@ import * as sessionState from "../../features/claude-code-session-state"
 describe("start-work hook", () => {
   let testDir: string
   let invokerDir: string
+
+  function writeFeatureArtifacts(
+    root: "specs" | ".specify/specs",
+    featureName: string,
+    files: { spec?: boolean; plan?: boolean; tasks?: boolean } = {},
+  ) {
+    const { spec = true, plan = true, tasks = true } = files
+    const featureDir = join(testDir, ...root.split("/"), featureName)
+    mkdirSync(featureDir, { recursive: true })
+    if (spec) writeFileSync(join(featureDir, "spec.md"), "# Spec\n")
+    if (plan) writeFileSync(join(featureDir, "plan.md"), "# Plan\n")
+    if (tasks) writeFileSync(join(featureDir, "tasks.md"), "- [ ] TASK-001\n")
+    return featureDir
+  }
 
   function createMockPluginInput() {
     return {
@@ -93,6 +108,7 @@ describe("start-work hook", () => {
         plan_name: "test-plan",
       }
       writeBoulderState(testDir, state)
+      writeFeatureArtifacts("specs", "test-plan")
 
       const hook = createStartWorkHook(createMockPluginInput())
       const output = {
@@ -168,6 +184,7 @@ describe("start-work hook", () => {
       // Plan 2: incomplete (has unchecked)
       const plan2Path = join(plansDir, "plan-incomplete.md")
       writeFileSync(plan2Path, "# Plan Incomplete\n- [ ] Task 1\n- [x] Task 2")
+      writeFeatureArtifacts("specs", "plan-incomplete")
 
       const hook = createStartWorkHook(createMockPluginInput())
       const output = {
@@ -254,6 +271,8 @@ describe("start-work hook", () => {
       const newPlanPath = join(plansDir, "new-plan.md")
       writeFileSync(newPlanPath, "# New Plan\n- [ ] New Task 1")
 
+      writeFeatureArtifacts("specs", "new-plan")
+
       // Set up stale boulder state pointing to old plan
       const staleState: BoulderState = {
         active_plan: oldPlanPath,
@@ -294,6 +313,7 @@ describe("start-work hook", () => {
 
       const planPath = join(plansDir, "my-feature-plan.md")
       writeFileSync(planPath, "# My Feature Plan\n- [ ] Task 1")
+      writeFeatureArtifacts("specs", "my-feature-plan")
 
       const hook = createStartWorkHook(createMockPluginInput())
       const output = {
@@ -325,6 +345,7 @@ describe("start-work hook", () => {
 
       const planPath = join(plansDir, "api-refactor.md")
       writeFileSync(planPath, "# API Refactor\n- [ ] Task 1")
+      writeFeatureArtifacts("specs", "api-refactor")
 
       const hook = createStartWorkHook(createMockPluginInput())
       const output = {
@@ -356,6 +377,7 @@ describe("start-work hook", () => {
 
       const planPath = join(plansDir, "2026-01-15-feature-implementation.md")
       writeFileSync(planPath, "# Feature Implementation\n- [ ] Task 1")
+      writeFeatureArtifacts("specs", "2026-01-15-feature-implementation")
 
       const hook = createStartWorkHook(createMockPluginInput())
       const output = {
@@ -378,6 +400,243 @@ describe("start-work hook", () => {
       // then - should find plan by partial match
       expect(output.parts[0].text).toContain("2026-01-15-feature-implementation")
       expect(output.parts[0].text).toContain("Auto-Selected Plan")
+    })
+
+    test("should resolve spec-kit tasks for prefixed plan name using numeric prefix fallback", async () => {
+      const planPath = join(testDir, "prefixed-plan.md")
+      writeFileSync(planPath, "# Plan\n- [ ] Task 1")
+
+      const state: BoulderState = {
+        active_plan: planPath,
+        started_at: "2026-01-02T10:00:00Z",
+        session_ids: ["session-1"],
+        plan_name: "fix/001-align-sdd-speckit-flow",
+        useSpecKitTasks: false,
+      }
+      writeBoulderState(testDir, state)
+
+      writeFeatureArtifacts(".specify/specs", "001-align-sdd-speckit-flow", {
+        spec: true,
+        plan: true,
+        tasks: true,
+      })
+
+      const hook = createStartWorkHook(createMockPluginInput())
+      const output = {
+        parts: [{ type: "text", text: "<session-context></session-context>" }],
+      }
+
+      await hook["chat.message"](
+        { sessionID: "session-123" },
+        output,
+      )
+
+      const updatedState = readBoulderState(testDir)
+      expect(updatedState?.useSpecKitTasks).toBe(true)
+      expect(updatedState?.tasksFilePath).toBe(".specify/specs/001-align-sdd-speckit-flow/tasks.md")
+    })
+
+    test("should prefer specs/ when both roots exist", async () => {
+      const plansDir = join(testDir, ".specify", "plans")
+      mkdirSync(plansDir, { recursive: true })
+
+      const planPath = join(plansDir, "001-prefer-specs.md")
+      writeFileSync(planPath, "# Plan\n- [ ] Task 1")
+
+      writeFeatureArtifacts("specs", "001-prefer-specs")
+      writeFeatureArtifacts(".specify/specs", "001-prefer-specs")
+
+      const hook = createStartWorkHook(createMockPluginInput())
+      const output = {
+        parts: [{ type: "text", text: "<session-context></session-context>" }],
+      }
+
+      await hook["chat.message"]({ sessionID: "session-123" }, output)
+
+      const updatedState = readBoulderState(testDir)
+      expect(updatedState?.useSpecKitTasks).toBe(true)
+      expect(updatedState?.tasksFilePath).toBe("specs/001-prefer-specs/tasks.md")
+    })
+
+    test("should fallback to .specify/specs/ when specs/ is missing", async () => {
+      const plansDir = join(testDir, ".specify", "plans")
+      mkdirSync(plansDir, { recursive: true })
+
+      const planPath = join(plansDir, "001-fallback-legacy.md")
+      writeFileSync(planPath, "# Plan\n- [ ] Task 1")
+
+      writeFeatureArtifacts(".specify/specs", "001-fallback-legacy")
+
+      const hook = createStartWorkHook(createMockPluginInput())
+      const output = {
+        parts: [{ type: "text", text: "<session-context></session-context>" }],
+      }
+
+      await hook["chat.message"]({ sessionID: "session-123" }, output)
+
+      const updatedState = readBoulderState(testDir)
+      expect(updatedState?.useSpecKitTasks).toBe(true)
+      expect(updatedState?.tasksFilePath).toBe(".specify/specs/001-fallback-legacy/tasks.md")
+    })
+
+    test("should block readiness when spec.md is missing", async () => {
+      const plansDir = join(testDir, ".specify", "plans")
+      mkdirSync(plansDir, { recursive: true })
+
+      const planPath = join(plansDir, "001-missing-spec.md")
+      writeFileSync(planPath, "# Plan\n- [ ] Task 1")
+
+      writeFeatureArtifacts("specs", "001-missing-spec", { spec: false, plan: true, tasks: true })
+
+      const hook = createStartWorkHook(createMockPluginInput())
+      const output = {
+        parts: [{ type: "text", text: "<session-context></session-context>" }],
+      }
+
+      await hook["chat.message"]({ sessionID: "session-123" }, output)
+
+      expect(output.parts[0].text).toContain("Readiness Blocked")
+      expect(output.parts[0].text).toContain("Run /speckit.specify")
+    })
+
+    test("should block readiness when plan.md is missing", async () => {
+      const plansDir = join(testDir, ".specify", "plans")
+      mkdirSync(plansDir, { recursive: true })
+
+      const planPath = join(plansDir, "001-missing-plan.md")
+      writeFileSync(planPath, "# Plan\n- [ ] Task 1")
+
+      writeFeatureArtifacts("specs", "001-missing-plan", { spec: true, plan: false, tasks: true })
+
+      const hook = createStartWorkHook(createMockPluginInput())
+      const output = {
+        parts: [{ type: "text", text: "<session-context></session-context>" }],
+      }
+
+      await hook["chat.message"]({ sessionID: "session-123" }, output)
+
+      expect(output.parts[0].text).toContain("Readiness Blocked")
+      expect(output.parts[0].text).toContain("Run /speckit.plan")
+    })
+
+    test("should block readiness on ambiguous NNN-* feature mapping", async () => {
+      const plansDir = join(testDir, ".specify", "plans")
+      mkdirSync(plansDir, { recursive: true })
+
+      const planPath = join(plansDir, "001-ambiguous.md")
+      writeFileSync(planPath, "# Plan\n- [ ] Task 1")
+
+      writeFeatureArtifacts("specs", "001-alpha")
+      writeFeatureArtifacts("specs", "001-beta")
+
+      const hook = createStartWorkHook(createMockPluginInput())
+      const output = {
+        parts: [{ type: "text", text: "<session-context></session-context>" }],
+      }
+
+      await hook["chat.message"]({ sessionID: "session-123" }, output)
+
+      expect(output.parts[0].text).toContain("Readiness Blocked")
+      expect(output.parts[0].text).toContain("Ambiguous feature mapping")
+    })
+
+    test("should block readiness when tasks.md is missing", async () => {
+      const plansDir = join(testDir, ".specify", "plans")
+      mkdirSync(plansDir, { recursive: true })
+
+      const planPath = join(plansDir, "001-missing-tasks.md")
+      writeFileSync(planPath, "# Plan\n- [ ] Task 1")
+
+      writeFeatureArtifacts("specs", "001-missing-tasks", { spec: true, plan: true, tasks: false })
+
+      const hook = createStartWorkHook(createMockPluginInput())
+      const output = {
+        parts: [{ type: "text", text: "<session-context></session-context>" }],
+      }
+
+      await hook["chat.message"](
+        { sessionID: "session-123" },
+        output,
+      )
+
+      expect(output.parts[0].text).toContain("Readiness Blocked")
+      expect(output.parts[0].text).toContain("Run /speckit.tasks first")
+    })
+
+    test("should report incomplete checklist status before execution", async () => {
+      const plansDir = join(testDir, ".specify", "plans")
+      mkdirSync(plansDir, { recursive: true })
+
+      const planPath = join(plansDir, "001-checklist-incomplete.md")
+      writeFileSync(planPath, "# Plan\n- [ ] Task 1")
+
+      const specDir = writeFeatureArtifacts("specs", "001-checklist-incomplete")
+      const checklistDir = join(specDir, "checklists")
+      mkdirSync(checklistDir, { recursive: true })
+      writeFileSync(join(checklistDir, "requirements.md"), "- [x] Complete\n- [ ] Pending")
+
+      const hook = createStartWorkHook(createMockPluginInput())
+      const output = {
+        parts: [{ type: "text", text: "<session-context></session-context>" }],
+      }
+
+      await hook["chat.message"](
+        { sessionID: "session-123" },
+        output,
+      )
+
+      expect(output.parts[0].text).toContain("Readiness Checklists Incomplete")
+      expect(output.parts[0].text).toContain("Some checklists are incomplete")
+    })
+
+    test("should align missing tasks remediation with speckit implement intent", async () => {
+      const plansDir = join(testDir, ".specify", "plans")
+      mkdirSync(plansDir, { recursive: true })
+
+      const planPath = join(plansDir, "001-parity-check.md")
+      writeFileSync(planPath, "# Plan\n- [ ] Task 1")
+
+      writeFeatureArtifacts("specs", "001-parity-check", { spec: true, plan: true, tasks: false })
+
+      const hook = createStartWorkHook(createMockPluginInput())
+      const output = {
+        parts: [{ type: "text", text: "<session-context></session-context>" }],
+      }
+
+      await hook["chat.message"](
+        { sessionID: "session-123" },
+        output,
+      )
+
+      expect(output.parts[0].text).toContain("Run /speckit.tasks first")
+      expect(output.parts[0].text).toContain("Readiness Blocked")
+    })
+
+    test("should not-found readiness mention both roots and precedence", async () => {
+      const plansDir = join(testDir, ".specify/plans")
+      mkdirSync(plansDir, { recursive: true })
+
+      const planPath = join(plansDir, "001-not-found.md")
+      writeFileSync(planPath, "# Plan\n- [ ] Task 1")
+
+      
+      const hook = createStartWorkHook(createMockPluginInput())
+      const output = {
+        parts: [
+          {
+            type: "text",
+            text: `<session-context>
+<user-request>001-not-found</user-request>
+</session-context>`,
+          },
+        ],
+      }
+
+      // when
+      await hook["chat.message"]({ sessionID: "session-123" }, output)
+
+      // then - not-found readiness message should reference both roots and precedence
+      expect(output.parts[0].text).toContain("No feature directory found for plan \"001-not-found\" under specs/ or .specify/specs/ (specs/ is preferred).")
     })
   })
 

@@ -7,7 +7,10 @@ exports[`generateModelConfig no providers available returns ULTIMATE_FALLBACK fo
     "axe": {
       "model": "opencode/glm-4.7-free",
     },
-    "mirana": {
+    "broodmother": {
+      "model": "opencode/glm-4.7-free",
+    },
+    "clockwerk": {
       "model": "opencode/glm-4.7-free",
     },
     "enigma": {
@@ -16,16 +19,13 @@ exports[`generateModelConfig no providers available returns ULTIMATE_FALLBACK fo
     "keeper": {
       "model": "opencode/glm-4.7-free",
     },
-    "rubick": {
-      "model": "opencode/glm-4.7-free",
-    },
-    "clockwerk": {
-      "model": "opencode/glm-4.7-free",
-    },
-    "broodmother": {
+    "mirana": {
       "model": "opencode/glm-4.7-free",
     },
     "oracle": {
+      "model": "opencode/glm-4.7-free",
+    },
+    "rubick": {
       "model": "opencode/glm-4.7-free",
     },
     "tinker": {
@@ -68,32 +68,32 @@ exports[`generateModelConfig single native provider uses Claude models when only
     "axe": {
       "model": "anthropic/claude-sonnet-4-5",
     },
-    "mirana": {
-      "model": "anthropic/claude-haiku-4-5",
-    },
-    "keeper": {
-      "model": "anthropic/claude-sonnet-4-5",
-    },
-    "rubick": {
-      "model": "anthropic/claude-opus-4-6",
-      "variant": "max",
+    "broodmother": {
+      "model": "opencode/glm-4.7-free",
     },
     "clockwerk": {
       "model": "anthropic/claude-opus-4-6",
       "variant": "max",
     },
-    "broodmother": {
+    "invoker": {
+      "model": "anthropic/claude-opus-4-6",
+      "variant": "max",
+    },
+    "keeper": {
+      "model": "anthropic/claude-sonnet-4-5",
+    },
+    "mirana": {
       "model": "anthropic/claude-haiku-4-5",
     },
     "oracle": {
       "model": "anthropic/claude-opus-4-6",
       "variant": "max",
     },
-    "tinker": {
+    "rubick": {
       "model": "anthropic/claude-opus-4-6",
       "variant": "max",
     },
-    "invoker": {
+    "tinker": {
       "model": "anthropic/claude-opus-4-6",
       "variant": "max",
     },
@@ -130,32 +130,32 @@ exports[`generateModelConfig single native provider uses Claude models with isMa
     "axe": {
       "model": "anthropic/claude-sonnet-4-5",
     },
-    "mirana": {
-      "model": "anthropic/claude-haiku-4-5",
-    },
-    "keeper": {
-      "model": "anthropic/claude-sonnet-4-5",
-    },
-    "rubick": {
-      "model": "anthropic/claude-opus-4-6",
-      "variant": "max",
+    "broodmother": {
+      "model": "opencode/glm-4.7-free",
     },
     "clockwerk": {
       "model": "anthropic/claude-opus-4-6",
       "variant": "max",
     },
-    "broodmother": {
+    "invoker": {
+      "model": "anthropic/claude-opus-4-6",
+      "variant": "max",
+    },
+    "keeper": {
+      "model": "anthropic/claude-sonnet-4-5",
+    },
+    "mirana": {
       "model": "anthropic/claude-haiku-4-5",
     },
     "oracle": {
       "model": "anthropic/claude-opus-4-6",
       "variant": "max",
     },
-    "tinker": {
+    "rubick": {
       "model": "anthropic/claude-opus-4-6",
       "variant": "max",
     },
-    "invoker": {
+    "tinker": {
       "model": "anthropic/claude-opus-4-6",
       "variant": "max",
     },
@@ -192,29 +192,34 @@ exports[`generateModelConfig single native provider uses OpenAI models when only
   "agents": {
     "axe": {
       "model": "openai/gpt-5.2",
-    },
-    "mirana": {
-      "model": "opencode/gpt-5-nano",
-    },
-    "enigma": {
-      "model": "openai/gpt-5.3-codex",
-      "variant": "medium",
-    },
-    "keeper": {
-      "model": "opencode/glm-4.7-free",
-    },
-    "rubick": {
-      "model": "openai/gpt-5.2",
-      "variant": "high",
-    },
-    "clockwerk": {
-      "model": "openai/gpt-5.2",
       "variant": "medium",
     },
     "broodmother": {
       "model": "openai/gpt-5.2",
     },
+    "clockwerk": {
+      "model": "openai/gpt-5.2",
+      "variant": "medium",
+    },
+    "enigma": {
+      "model": "openai/gpt-5.3-codex",
+      "variant": "medium",
+    },
+    "invoker": {
+      "model": "openai/gpt-5.2",
+      "variant": "high",
+    },
+    "keeper": {
+      "model": "opencode/glm-4.7-free",
+    },
+    "mirana": {
+      "model": "opencode/gpt-5-nano",
+    },
     "oracle": {
+      "model": "openai/gpt-5.2",
+      "variant": "high",
+    },
+    "rubick": {
       "model": "openai/gpt-5.2",
       "variant": "high",
     },
@@ -229,7 +234,7 @@ exports[`generateModelConfig single native provider uses OpenAI models when only
       "variant": "medium",
     },
     "quick": {
-      "model": "opencode/glm-4.7-free",
+      "model": "openai/gpt-5-nano",
     },
     "ultrabrain": {
       "model": "openai/gpt-5.3-codex",
@@ -259,29 +264,34 @@ exports[`generateModelConfig single native provider uses OpenAI models with isMa
   "agents": {
     "axe": {
       "model": "openai/gpt-5.2",
-    },
-    "mirana": {
-      "model": "opencode/gpt-5-nano",
-    },
-    "enigma": {
-      "model": "openai/gpt-5.3-codex",
-      "variant": "medium",
-    },
-    "keeper": {
-      "model": "opencode/glm-4.7-free",
-    },
-    "rubick": {
-      "model": "openai/gpt-5.2",
-      "variant": "high",
-    },
-    "clockwerk": {
-      "model": "openai/gpt-5.2",
       "variant": "medium",
     },
     "broodmother": {
       "model": "openai/gpt-5.2",
     },
+    "clockwerk": {
+      "model": "openai/gpt-5.2",
+      "variant": "medium",
+    },
+    "enigma": {
+      "model": "openai/gpt-5.3-codex",
+      "variant": "medium",
+    },
+    "invoker": {
+      "model": "openai/gpt-5.2",
+      "variant": "high",
+    },
+    "keeper": {
+      "model": "opencode/glm-4.7-free",
+    },
+    "mirana": {
+      "model": "opencode/gpt-5-nano",
+    },
     "oracle": {
+      "model": "openai/gpt-5.2",
+      "variant": "high",
+    },
+    "rubick": {
       "model": "openai/gpt-5.2",
       "variant": "high",
     },
@@ -296,14 +306,14 @@ exports[`generateModelConfig single native provider uses OpenAI models with isMa
       "variant": "medium",
     },
     "quick": {
-      "model": "opencode/glm-4.7-free",
+      "model": "openai/gpt-5-nano",
     },
     "ultrabrain": {
       "model": "openai/gpt-5.3-codex",
       "variant": "xhigh",
     },
     "unspecified-high": {
-      "model": "openai/gpt-5.2",
+      "model": "openai/gpt-5.3-codex",
       "variant": "high",
     },
     "unspecified-low": {
@@ -325,31 +335,32 @@ exports[`generateModelConfig single native provider uses Gemini models when only
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
   "agents": {
     "axe": {
-      "model": "google/gemini-3-pro",
-    },
-    "mirana": {
-      "model": "opencode/gpt-5-nano",
-    },
-    "keeper": {
       "model": "opencode/glm-4.7-free",
-    },
-    "rubick": {
-      "model": "google/gemini-3-pro",
-      "variant": "high",
-    },
-    "clockwerk": {
-      "model": "google/gemini-3-pro",
-      "variant": "high",
     },
     "broodmother": {
       "model": "google/gemini-3-flash",
     },
-    "oracle": {
+    "clockwerk": {
+      "model": "opencode/glm-4.7-free",
+    },
+    "invoker": {
       "model": "google/gemini-3-pro",
       "variant": "high",
     },
+    "keeper": {
+      "model": "opencode/glm-4.7-free",
+    },
+    "mirana": {
+      "model": "opencode/gpt-5-nano",
+    },
+    "oracle": {
+      "model": "opencode/glm-4.7-free",
+    },
+    "rubick": {
+      "model": "opencode/glm-4.7-free",
+    },
     "tinker": {
-      "model": "google/gemini-3-pro",
+      "model": "opencode/glm-4.7-free",
     },
   },
   "categories": {
@@ -358,17 +369,16 @@ exports[`generateModelConfig single native provider uses Gemini models when only
       "variant": "high",
     },
     "quick": {
-      "model": "google/gemini-3-flash",
+      "model": "opencode/glm-4.7-free",
     },
     "ultrabrain": {
-      "model": "google/gemini-3-pro",
-      "variant": "high",
+      "model": "opencode/glm-4.7-free",
     },
     "unspecified-high": {
-      "model": "google/gemini-3-flash",
+      "model": "opencode/glm-4.7-free",
     },
     "unspecified-low": {
-      "model": "google/gemini-3-flash",
+      "model": "opencode/glm-4.7-free",
     },
     "visual-engineering": {
       "model": "google/gemini-3-pro",
@@ -386,31 +396,32 @@ exports[`generateModelConfig single native provider uses Gemini models with isMa
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
   "agents": {
     "axe": {
-      "model": "google/gemini-3-pro",
-    },
-    "mirana": {
-      "model": "opencode/gpt-5-nano",
-    },
-    "keeper": {
       "model": "opencode/glm-4.7-free",
-    },
-    "rubick": {
-      "model": "google/gemini-3-pro",
-      "variant": "high",
-    },
-    "clockwerk": {
-      "model": "google/gemini-3-pro",
-      "variant": "high",
     },
     "broodmother": {
       "model": "google/gemini-3-flash",
     },
-    "oracle": {
+    "clockwerk": {
+      "model": "opencode/glm-4.7-free",
+    },
+    "invoker": {
       "model": "google/gemini-3-pro",
       "variant": "high",
     },
+    "keeper": {
+      "model": "opencode/glm-4.7-free",
+    },
+    "mirana": {
+      "model": "opencode/gpt-5-nano",
+    },
+    "oracle": {
+      "model": "opencode/glm-4.7-free",
+    },
+    "rubick": {
+      "model": "opencode/glm-4.7-free",
+    },
     "tinker": {
-      "model": "google/gemini-3-pro",
+      "model": "opencode/glm-4.7-free",
     },
   },
   "categories": {
@@ -419,17 +430,16 @@ exports[`generateModelConfig single native provider uses Gemini models with isMa
       "variant": "high",
     },
     "quick": {
-      "model": "google/gemini-3-flash",
+      "model": "opencode/glm-4.7-free",
     },
     "ultrabrain": {
-      "model": "google/gemini-3-pro",
-      "variant": "high",
+      "model": "opencode/glm-4.7-free",
     },
     "unspecified-high": {
-      "model": "google/gemini-3-pro",
+      "model": "opencode/glm-4.7-free",
     },
     "unspecified-low": {
-      "model": "google/gemini-3-flash",
+      "model": "opencode/glm-4.7-free",
     },
     "visual-engineering": {
       "model": "google/gemini-3-pro",
@@ -449,36 +459,36 @@ exports[`generateModelConfig all native providers uses preferred models from fal
     "axe": {
       "model": "anthropic/claude-sonnet-4-5",
     },
-    "mirana": {
-      "model": "anthropic/claude-haiku-4-5",
-    },
-    "enigma": {
-      "model": "openai/gpt-5.3-codex",
-      "variant": "medium",
-    },
-    "keeper": {
-      "model": "anthropic/claude-sonnet-4-5",
-    },
-    "rubick": {
-      "model": "anthropic/claude-opus-4-6",
-      "variant": "max",
+    "broodmother": {
+      "model": "google/gemini-3-flash",
     },
     "clockwerk": {
       "model": "openai/gpt-5.2",
       "variant": "medium",
     },
-    "broodmother": {
-      "model": "google/gemini-3-flash",
+    "enigma": {
+      "model": "openai/gpt-5.3-codex",
+      "variant": "medium",
+    },
+    "invoker": {
+      "model": "anthropic/claude-opus-4-6",
+      "variant": "max",
+    },
+    "keeper": {
+      "model": "anthropic/claude-sonnet-4-5",
+    },
+    "mirana": {
+      "model": "anthropic/claude-haiku-4-5",
     },
     "oracle": {
       "model": "openai/gpt-5.2",
       "variant": "high",
     },
-    "tinker": {
+    "rubick": {
       "model": "anthropic/claude-opus-4-6",
       "variant": "max",
     },
-    "invoker": {
+    "tinker": {
       "model": "anthropic/claude-opus-4-6",
       "variant": "max",
     },
@@ -523,36 +533,36 @@ exports[`generateModelConfig all native providers uses preferred models with isM
     "axe": {
       "model": "anthropic/claude-sonnet-4-5",
     },
-    "mirana": {
-      "model": "anthropic/claude-haiku-4-5",
-    },
-    "enigma": {
-      "model": "openai/gpt-5.3-codex",
-      "variant": "medium",
-    },
-    "keeper": {
-      "model": "anthropic/claude-sonnet-4-5",
-    },
-    "rubick": {
-      "model": "anthropic/claude-opus-4-6",
-      "variant": "max",
+    "broodmother": {
+      "model": "google/gemini-3-flash",
     },
     "clockwerk": {
       "model": "openai/gpt-5.2",
       "variant": "medium",
     },
-    "broodmother": {
-      "model": "google/gemini-3-flash",
+    "enigma": {
+      "model": "openai/gpt-5.3-codex",
+      "variant": "medium",
+    },
+    "invoker": {
+      "model": "anthropic/claude-opus-4-6",
+      "variant": "max",
+    },
+    "keeper": {
+      "model": "anthropic/claude-sonnet-4-5",
+    },
+    "mirana": {
+      "model": "anthropic/claude-haiku-4-5",
     },
     "oracle": {
       "model": "openai/gpt-5.2",
       "variant": "high",
     },
-    "tinker": {
+    "rubick": {
       "model": "anthropic/claude-opus-4-6",
       "variant": "max",
     },
-    "invoker": {
+    "tinker": {
       "model": "anthropic/claude-opus-4-6",
       "variant": "max",
     },
@@ -596,38 +606,38 @@ exports[`generateModelConfig fallback providers uses OpenCode Zen models when on
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
   "agents": {
     "axe": {
-      "model": "opencode/kimi-k2.5-free",
+      "model": "opencode/claude-sonnet-4-5",
     },
-    "mirana": {
-      "model": "opencode/claude-haiku-4-5",
-    },
-    "enigma": {
-      "model": "opencode/gpt-5.3-codex",
-      "variant": "medium",
-    },
-    "keeper": {
-      "model": "opencode/glm-4.7-free",
-    },
-    "rubick": {
-      "model": "opencode/claude-opus-4-6",
-      "variant": "max",
+    "broodmother": {
+      "model": "opencode/gemini-3-flash",
     },
     "clockwerk": {
       "model": "opencode/gpt-5.2",
       "variant": "medium",
     },
-    "broodmother": {
-      "model": "opencode/gemini-3-flash",
+    "enigma": {
+      "model": "opencode/gpt-5.3-codex",
+      "variant": "medium",
+    },
+    "invoker": {
+      "model": "opencode/claude-opus-4-6",
+      "variant": "max",
+    },
+    "keeper": {
+      "model": "opencode/claude-sonnet-4-5",
+    },
+    "mirana": {
+      "model": "opencode/claude-haiku-4-5",
     },
     "oracle": {
       "model": "opencode/gpt-5.2",
       "variant": "high",
     },
-    "tinker": {
+    "rubick": {
       "model": "opencode/claude-opus-4-6",
       "variant": "max",
     },
-    "invoker": {
+    "tinker": {
       "model": "opencode/claude-opus-4-6",
       "variant": "max",
     },
@@ -670,38 +680,38 @@ exports[`generateModelConfig fallback providers uses OpenCode Zen models with is
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
   "agents": {
     "axe": {
-      "model": "opencode/kimi-k2.5-free",
+      "model": "opencode/claude-sonnet-4-5",
     },
-    "mirana": {
-      "model": "opencode/claude-haiku-4-5",
-    },
-    "enigma": {
-      "model": "opencode/gpt-5.3-codex",
-      "variant": "medium",
-    },
-    "keeper": {
-      "model": "opencode/glm-4.7-free",
-    },
-    "rubick": {
-      "model": "opencode/claude-opus-4-6",
-      "variant": "max",
+    "broodmother": {
+      "model": "opencode/gemini-3-flash",
     },
     "clockwerk": {
       "model": "opencode/gpt-5.2",
       "variant": "medium",
     },
-    "broodmother": {
-      "model": "opencode/gemini-3-flash",
+    "enigma": {
+      "model": "opencode/gpt-5.3-codex",
+      "variant": "medium",
+    },
+    "invoker": {
+      "model": "opencode/claude-opus-4-6",
+      "variant": "max",
+    },
+    "keeper": {
+      "model": "opencode/claude-sonnet-4-5",
+    },
+    "mirana": {
+      "model": "opencode/claude-haiku-4-5",
     },
     "oracle": {
       "model": "opencode/gpt-5.2",
       "variant": "high",
     },
-    "tinker": {
+    "rubick": {
       "model": "opencode/claude-opus-4-6",
       "variant": "max",
     },
-    "invoker": {
+    "tinker": {
       "model": "opencode/claude-opus-4-6",
       "variant": "max",
     },
@@ -747,45 +757,41 @@ exports[`generateModelConfig fallback providers uses GitHub Copilot models when 
     "axe": {
       "model": "github-copilot/claude-sonnet-4.5",
     },
-    "mirana": {
-      "model": "github-copilot/gpt-5-mini",
-    },
-    "enigma": {
-      "model": "github-copilot/gpt-5.3-codex",
-      "variant": "medium",
-    },
-    "keeper": {
-      "model": "github-copilot/claude-sonnet-4.5",
-    },
-    "rubick": {
-      "model": "github-copilot/claude-opus-4.6",
-      "variant": "max",
+    "broodmother": {
+      "model": "github-copilot/gpt-5.2",
     },
     "clockwerk": {
       "model": "github-copilot/gpt-5.2",
       "variant": "medium",
     },
-    "broodmother": {
-      "model": "github-copilot/gemini-3-flash-preview",
-    },
-    "oracle": {
-      "model": "github-copilot/gpt-5.2",
-      "variant": "high",
-    },
-    "tinker": {
-      "model": "github-copilot/claude-opus-4.6",
-      "variant": "max",
+    "enigma": {
+      "model": "github-copilot/gpt-5.3-codex",
+      "variant": "medium",
     },
     "invoker": {
       "model": "github-copilot/claude-opus-4.6",
       "variant": "max",
     },
-  },
-  "categories": {
-    "artistry": {
-      "model": "github-copilot/gemini-3-pro-preview",
+    "keeper": {
+      "model": "github-copilot/claude-sonnet-4.5",
+    },
+    "mirana": {
+      "model": "github-copilot/gpt-5-mini",
+    },
+    "oracle": {
+      "model": "github-copilot/gpt-5.2",
       "variant": "high",
     },
+    "rubick": {
+      "model": "github-copilot/claude-opus-4.6",
+      "variant": "max",
+    },
+    "tinker": {
+      "model": "github-copilot/claude-opus-4.6",
+      "variant": "max",
+    },
+  },
+  "categories": {
     "deep": {
       "model": "github-copilot/gpt-5.3-codex",
       "variant": "medium",
@@ -804,11 +810,11 @@ exports[`generateModelConfig fallback providers uses GitHub Copilot models when 
       "model": "github-copilot/claude-sonnet-4.5",
     },
     "visual-engineering": {
-      "model": "github-copilot/gemini-3-pro-preview",
-      "variant": "high",
+      "model": "github-copilot/claude-opus-4.6",
+      "variant": "max",
     },
     "writing": {
-      "model": "github-copilot/gemini-3-flash-preview",
+      "model": "github-copilot/claude-sonnet-4.5",
     },
   },
 }
@@ -821,45 +827,41 @@ exports[`generateModelConfig fallback providers uses GitHub Copilot models with 
     "axe": {
       "model": "github-copilot/claude-sonnet-4.5",
     },
-    "mirana": {
-      "model": "github-copilot/gpt-5-mini",
-    },
-    "enigma": {
-      "model": "github-copilot/gpt-5.3-codex",
-      "variant": "medium",
-    },
-    "keeper": {
-      "model": "github-copilot/claude-sonnet-4.5",
-    },
-    "rubick": {
-      "model": "github-copilot/claude-opus-4.6",
-      "variant": "max",
+    "broodmother": {
+      "model": "github-copilot/gpt-5.2",
     },
     "clockwerk": {
       "model": "github-copilot/gpt-5.2",
       "variant": "medium",
     },
-    "broodmother": {
-      "model": "github-copilot/gemini-3-flash-preview",
-    },
-    "oracle": {
-      "model": "github-copilot/gpt-5.2",
-      "variant": "high",
-    },
-    "tinker": {
-      "model": "github-copilot/claude-opus-4.6",
-      "variant": "max",
+    "enigma": {
+      "model": "github-copilot/gpt-5.3-codex",
+      "variant": "medium",
     },
     "invoker": {
       "model": "github-copilot/claude-opus-4.6",
       "variant": "max",
     },
-  },
-  "categories": {
-    "artistry": {
-      "model": "github-copilot/gemini-3-pro-preview",
+    "keeper": {
+      "model": "github-copilot/claude-sonnet-4.5",
+    },
+    "mirana": {
+      "model": "github-copilot/gpt-5-mini",
+    },
+    "oracle": {
+      "model": "github-copilot/gpt-5.2",
       "variant": "high",
     },
+    "rubick": {
+      "model": "github-copilot/claude-opus-4.6",
+      "variant": "max",
+    },
+    "tinker": {
+      "model": "github-copilot/claude-opus-4.6",
+      "variant": "max",
+    },
+  },
+  "categories": {
     "deep": {
       "model": "github-copilot/gpt-5.3-codex",
       "variant": "medium",
@@ -879,11 +881,11 @@ exports[`generateModelConfig fallback providers uses GitHub Copilot models with 
       "model": "github-copilot/claude-sonnet-4.5",
     },
     "visual-engineering": {
-      "model": "github-copilot/gemini-3-pro-preview",
-      "variant": "high",
+      "model": "github-copilot/claude-opus-4.6",
+      "variant": "max",
     },
     "writing": {
-      "model": "github-copilot/gemini-3-flash-preview",
+      "model": "github-copilot/claude-sonnet-4.5",
     },
   },
 }
@@ -896,29 +898,26 @@ exports[`generateModelConfig fallback providers uses ZAI model for keeper when o
     "axe": {
       "model": "opencode/glm-4.7-free",
     },
-    "mirana": {
-      "model": "opencode/gpt-5-nano",
-    },
-    "keeper": {
-      "model": "zai-coding-plan/glm-4.7",
-    },
-    "rubick": {
+    "broodmother": {
       "model": "opencode/glm-4.7-free",
     },
     "clockwerk": {
       "model": "opencode/glm-4.7-free",
     },
-    "broodmother": {
-      "model": "zai-coding-plan/glm-4.6v",
+    "keeper": {
+      "model": "zai-coding-plan/glm-4.7",
+    },
+    "mirana": {
+      "model": "opencode/gpt-5-nano",
     },
     "oracle": {
       "model": "opencode/glm-4.7-free",
     },
-    "tinker": {
+    "rubick": {
       "model": "opencode/glm-4.7-free",
     },
-    "invoker": {
-      "model": "zai-coding-plan/glm-4.7",
+    "tinker": {
+      "model": "opencode/glm-4.7-free",
     },
   },
   "categories": {
@@ -951,29 +950,26 @@ exports[`generateModelConfig fallback providers uses ZAI model for keeper with i
     "axe": {
       "model": "opencode/glm-4.7-free",
     },
-    "mirana": {
-      "model": "opencode/gpt-5-nano",
-    },
-    "keeper": {
-      "model": "zai-coding-plan/glm-4.7",
-    },
-    "rubick": {
+    "broodmother": {
       "model": "opencode/glm-4.7-free",
     },
     "clockwerk": {
       "model": "opencode/glm-4.7-free",
     },
-    "broodmother": {
-      "model": "zai-coding-plan/glm-4.6v",
+    "keeper": {
+      "model": "zai-coding-plan/glm-4.7",
+    },
+    "mirana": {
+      "model": "opencode/gpt-5-nano",
     },
     "oracle": {
       "model": "opencode/glm-4.7-free",
     },
-    "tinker": {
+    "rubick": {
       "model": "opencode/glm-4.7-free",
     },
-    "invoker": {
-      "model": "zai-coding-plan/glm-4.7",
+    "tinker": {
+      "model": "opencode/glm-4.7-free",
     },
   },
   "categories": {
@@ -1004,38 +1000,38 @@ exports[`generateModelConfig mixed provider scenarios uses Claude + OpenCode Zen
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
   "agents": {
     "axe": {
-      "model": "opencode/kimi-k2.5-free",
+      "model": "anthropic/claude-sonnet-4-5",
     },
-    "mirana": {
-      "model": "anthropic/claude-haiku-4-5",
-    },
-    "enigma": {
-      "model": "opencode/gpt-5.3-codex",
-      "variant": "medium",
-    },
-    "keeper": {
-      "model": "opencode/glm-4.7-free",
-    },
-    "rubick": {
-      "model": "anthropic/claude-opus-4-6",
-      "variant": "max",
+    "broodmother": {
+      "model": "opencode/gemini-3-flash",
     },
     "clockwerk": {
       "model": "opencode/gpt-5.2",
       "variant": "medium",
     },
-    "broodmother": {
-      "model": "opencode/gemini-3-flash",
+    "enigma": {
+      "model": "opencode/gpt-5.3-codex",
+      "variant": "medium",
+    },
+    "invoker": {
+      "model": "anthropic/claude-opus-4-6",
+      "variant": "max",
+    },
+    "keeper": {
+      "model": "anthropic/claude-sonnet-4-5",
+    },
+    "mirana": {
+      "model": "anthropic/claude-haiku-4-5",
     },
     "oracle": {
       "model": "opencode/gpt-5.2",
       "variant": "high",
     },
-    "tinker": {
+    "rubick": {
       "model": "anthropic/claude-opus-4-6",
       "variant": "max",
     },
-    "invoker": {
+    "tinker": {
       "model": "anthropic/claude-opus-4-6",
       "variant": "max",
     },
@@ -1080,45 +1076,41 @@ exports[`generateModelConfig mixed provider scenarios uses OpenAI + Copilot comb
     "axe": {
       "model": "github-copilot/claude-sonnet-4.5",
     },
-    "mirana": {
-      "model": "github-copilot/gpt-5-mini",
-    },
-    "enigma": {
-      "model": "openai/gpt-5.3-codex",
-      "variant": "medium",
-    },
-    "keeper": {
-      "model": "github-copilot/claude-sonnet-4.5",
-    },
-    "rubick": {
-      "model": "github-copilot/claude-opus-4.6",
-      "variant": "max",
+    "broodmother": {
+      "model": "openai/gpt-5.2",
     },
     "clockwerk": {
       "model": "openai/gpt-5.2",
       "variant": "medium",
     },
-    "broodmother": {
-      "model": "github-copilot/gemini-3-flash-preview",
-    },
-    "oracle": {
-      "model": "openai/gpt-5.2",
-      "variant": "high",
-    },
-    "tinker": {
-      "model": "github-copilot/claude-opus-4.6",
-      "variant": "max",
+    "enigma": {
+      "model": "openai/gpt-5.3-codex",
+      "variant": "medium",
     },
     "invoker": {
       "model": "github-copilot/claude-opus-4.6",
       "variant": "max",
     },
-  },
-  "categories": {
-    "artistry": {
-      "model": "github-copilot/gemini-3-pro-preview",
+    "keeper": {
+      "model": "github-copilot/claude-sonnet-4.5",
+    },
+    "mirana": {
+      "model": "github-copilot/gpt-5-mini",
+    },
+    "oracle": {
+      "model": "openai/gpt-5.2",
       "variant": "high",
     },
+    "rubick": {
+      "model": "github-copilot/claude-opus-4.6",
+      "variant": "max",
+    },
+    "tinker": {
+      "model": "github-copilot/claude-opus-4.6",
+      "variant": "max",
+    },
+  },
+  "categories": {
     "deep": {
       "model": "openai/gpt-5.3-codex",
       "variant": "medium",
@@ -1137,11 +1129,11 @@ exports[`generateModelConfig mixed provider scenarios uses OpenAI + Copilot comb
       "model": "github-copilot/claude-sonnet-4.5",
     },
     "visual-engineering": {
-      "model": "github-copilot/gemini-3-pro-preview",
-      "variant": "high",
+      "model": "github-copilot/claude-opus-4.6",
+      "variant": "max",
     },
     "writing": {
-      "model": "github-copilot/gemini-3-flash-preview",
+      "model": "github-copilot/claude-sonnet-4.5",
     },
   },
 }
@@ -1154,32 +1146,32 @@ exports[`generateModelConfig mixed provider scenarios uses Claude + ZAI combinat
     "axe": {
       "model": "anthropic/claude-sonnet-4-5",
     },
-    "mirana": {
-      "model": "anthropic/claude-haiku-4-5",
-    },
-    "keeper": {
-      "model": "zai-coding-plan/glm-4.7",
-    },
-    "rubick": {
-      "model": "anthropic/claude-opus-4-6",
-      "variant": "max",
+    "broodmother": {
+      "model": "opencode/glm-4.7-free",
     },
     "clockwerk": {
       "model": "anthropic/claude-opus-4-6",
       "variant": "max",
     },
-    "broodmother": {
-      "model": "zai-coding-plan/glm-4.6v",
+    "invoker": {
+      "model": "anthropic/claude-opus-4-6",
+      "variant": "max",
+    },
+    "keeper": {
+      "model": "zai-coding-plan/glm-4.7",
+    },
+    "mirana": {
+      "model": "anthropic/claude-haiku-4-5",
     },
     "oracle": {
       "model": "anthropic/claude-opus-4-6",
       "variant": "max",
     },
-    "tinker": {
+    "rubick": {
       "model": "anthropic/claude-opus-4-6",
       "variant": "max",
     },
-    "invoker": {
+    "tinker": {
       "model": "anthropic/claude-opus-4-6",
       "variant": "max",
     },
@@ -1215,32 +1207,32 @@ exports[`generateModelConfig mixed provider scenarios uses Gemini + Claude combi
     "axe": {
       "model": "anthropic/claude-sonnet-4-5",
     },
-    "mirana": {
-      "model": "anthropic/claude-haiku-4-5",
-    },
-    "keeper": {
-      "model": "anthropic/claude-sonnet-4-5",
-    },
-    "rubick": {
-      "model": "anthropic/claude-opus-4-6",
-      "variant": "max",
+    "broodmother": {
+      "model": "google/gemini-3-flash",
     },
     "clockwerk": {
       "model": "anthropic/claude-opus-4-6",
       "variant": "max",
     },
-    "broodmother": {
-      "model": "google/gemini-3-flash",
-    },
-    "oracle": {
-      "model": "google/gemini-3-pro",
-      "variant": "high",
-    },
-    "tinker": {
+    "invoker": {
       "model": "anthropic/claude-opus-4-6",
       "variant": "max",
     },
-    "invoker": {
+    "keeper": {
+      "model": "anthropic/claude-sonnet-4-5",
+    },
+    "mirana": {
+      "model": "anthropic/claude-haiku-4-5",
+    },
+    "oracle": {
+      "model": "anthropic/claude-opus-4-6",
+      "variant": "max",
+    },
+    "rubick": {
+      "model": "anthropic/claude-opus-4-6",
+      "variant": "max",
+    },
+    "tinker": {
       "model": "anthropic/claude-opus-4-6",
       "variant": "max",
     },
@@ -1254,8 +1246,8 @@ exports[`generateModelConfig mixed provider scenarios uses Gemini + Claude combi
       "model": "anthropic/claude-haiku-4-5",
     },
     "ultrabrain": {
-      "model": "google/gemini-3-pro",
-      "variant": "high",
+      "model": "anthropic/claude-opus-4-6",
+      "variant": "max",
     },
     "unspecified-high": {
       "model": "anthropic/claude-sonnet-4-5",
@@ -1279,45 +1271,45 @@ exports[`generateModelConfig mixed provider scenarios uses all fallback provider
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
   "agents": {
     "axe": {
-      "model": "opencode/kimi-k2.5-free",
+      "model": "github-copilot/claude-sonnet-4.5",
     },
-    "mirana": {
-      "model": "opencode/claude-haiku-4-5",
-    },
-    "enigma": {
-      "model": "github-copilot/gpt-5.3-codex",
-      "variant": "medium",
-    },
-    "keeper": {
-      "model": "zai-coding-plan/glm-4.7",
-    },
-    "rubick": {
-      "model": "github-copilot/claude-opus-4.6",
-      "variant": "max",
+    "broodmother": {
+      "model": "opencode/gemini-3-flash",
     },
     "clockwerk": {
       "model": "github-copilot/gpt-5.2",
       "variant": "medium",
     },
-    "broodmother": {
-      "model": "github-copilot/gemini-3-flash-preview",
+    "enigma": {
+      "model": "github-copilot/gpt-5.3-codex",
+      "variant": "medium",
+    },
+    "invoker": {
+      "model": "github-copilot/claude-opus-4.6",
+      "variant": "max",
+    },
+    "keeper": {
+      "model": "zai-coding-plan/glm-4.7",
+    },
+    "mirana": {
+      "model": "opencode/claude-haiku-4-5",
     },
     "oracle": {
       "model": "github-copilot/gpt-5.2",
       "variant": "high",
     },
-    "tinker": {
+    "rubick": {
       "model": "github-copilot/claude-opus-4.6",
       "variant": "max",
     },
-    "invoker": {
+    "tinker": {
       "model": "github-copilot/claude-opus-4.6",
       "variant": "max",
     },
   },
   "categories": {
     "artistry": {
-      "model": "github-copilot/gemini-3-pro-preview",
+      "model": "opencode/gemini-3-pro",
       "variant": "high",
     },
     "deep": {
@@ -1338,11 +1330,11 @@ exports[`generateModelConfig mixed provider scenarios uses all fallback provider
       "model": "github-copilot/claude-sonnet-4.5",
     },
     "visual-engineering": {
-      "model": "github-copilot/gemini-3-pro-preview",
+      "model": "opencode/gemini-3-pro",
       "variant": "high",
     },
     "writing": {
-      "model": "github-copilot/gemini-3-flash-preview",
+      "model": "opencode/gemini-3-flash",
     },
   },
 }
@@ -1353,38 +1345,38 @@ exports[`generateModelConfig mixed provider scenarios uses all providers togethe
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
   "agents": {
     "axe": {
-      "model": "opencode/kimi-k2.5-free",
+      "model": "anthropic/claude-sonnet-4-5",
     },
-    "mirana": {
-      "model": "anthropic/claude-haiku-4-5",
-    },
-    "enigma": {
-      "model": "openai/gpt-5.3-codex",
-      "variant": "medium",
-    },
-    "keeper": {
-      "model": "zai-coding-plan/glm-4.7",
-    },
-    "rubick": {
-      "model": "anthropic/claude-opus-4-6",
-      "variant": "max",
+    "broodmother": {
+      "model": "google/gemini-3-flash",
     },
     "clockwerk": {
       "model": "openai/gpt-5.2",
       "variant": "medium",
     },
-    "broodmother": {
-      "model": "google/gemini-3-flash",
+    "enigma": {
+      "model": "openai/gpt-5.3-codex",
+      "variant": "medium",
+    },
+    "invoker": {
+      "model": "anthropic/claude-opus-4-6",
+      "variant": "max",
+    },
+    "keeper": {
+      "model": "zai-coding-plan/glm-4.7",
+    },
+    "mirana": {
+      "model": "anthropic/claude-haiku-4-5",
     },
     "oracle": {
       "model": "openai/gpt-5.2",
       "variant": "high",
     },
-    "tinker": {
+    "rubick": {
       "model": "anthropic/claude-opus-4-6",
       "variant": "max",
     },
-    "invoker": {
+    "tinker": {
       "model": "anthropic/claude-opus-4-6",
       "variant": "max",
     },
@@ -1427,38 +1419,38 @@ exports[`generateModelConfig mixed provider scenarios uses all providers with is
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
   "agents": {
     "axe": {
-      "model": "opencode/kimi-k2.5-free",
+      "model": "anthropic/claude-sonnet-4-5",
     },
-    "mirana": {
-      "model": "anthropic/claude-haiku-4-5",
-    },
-    "enigma": {
-      "model": "openai/gpt-5.3-codex",
-      "variant": "medium",
-    },
-    "keeper": {
-      "model": "zai-coding-plan/glm-4.7",
-    },
-    "rubick": {
-      "model": "anthropic/claude-opus-4-6",
-      "variant": "max",
+    "broodmother": {
+      "model": "google/gemini-3-flash",
     },
     "clockwerk": {
       "model": "openai/gpt-5.2",
       "variant": "medium",
     },
-    "broodmother": {
-      "model": "google/gemini-3-flash",
+    "enigma": {
+      "model": "openai/gpt-5.3-codex",
+      "variant": "medium",
+    },
+    "invoker": {
+      "model": "anthropic/claude-opus-4-6",
+      "variant": "max",
+    },
+    "keeper": {
+      "model": "zai-coding-plan/glm-4.7",
+    },
+    "mirana": {
+      "model": "anthropic/claude-haiku-4-5",
     },
     "oracle": {
       "model": "openai/gpt-5.2",
       "variant": "high",
     },
-    "tinker": {
+    "rubick": {
       "model": "anthropic/claude-opus-4-6",
       "variant": "max",
     },
-    "invoker": {
+    "tinker": {
       "model": "anthropic/claude-opus-4-6",
       "variant": "max",
     },

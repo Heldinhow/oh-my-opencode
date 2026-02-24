@@ -160,7 +160,7 @@ describe("tinker-md-only", () => {
     })
   })
 
-   describe("with Tinker agent in message storage", () => {
+  describe("with Tinker agent in message storage", () => {
      beforeEach(() => {
        setupMessageStorage(TEST_SESSION_ID, "tinker")
      })
@@ -257,7 +257,7 @@ describe("tinker-md-only", () => {
       // when / #then
       await expect(
         hook["tool.execute.before"](input, output)
-      ).rejects.toThrow("can only write/edit .md files inside .specify/")
+      ).rejects.toThrow(/can only write\/edit \.md files inside (?:\.specify\/|specs\/\*\*\.md)/)
     })
 
     test("should block Edit tool for non-.md files", async () => {
@@ -348,8 +348,104 @@ describe("tinker-md-only", () => {
       await hook["tool.execute.before"](input, output)
 
       // then
-      expect(output.args.prompt).toContain(SYSTEM_DIRECTIVE_PREFIX)
+      expect(output.args.prompt).toContain("PROMETHEUS READ-ONLY")
       expect(output.args.prompt).toContain("DO NOT modify any files")
+    })
+
+    test("should allow specs/md under specs root", async () => {
+      // given
+      const hook = createTinkerMdOnlyHook(createMockPluginInput())
+      const input = {
+        tool: "Write",
+        sessionID: TEST_SESSION_ID,
+        callID: "call-1",
+      }
+      const output = {
+        args: { filePath: "/tmp/test/specs/001-x/spec.md" },
+      }
+
+      // when / then
+      await expect(hook["tool.execute.before"](input, output)).resolves.toBeUndefined()
+    })
+
+    test("should block specs/001-x/spec.ts under specs root", async () => {
+      // given
+      const hook = createTinkerMdOnlyHook(createMockPluginInput())
+      const input = {
+        tool: "Write",
+        sessionID: TEST_SESSION_ID,
+        callID: "call-1",
+      }
+      const output = {
+        args: { filePath: "/tmp/test/specs/001-x/spec.ts" },
+      }
+
+      // when / #then
+      await expect(hook["tool.execute.before"](input, output)).rejects.toThrow()
+    })
+
+    test("should block specs/../secrets.md traversal", async () => {
+      // given
+      const hook = createTinkerMdOnlyHook(createMockPluginInput())
+      const input = {
+        tool: "Write",
+        sessionID: TEST_SESSION_ID,
+        callID: "call-1",
+      }
+      const output = {
+        args: { filePath: "/tmp/test/specs/../secrets.md" },
+      }
+
+      // when / #then
+      await expect(hook["tool.execute.before"](input, output)).rejects.toThrow()
+    })
+
+    test("should allow .specify/specs/001-x/spec.json under .specify root", async () => {
+      // given
+      const hook = createTinkerMdOnlyHook(createMockPluginInput())
+      const input = {
+        tool: "Write",
+        sessionID: TEST_SESSION_ID,
+        callID: "call-1",
+      }
+      const output = {
+        args: { filePath: "/tmp/test/.specify/specs/001-x/spec.json" },
+      }
+
+      // when / #then
+      await expect(hook["tool.execute.before"](input, output)).resolves.toBeUndefined()
+    })
+
+    test("should block specs/001-x/state.json under specs root", async () => {
+      // given
+      const hook = createTinkerMdOnlyHook(createMockPluginInput())
+      const input = {
+        tool: "Write",
+        sessionID: TEST_SESSION_ID,
+        callID: "call-1",
+      }
+      const output = {
+        args: { filePath: "/tmp/test/specs/001-x/state.json" },
+      }
+
+      // when / #then
+      await expect(hook["tool.execute.before"](input, output)).rejects.toThrow()
+    })
+
+    test("should block specs/.specify/state.json when specs root precedes .specify", async () => {
+      // given
+      const hook = createTinkerMdOnlyHook(createMockPluginInput())
+      const input = {
+        tool: "Write",
+        sessionID: TEST_SESSION_ID,
+        callID: "call-1",
+      }
+      const output = {
+        args: { filePath: "/tmp/test/specs/.specify/state.json" },
+      }
+
+      // when / then
+      await expect(hook["tool.execute.before"](input, output)).rejects.toThrow()
     })
 
     test("should inject read-only warning when Tinker calls task", async () => {
@@ -368,7 +464,7 @@ describe("tinker-md-only", () => {
       await hook["tool.execute.before"](input, output)
 
       // then
-      expect(output.args.prompt).toContain(SYSTEM_DIRECTIVE_PREFIX)
+      expect(output.args.prompt).toContain("PROMETHEUS READ-ONLY")
     })
 
     test("should inject read-only warning when Tinker calls call_omo_agent", async () => {
@@ -387,7 +483,7 @@ describe("tinker-md-only", () => {
       await hook["tool.execute.before"](input, output)
 
       // then
-      expect(output.args.prompt).toContain(SYSTEM_DIRECTIVE_PREFIX)
+      expect(output.args.prompt).toContain("PROMETHEUS READ-ONLY")
     })
 
     test("should not double-inject warning if already present", async () => {
@@ -670,7 +766,7 @@ describe("tinker-md-only", () => {
        // when / #then
        await expect(
          hook["tool.execute.before"](input, output)
-       ).rejects.toThrow("can only write/edit .md files inside .specify/")
+        ).rejects.toThrow(/can only write\/edit \.md files inside (?:\.specify\/|specs\/\*\*\.md)/)
      })
 
      test("should allow nested .invoker directories (ctx.directory may be parent)", async () => {
@@ -708,7 +804,7 @@ describe("tinker-md-only", () => {
        // when / #then
        await expect(
          hook["tool.execute.before"](input, output)
-       ).rejects.toThrow("can only write/edit .md files inside .specify/")
+        ).rejects.toThrow(/can only write\/edit \.md files inside (?:\.specify\/|specs\/\*\*\.md)/)
      })
 
     test("should allow case-insensitive .SPECIFY directory", async () => {

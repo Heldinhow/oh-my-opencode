@@ -1,5 +1,23 @@
-import { access, mkdir, writeFile } from "node:fs/promises"
+import { access, mkdir, readFile, writeFile } from "node:fs/promises"
 import { dirname, join } from "node:path"
+import { classifyPrefixFromContext } from "../../shared/branch-governance"
+
+export const CANONICAL_SDD_SEQUENCE = ["constitution", "specify", "clarify", "plan", "tasks", "start-work"] as const
+
+export function getCanonicalSddSequence(): readonly string[] {
+  return CANONICAL_SDD_SEQUENCE
+}
+
+export function detectSddBranchPrefix(request: string): {
+  prefix: string
+  requiresConfirmation: boolean
+} {
+  const result = classifyPrefixFromContext(request)
+  return {
+    prefix: result.detectedPrefix ?? "feat",
+    requiresConfirmation: result.requiresUserConfirmation,
+  }
+}
 
 /**
  * Tinker SDD Mode (Specification-Driven Development)
@@ -19,9 +37,9 @@ const CONSTITUTION_TEMPLATE = `---
 - Edge cases documented before implementation
 
 ## Process
-- SPECIFY -> CLARIFY -> APPROVE -> PLAN -> /start-work
+- SPECIFY -> CLARIFY -> PLAN -> TASKS -> /start-work
 ---
-`
+` 
 
 export const SDD_MODE_PROMPT = `# SDD MODE ENABLED
 SDD=ON
@@ -40,7 +58,7 @@ If missing:
   3. Inform the user: "📋 Constitution created in .specify/memory/constitution.md — review and adjust for your project."
 
 ## PHASE SPECIFY
-- Create .specify/specs/{slug}/spec.md using the spec template.
+- Create specs/{slug}/spec.md using the spec template.
 - Focus on what and why. No implementation details yet.
 - Capture: problem, success criteria, requirements, edge cases, dependencies, open questions.
 
@@ -49,10 +67,11 @@ If missing:
 - Record answers in a "Clarifications" section in spec.md.
 - Use mirana/keeper only to reduce ambiguity.
 
-## PHASE APPROVE
-- Present the spec to the user and wait for explicit approval.
-- On approval: update sdd-state.json to { "spec_status": "approved" }.
-- Do not move to planning or implementation without approval.
+// APPROVAL GATE
+- Approval is required here before moving from CLARIFY to PLAN.
+- The user must explicitly approve the spec to proceed to PLAN.
+- Do not move to planning or implementation without explicit user approval.
+- This gate occurs before advancing to PLAN and TASKS.
 `;
 
 export const SPEC_FILE_OPERATIONS = {
@@ -60,25 +79,23 @@ export const SPEC_FILE_OPERATIONS = {
    * Creates a new specification file with the given content
    */
   createSpec: (slug: string, content: string): string => {
-    return `write(".specify/specs/${slug}/spec.md", \`${content}\`)`;
+    return `write("specs/${slug}/spec.md", \`${content}\`)`;
   },
 
   /**
    * Appends a section to an existing specification
    */
   appendSection: (slug: string, sectionTitle: string, content: string): string => {
-    return `edit(".specify/specs/${slug}/spec.md", 
-  oldText="## Open Questions", 
-  newText="## ${sectionTitle}\n${content}\n\n## Open Questions")`;
+    return `edit("specs/${slug}/spec.md", \n  oldText="## Clarifications", \n  newText="## Clarifications\\n\\n### ${sectionTitle}\\n${content}\\n")`;
   },
 
   /**
    * Marks a question as resolved in the spec
    */
   resolveQuestion: (slug: string, question: string, answer: string): string => {
-    return `edit(".specify/specs/${slug}/spec.md",
+    return `edit("specs/${slug}/spec.md",
   oldText="- [ ] ${question}",
-  newText="- [x] ${question}\n  **Answer**: ${answer}")`;
+  newText="- [x] ${question}\\n  **Answer**: ${answer}")`;
   },
 
   /**
@@ -90,18 +107,18 @@ export const SPEC_FILE_OPERATIONS = {
     criterion: string,
     newCriterion: string
   ): string => {
-    return `edit(".specify/specs/${slug}/spec.md",
-  oldText="### ${reqId}: *\n**Acceptance Criteria**:",
-  newText="### ${reqId}: *\n**Acceptance Criteria**:\n- ${newCriterion}")`;
+    return `edit("specs/${slug}/spec.md",
+  oldText="### ${reqId}: *\\n**Acceptance Criteria**:",
+  newText="### ${reqId}: *\\n**Acceptance Criteria**: ${criterion}\\n- ${newCriterion}")`;
   },
 
   /**
    * Marks spec as approved
    */
   markApproved: (slug: string): string => {
-    return `edit(".specify/specs/${slug}/spec.md",
-  oldText="# Specification: ${slug}",
-  newText="# Specification: ${slug}\n\n**Status**: APPROVED")`;
+    return `edit("specs/${slug}/spec.md",
+  oldText="**Status**: Draft",
+  newText="**Status**: APPROVED")`;
   },
 };
 
@@ -109,10 +126,20 @@ export async function ensureConstitution(projectRoot: string): Promise<{ created
   const filePath = join(projectRoot, ".specify/memory/constitution.md")
   try {
     await access(filePath)
+    // If file exists, replace literal [DATE] tokens with today's date, but only the tokens
+    // and only when they exist. Do not overwrite content otherwise.
+    const existing = await readFile(filePath, "utf8")
+    if (existing.includes("[DATE]")) {
+      const today = new Date().toISOString().slice(0, 10)
+      const updated = existing.split("[DATE]").join(today)
+      await writeFile(filePath, updated, "utf8")
+    }
     return { created: false, path: filePath }
   } catch {
     await mkdir(dirname(filePath), { recursive: true })
-    await writeFile(filePath, CONSTITUTION_TEMPLATE, "utf8")
+    const today = new Date().toISOString().slice(0, 10)
+    const content = `# Oh My OpenCode Constitution\nDate: ${today}\n${CONSTITUTION_TEMPLATE}`
+    await writeFile(filePath, content, "utf8")
     return { created: true, path: filePath }
   }
 }
