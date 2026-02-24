@@ -58,7 +58,7 @@ If missing:
   3. Inform the user: "📋 Constitution created in .specify/memory/constitution.md — review and adjust for your project."
 
 ## PHASE SPECIFY
-- Create .specify/specs/{slug}/spec.md using the spec template.
+- Create specs/{slug}/spec.md using the spec template.
 - Focus on what and why. No implementation details yet.
 - Capture: problem, success criteria, requirements, edge cases, dependencies, open questions.
 
@@ -78,14 +78,14 @@ export const SPEC_FILE_OPERATIONS = {
    * Creates a new specification file with the given content
    */
   createSpec: (slug: string, content: string): string => {
-    return `write(".specify/specs/${slug}/spec.md", \`${content}\`)`;
+    return `write("specs/${slug}/spec.md", \`${content}\`)`;
   },
 
   /**
    * Appends a section to an existing specification
    */
   appendSection: (slug: string, sectionTitle: string, content: string): string => {
-    return `edit(".specify/specs/${slug}/spec.md", 
+    return `edit("specs/${slug}/spec.md", 
   oldText="## Open Questions", 
   newText="## ${sectionTitle}\n${content}\n\n## Open Questions")`;
   },
@@ -94,7 +94,7 @@ export const SPEC_FILE_OPERATIONS = {
    * Marks a question as resolved in the spec
    */
   resolveQuestion: (slug: string, question: string, answer: string): string => {
-    return `edit(".specify/specs/${slug}/spec.md",
+    return `edit("specs/${slug}/spec.md",
   oldText="- [ ] ${question}",
   newText="- [x] ${question}\n  **Answer**: ${answer}")`;
   },
@@ -108,7 +108,7 @@ export const SPEC_FILE_OPERATIONS = {
     criterion: string,
     newCriterion: string
   ): string => {
-    return `edit(".specify/specs/${slug}/spec.md",
+    return `edit("specs/${slug}/spec.md",
   oldText="### ${reqId}: *\n**Acceptance Criteria**:",
   newText="### ${reqId}: *\n**Acceptance Criteria**:\n- ${newCriterion}")`;
   },
@@ -117,7 +117,7 @@ export const SPEC_FILE_OPERATIONS = {
    * Marks spec as approved
    */
   markApproved: (slug: string): string => {
-    return `edit(".specify/specs/${slug}/spec.md",
+    return `edit("specs/${slug}/spec.md",
   oldText="# Specification: ${slug}",
   newText="# Specification: ${slug}\n\n**Status**: APPROVED")`;
   },

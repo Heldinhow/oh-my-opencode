@@ -4,7 +4,13 @@ import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { buildInterviewModePrompt, evaluateClarifyNeed } from "./interview-mode"
 import { getPlanningTransition } from "./plan-generation"
-import { SDD_MODE_PROMPT, ensureConstitution, getCanonicalSddSequence, detectSddBranchPrefix } from "./sdd-mode"
+import {
+  SDD_MODE_PROMPT,
+  SPEC_FILE_OPERATIONS,
+  ensureConstitution,
+  getCanonicalSddSequence,
+  detectSddBranchPrefix,
+} from "./sdd-mode"
 import { orchestrateSpeckitFlow, shouldProceedToPlan, getSddSequence } from "./orchestration"
 
 const GOLDEN_PROMETHEUS_TO_TINKER_SEQUENCE = ["constitution", "specify", "clarify", "plan", "tasks", "start-work"] as const
@@ -20,6 +26,30 @@ describe("sdd-mode", () => {
 
     //#when / #then
     expect(prompt).toContain(SDD_MODE_PROMPT)
+  })
+
+  test("SDD_MODE_PROMPT references specs root for spec artifacts", () => {
+    //#given / #when / #then
+    expect(SDD_MODE_PROMPT).toContain("specs/{slug}/spec.md")
+    expect(SDD_MODE_PROMPT).not.toContain(".specify/specs")
+  })
+
+  test("SPEC_FILE_OPERATIONS targets specs root", () => {
+    //#given
+    const slug = "001-example"
+
+    //#when
+    const create = SPEC_FILE_OPERATIONS.createSpec(slug, "content")
+    const append = SPEC_FILE_OPERATIONS.appendSection(slug, "Clarifications", "text")
+    const approve = SPEC_FILE_OPERATIONS.markApproved(slug)
+
+    //#then
+    expect(create).toContain(`write("specs/${slug}/spec.md"`)
+    expect(append).toContain(`edit("specs/${slug}/spec.md"`)
+    expect(approve).toContain(`edit("specs/${slug}/spec.md"`)
+    expect(create).not.toContain(".specify/specs")
+    expect(append).not.toContain(".specify/specs")
+    expect(approve).not.toContain(".specify/specs")
   })
 
   test("ensureConstitution creates file when missing", async () => {
@@ -154,6 +184,38 @@ describe("orchestration", () => {
     expect(result.branchPrefix).toBe("fix")
   })
 
+  test("orchestrateSpeckitFlow computes spec path under specs root by default", async () => {
+    //#given
+    const root = await createTempDir()
+
+    //#when
+    const result = await orchestrateSpeckitFlow({
+      projectRoot: root,
+      userRequest: "clean feature",
+    })
+
+    //#then
+    expect(result.success).toBe(true)
+    expect(result.specPath).toBe(join(root, "specs", "001-clean-feature", "spec.md"))
+    expect(result.specPath).not.toContain(join(root, ".specify", "specs"))
+  })
+
+  test("orchestrateSpeckitFlow falls back to legacy .specify/specs when specs root is missing", async () => {
+    //#given
+    const root = await createTempDir()
+    await mkdir(join(root, ".specify", "specs", "005-old-feature"), { recursive: true })
+
+    //#when
+    const result = await orchestrateSpeckitFlow({
+      projectRoot: root,
+      userRequest: "add thing",
+    })
+
+    //#then
+    expect(result.success).toBe(true)
+    expect(result.specPath).toBe(join(root, ".specify", "specs", "006-add-thing", "spec.md"))
+  })
+
   test("shouldProceedToPlan returns false when clarify needed", () => {
     //#given
     const specWithMarker = "Feature: Add auth\n[NEEDS CLARIFICATION: what provider?]"
@@ -219,7 +281,7 @@ describe("orchestration", () => {
   test("orchestrateSpeckitFlow skips clarify when spec is clean", async () => {
     //#given
     const root = await createTempDir()
-    const specsDir = join(root, ".specify", "specs", "002-clean-feature")
+    const specsDir = join(root, "specs", "002-clean-feature")
     await mkdir(specsDir, { recursive: true })
     await writeFile(join(specsDir, "spec.md"), "Feature: Clean feature\nRequirements: Complete")
 

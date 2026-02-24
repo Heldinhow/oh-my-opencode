@@ -53,8 +53,21 @@ function generateSlug(request: string): string {
 /**
  * Get next available feature number from specs directory
  */
-function getNextFeatureNumber(projectRoot: string): number {
-  const specsDir = join(projectRoot, ".specify", "specs")
+function resolveSpeckitSpecsRoot(projectRoot: string): string {
+  const canonical = join(projectRoot, "specs")
+  if (existsSync(canonical)) {
+    return canonical
+  }
+
+  const legacy = join(projectRoot, ".specify", "specs")
+  if (existsSync(legacy)) {
+    return legacy
+  }
+
+  return canonical
+}
+
+function getNextFeatureNumber(specsDir: string): number {
   if (!existsSync(specsDir)) {
     return 1
   }
@@ -106,10 +119,11 @@ export async function orchestrateSpeckitFlow(
 
     // Stage 3: Generate/resolve spec slug
     const slug = specSlug || generateSlug(userRequest)
-    const featureNum = getNextFeatureNumber(projectRoot)
+    const specsRoot = resolveSpeckitSpecsRoot(projectRoot)
+    const featureNum = getNextFeatureNumber(specsRoot)
     const paddedNum = String(featureNum).padStart(3, "0")
     const fullSlug = `${paddedNum}-${slug}`
-    const specDir = join(projectRoot, ".specify", "specs", fullSlug)
+    const specDir = join(specsRoot, fullSlug)
     const specPath = join(specDir, "spec.md")
     stagesCompleted.push("spec-resolution")
 
@@ -142,7 +156,7 @@ export async function orchestrateSpeckitFlow(
       constitutionPath: constitutionResult.path,
       branchPrefix,
       branchRequiresConfirmation,
-      specPath: existsSync(specPath) ? specPath : undefined,
+      specPath,
       clarifyRequired,
       clarifyReasons,
     }
