@@ -1,7 +1,11 @@
 export const AGENT_NAME_MAP: Record<string, string> = {
   // Invoker variants → "invoker"
   omo: "invoker",
+  // Exact-casing variant for legacy alias used in tests
+  OmO: "invoker",
   invoker: "invoker",
+  // Legacy SISYPHUS alias → maps to the canonical invoker
+  sisyphus: "invoker",
 
   // Tinker variants → "tinker"
   "OmO-Plan": "tinker",
